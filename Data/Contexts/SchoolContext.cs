@@ -5,6 +5,12 @@ namespace Data.Contexts
 {
     public class SchoolContext : DbContext
     {
+        public SchoolContext()
+        {
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server =.\SQLEXPRESS; Database = SchoolDB; Trusted_Connection = True");

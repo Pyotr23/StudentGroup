@@ -21,8 +21,8 @@ namespace Data.Models
         public string Name { get; set; }
 
         [MaxLength(60)]
-        public string MiddleName { get; set; }
-                
+        public string MiddleName { get; set; }               
+        
         [MinLength(6)]
         [MaxLength(16)]        
         public string Nickname { get; set; }
