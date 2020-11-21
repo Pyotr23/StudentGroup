@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-#nullable disable
-
-namespace WebApi.Models
+﻿namespace StudentGroup.Infrastracture.Data.Models
 {
     public partial class Group
     {

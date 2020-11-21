@@ -1,10 +1,7 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentGroup.Infrastracture.Data.Models;
 
-#nullable disable
-
-namespace WebApi.Models
+namespace StudentGroup.Infrastracture.Data.Contexts
 {
     public partial class SchoolContext : DbContext
     {
@@ -20,14 +17,6 @@ namespace WebApi.Models
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<GroupsStudent> GroupsStudents { get; set; }
         public virtual DbSet<Student> Students { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=School;Trusted_Connection=True;");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

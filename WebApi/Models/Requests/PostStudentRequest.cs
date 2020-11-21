@@ -1,8 +1,7 @@
-﻿namespace StudentGroup.Infrastracture.Data.Models
+﻿namespace StudentGroup.Services.WebApi.Models.Requests
 {
-    public partial class Student
+    public class PostStudentRequest
     {
-        public int Id { get; set; }
         public string Sex { get; set; }
         public string Surname { get; set; }
         public string Name { get; set; }
