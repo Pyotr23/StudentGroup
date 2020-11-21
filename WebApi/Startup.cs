@@ -4,10 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using StudentGroup.Infrastracture.Data.Contexts;
 using StudentGroup.Infrastracture.Data.Repositories;
 using StudentGroup.Infrastracture.Shared.Managers;
+using StudentGroup.Services.WebApi.Configurations;
+using StudentGroup.Services.WebApi.Extensions;
 
 namespace StudentGroup.Services.WebApi
 {
@@ -29,14 +32,20 @@ namespace StudentGroup.Services.WebApi
                 .AddTransient<ISchoolRepository, SchoolRepository>()
                 .AddTransient<ISchoolManager, SchoolManager>()
                 .AddControllers();
+
+            var apiConfiguration = services
+                .AddCustomOptions(Configuration)
+                .GetRequiredService<IOptions<ApiConfiguration>>()
+                .Value;
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1.0", new OpenApiInfo { Title = "Student group", Version = "v1.0" });                                
+                options.SwaggerDoc(apiConfiguration.Version, 
+                    new OpenApiInfo { Title = apiConfiguration.Name, Version = apiConfiguration.Version });                                
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<ApiConfiguration> apiOptions)
         {
             if (env.IsDevelopment())
             {
@@ -51,9 +60,10 @@ namespace StudentGroup.Services.WebApi
 
             app.UseSwagger();
 
+            var apiConfiguration = apiOptions.Value;
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint($"/v1/swagger.json", "Student group");
+                c.SwaggerEndpoint($"/swagger/v1/swagger.json", apiConfiguration.Name);
                 c.RoutePrefix = string.Empty;
             });
 

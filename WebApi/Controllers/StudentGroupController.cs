@@ -10,12 +10,12 @@ namespace StudentGroup.Services.WebApi.Controllers
     [ApiController]
     public class StudentGroupController : ControllerBase
     {
-        private readonly ISchoolManager _schoolManager;
-        
-        public StudentGroupController(ISchoolManager schoolManager)
-        {
-            _schoolManager = schoolManager;
-        }
+        //private readonly ISchoolManager _schoolManager;
+
+        //public StudentGroupController(ISchoolManager schoolManager)
+        //{
+        //    _schoolManager = schoolManager;
+        //}
 
         //// GET: api/<StudentGroupController>
         //[HttpGet]
@@ -32,8 +32,14 @@ namespace StudentGroup.Services.WebApi.Controllers
         //}
 
         // POST api/<StudentGroupController>
-        [HttpPost("Student")]
-        public string Post([FromBody] string value)
+        //[HttpPost("Student")]
+        //public string PostStudent()
+        //{
+        //    return string.Empty;
+        //}
+
+        [HttpGet("Index")]
+        public string Index()
         {
             return string.Empty;
         }
