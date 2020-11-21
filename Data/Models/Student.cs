@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Data.Models
+#nullable disable
+
+namespace WebApi.Models
 {
-    class Student
+    public partial class Student
     {
+        public int Id { get; set; }
+        public string Sex { get; set; }
+        public string Surname { get; set; }
+        public string Name { get; set; }
+        public string MiddleName { get; set; }
+        public string Nickname { get; set; }
     }
 }
