@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Students.Api.Controllers
+namespace StudentGroup.Services.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentsController : ControllerBase
+    public class StudentGroupController : ControllerBase
     {
         [HttpGet("Index")]
         public string Index()

@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Students.Api.Configurations;
+using StudentGroup.Services.Api.Configurations;
 
-namespace Students.Api.Extensions
+namespace StudentGroup.Services.Api.Extensions
 {
     internal static class StartupExtensions
     {
