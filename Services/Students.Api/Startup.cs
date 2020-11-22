@@ -4,15 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using StudentGroup.Services.WebApi.Configurations;
-using StudentGroup.Services.WebApi.Extensions;
+using Students.Api.Configurations;
+using Students.Api.Extensions;
 
-namespace StudentGroup.Services.WebApi
+namespace Students.Api
 {
     public class Startup
     {
@@ -31,7 +32,7 @@ namespace StudentGroup.Services.WebApi
 
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc(apiConfiguration.Version, new OpenApiInfo { Title = apiConfiguration.Name, Version = apiConfiguration.Version });
+                options.SwaggerDoc(apiConfiguration.ApiVersion, new OpenApiInfo { Title = apiConfiguration.ApiName, Version = apiConfiguration.ApiVersion });
             });
 
             services.AddControllers();
@@ -53,7 +54,7 @@ namespace StudentGroup.Services.WebApi
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint($"/swagger/v1/swagger.json", apiConfiguration.Name);
+                c.SwaggerEndpoint($"/swagger/v1/swagger.json", apiConfiguration.ApiName);
                 c.RoutePrefix = string.Empty;
             });
 
