@@ -1,5 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using StudentGroup.Infrastracture.Data.Models;
+
+#nullable disable
 
 namespace StudentGroup.Infrastracture.Data.Contexts
 {
@@ -15,7 +19,7 @@ namespace StudentGroup.Infrastracture.Data.Contexts
         }
 
         public virtual DbSet<Group> Groups { get; set; }
-        public virtual DbSet<GroupsStudent> GroupsStudents { get; set; }
+        public virtual DbSet<GroupStudent> GroupStudents { get; set; }
         public virtual DbSet<Student> Students { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -27,9 +31,11 @@ namespace StudentGroup.Infrastracture.Data.Contexts
                     .HasMaxLength(25);
             });
 
-            modelBuilder.Entity<GroupsStudent>(entity =>
+            modelBuilder.Entity<GroupStudent>(entity =>
             {
                 entity.HasNoKey();
+
+                entity.ToTable("GroupStudent");
 
                 entity.HasOne(d => d.Group)
                     .WithMany()

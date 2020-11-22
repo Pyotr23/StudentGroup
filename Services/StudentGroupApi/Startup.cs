@@ -1,10 +1,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using StudentGroup.Infrastracture.Data.Contexts;
+using StudentGroup.Infrastracture.Data.Repositories;
+using StudentGroup.Infrastracture.Shared.Managers;
 using StudentGroup.Services.Api.Configurations;
 using StudentGroup.Services.Api.Extensions;
 
@@ -24,7 +28,13 @@ namespace StudentGroup.Services.Api
             var apiConfiguration = GetApiConfiguration(services);
             services.AddSwaggerGen(options =>
                 options.SwaggerDoc(apiConfiguration.Version, (OpenApiInfo)apiConfiguration));
-            services.AddControllers();
+
+            var connectionString = Configuration.GetConnectionString("Default");
+            services
+                .AddDbContext<SchoolContext>(opt => opt.UseSqlServer(connectionString))
+                .AddTransient<ISchoolManager, SchoolManager>()
+                .AddTransient<ISchoolRepository, SchoolRepository>()
+                .AddControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<ApiConfiguration> apiOption)
