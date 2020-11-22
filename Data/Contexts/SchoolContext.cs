@@ -1,30 +1,73 @@
-﻿using Data.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using StudentGroup.Infrastracture.Data.Models;
 
-namespace Data.Contexts
+namespace StudentGroup.Infrastracture.Data.Contexts
 {
-    public class SchoolContext : DbContext
+    public partial class SchoolContext : DbContext
     {
         public SchoolContext()
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public SchoolContext(DbContextOptions<SchoolContext> options)
+            : base(options)
         {
-            optionsBuilder.UseSqlServer(@"Server =.\SQLEXPRESS; Database = SchoolDB; Trusted_Connection = True");
         }
+
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<GroupsStudent> GroupsStudents { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder
-                .Entity<GroupStudent>()
-                .HasKey(sc => new { sc.GroupId, sc.StudentId });
+            modelBuilder.Entity<Group>(entity =>
+            {
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(25);
+            });
+
+            modelBuilder.Entity<GroupsStudent>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.HasOne(d => d.Group)
+                    .WithMany()
+                    .HasForeignKey(d => d.GroupId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupsStudents_Groups");
+
+                entity.HasOne(d => d.Student)
+                    .WithMany()
+                    .HasForeignKey(d => d.StudentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_GroupsStudents_Students");
+            });
+
+            modelBuilder.Entity<Student>(entity =>
+            {
+                entity.HasIndex(e => e.Nickname, "UK_Nickname")
+                    .IsUnique()
+                    .HasFilter("([Nickname] IS NOT NULL)");
+
+                entity.Property(e => e.MiddleName).HasMaxLength(60);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.Nickname).HasMaxLength(16);
+
+                entity.Property(e => e.Sex).IsRequired();
+
+                entity.Property(e => e.Surname)
+                    .IsRequired()
+                    .HasMaxLength(40);
+            });
+
+            OnModelCreatingPartial(modelBuilder);
         }
 
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Group> Groups { get; set; }
-        public DbSet<GroupStudent> GroupStudents { get; set; }
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

@@ -1,17 +1,8 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace Data.Models
+﻿namespace StudentGroup.Infrastracture.Data.Models
 {
-    public class Group
+    public partial class Group
     {
-        [Required]
-        [Key]
         public int Id { get; set; }
-
-        [MaxLength(25)]
         public string Name { get; set; }
-
-        public ICollection<GroupStudent> GroupStudents { get; set; }
     }
 }

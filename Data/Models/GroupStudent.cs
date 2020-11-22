@@ -1,4 +1,6 @@
-﻿namespace Data.Models
+﻿using StudentGroup.Infrastracture.Data.Models;
+
+namespace Data.Models
 {
     public class GroupStudent
     {
