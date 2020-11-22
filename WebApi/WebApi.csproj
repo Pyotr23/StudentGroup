@@ -2,18 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>05f92e30-ca0a-4e22-8d7a-82b429ec2ce7</UserSecretsId>
-    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+    <!--<UserSecretsId>05f92e30-ca0a-4e22-8d7a-82b429ec2ce7</UserSecretsId>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>-->
     <AssemblyName>StudentGroup.Services.WebApi</AssemblyName>
     <RootNamespace>StudentGroup.Services.WebApi</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+  <ItemGroup>    
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.5.1" />
   </ItemGroup>

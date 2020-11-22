@@ -10,8 +10,9 @@ namespace StudentGroup.Services.WebApi.Extensions
             this IServiceCollection services, 
             IConfiguration configuration)
         {
+            var configurationSection = configuration.GetSection(nameof(ApiConfiguration));
             return services
-                .Configure<ApiConfiguration>(configuration.GetSection(nameof(ApiConfiguration)))
+                .Configure<ApiConfiguration>(configurationSection)
                 .BuildServiceProvider();
         }
     }
