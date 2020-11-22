@@ -13,40 +13,29 @@ namespace StudentGroup.Services.Api
     public class Startup
     {
         public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var provider = services.AddCustomOptions(Configuration);
-            var apiConfiguration = provider.GetRequiredService<IOptions<ApiConfiguration>>().Value;
-
+            var apiConfiguration = GetApiConfiguration(services);
             services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc(apiConfiguration.Version, new OpenApiInfo { Title = apiConfiguration.Name, Version = apiConfiguration.Version });
-            });
-
+                options.SwaggerDoc(apiConfiguration.Version, (OpenApiInfo)apiConfiguration));
             services.AddControllers();
-
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<ApiConfiguration> apiOption)
         {
-            var apiConfiguration = apiOption.Value;
-
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
 
             app.UseRouting();
-
             app.UseSwagger();
+
+            var apiConfiguration = apiOption.Value;
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint($"/swagger/v1/swagger.json", apiConfiguration.Name);
@@ -54,6 +43,14 @@ namespace StudentGroup.Services.Api
             });
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+
+        private ApiConfiguration GetApiConfiguration(IServiceCollection services)
+        {
+            return services
+                .AddCustomOptions(Configuration)
+                .GetRequiredService<IOptions<ApiConfiguration>>()
+                .Value;
         }
     }
 }

@@ -9,9 +9,10 @@ namespace StudentGroup.Services.Api.Extensions
         internal static ServiceProvider AddCustomOptions(this IServiceCollection services,
             IConfiguration configuration)
         {
-            services.Configure<ApiConfiguration>(configuration.GetSection(nameof(ApiConfiguration)));
-
-            return services.BuildServiceProvider();
+            var apiConfigurationSectionName = configuration.GetSection(nameof(ApiConfiguration));
+            return services
+                .Configure<ApiConfiguration>(apiConfigurationSectionName)
+                .BuildServiceProvider();
         }
     }
 }
