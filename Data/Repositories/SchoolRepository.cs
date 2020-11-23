@@ -32,6 +32,7 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                         Student = x.student,
                         Groups = y
                     })
+                .Select(x => x)
                 .ToListAsync();            
         }
 
