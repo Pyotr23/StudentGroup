@@ -2,10 +2,9 @@
 
 namespace StudentGroup.Infrastracture.Data.Models
 {
-    public class StudentWithGroups
+    public class StudentWithGroupIds
     {
         public Student Student { get; set; }
-        public IEnumerable<Group> Groups { get; set; }
-        //public Group Groups { get; set; }
+        public int? GroupId { get; set; }
     }
 }
