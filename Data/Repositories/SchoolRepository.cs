@@ -20,19 +20,26 @@ namespace StudentGroup.Infrastracture.Data.Repositories
         {
             return await _context
                 .Students                
-                .Join(_context.GroupStudents, 
+                .GroupJoin(_context.GroupStudents, 
                     s => s.Id, 
                     gs => gs.StudentId,
-                    (student, groupStudent) => new { student, groupStudent })
-                .GroupJoin(_context.Groups,
-                    gs => gs.groupStudent.GroupId,
-                    g => g.Id,
-                    (x, y) => new StudentWithGroups 
-                    {
-                        Student = x.student,
-                        Groups = y
-                    })
-                .Select(x => x)
+                    (student, groupStudents) => new { Student = student, Groups = groupStudents })
+                .SelectMany(
+                    xy => xy.Groups.DefaultIfEmpty(),
+                    (x, y) => new { Student = x.Student, GroupStudent = y })
+                .Select(s => new StudentWithGroups
+                {
+                    Student = s.Student,
+                    Groups = new Group { Id = 1, Name = "" }
+                })
+                //.Join(_context.Groups,
+                //    gs => gs.groupStudent.GroupId,
+                //    g => g.Id,
+                //    (x, y) => new StudentWithGroups 
+                //    {
+                //        Student = x.student,
+                //        Groups = y
+                //    })
                 .ToListAsync();            
         }
 

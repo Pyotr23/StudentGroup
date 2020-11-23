@@ -30,7 +30,8 @@ namespace StudentGroup.Services.Api.Controllers
                     Name = s.Student.Name,
                     MiddleName = s.Student.MiddleName,
                     Nickname = s.Student.Nickname,
-                    GroupNames = string.Join(", ", s.Groups.Select(g => g.Name))
+                    GroupNames = "Hello"
+                    //GroupNames = string.Join(", ", s.Groups.Select(g => g.Name))
                 });
             return Ok(studentsWithGroupNames);
         }
