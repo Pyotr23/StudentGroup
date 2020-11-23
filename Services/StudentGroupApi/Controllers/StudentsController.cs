@@ -22,15 +22,16 @@ namespace StudentGroup.Services.Api.Controllers
         public async Task<ActionResult<IEnumerable<StudentWithGroups>>> GetAllStudents()
         {
             var studentsWithGroups = await _schoolManager.GetAllStudentsWithGroups();
-            var studentsWithGroupNames = studentsWithGroups.Select(s => new StudentWithGroups 
-            {
-                Id = s.Id,
-                Surname = s.Surname,
-                Name = s.Name,
-                MiddleName = s.MiddleName,
-                Nickname = s.Nickname,
-                GroupNames = string.Join(", ", s.Groups.Select(g => g.Name))
-            });
+            var studentsWithGroupNames = studentsWithGroups                
+                .Select(s => new StudentWithGroups 
+                {
+                    Id = s.Student.Id,
+                    Surname = s.Student.Surname,
+                    Name = s.Student.Name,
+                    MiddleName = s.Student.MiddleName,
+                    Nickname = s.Student.Nickname,
+                    GroupNames = string.Join(", ", s.Groups.Select(g => g.Name))
+                });
             return Ok(studentsWithGroupNames);
         }
 

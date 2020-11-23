@@ -19,25 +19,19 @@ namespace StudentGroup.Infrastracture.Data.Repositories
         public async Task<IEnumerable<StudentWithGroups>> GetStudentsWithGroupsAsync()
         {
             return await _context
-                .Students
+                .Students                
                 .Join(_context.GroupStudents, 
                     s => s.Id, 
                     gs => gs.StudentId,
-                    (s, gs) => new  
+                    (student, groupStudent) => new { student, groupStudent })
+                .GroupJoin(_context.Groups,
+                    gs => gs.groupStudent.GroupId,
+                    g => g.Id,
+                    (x, y) => new StudentWithGroups 
                     {
-                        Student = s,
-                        gs.Group
+                        Student = x.student,
+                        Groups = y
                     })
-                .GroupBy(x => x.Student)
-                .Select(y => new StudentWithGroups
-                {
-                    Id = y.Key.Id,
-                    Surname = y.Key.Surname,
-                    Name = y.Key.Name,
-                    MiddleName = y.Key.MiddleName,
-                    Nickname = y.Key.Nickname,
-                    Groups = y.Select(s => s.Group)
-                })                
                 .ToListAsync();            
         }
 

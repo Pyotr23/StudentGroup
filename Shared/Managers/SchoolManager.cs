@@ -19,7 +19,7 @@ namespace StudentGroup.Infrastracture.Shared.Managers
 
         public async Task<IEnumerable<StudentWithGroups>> GetAllStudentsWithGroups()
         {
-           return await _schoolRepository.GetStudentsWithGroupsAsync();            
+            return await _schoolRepository.GetStudentsWithGroupsAsync();                                    
         }
 
         public StudentDto PostStudent(AddStudentDto addStudentDto)
