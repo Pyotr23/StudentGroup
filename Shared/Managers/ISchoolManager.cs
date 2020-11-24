@@ -9,5 +9,7 @@ namespace StudentGroup.Infrastracture.Shared.Managers
     {
         StudentDto PostStudent(AddStudentDto addStudentDto);
         Task<IEnumerable<StudentWithGroups>> GetAllStudentsWithGroups();
+        Task<IEnumerable<StudentWithGroupIds>> GetAllStudentsWithGroupIds();
+        Task<IEnumerable<Group>> GetAllGroups();
     }
 }

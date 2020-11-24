@@ -19,12 +19,37 @@ namespace StudentGroup.Infrastracture.Shared.Managers
 
         public async Task<IEnumerable<StudentWithGroups>> GetAllStudentsWithGroups()
         {
-            return await _schoolRepository.GetStudentsWithGroupsAsync();                                    
+            var studentWithGroupIds = await GetAllStudentsWithGroupIds();
+            var groups = await GetAllGroups();
+            var studentsWithoutGroups = studentWithGroupIds
+                .Where(s => s.GroupId == null)
+                .Select(s => new StudentWithGroups { Student = s.Student, Groups = null });
+            var studentWithGroups = studentWithGroupIds
+                .Where(s => s.GroupId != null)
+                .Join(groups,
+                    s => s.GroupId,
+                    g => g.Id,
+                    (swgi, g) => new { swgi.Student, Group = g })
+                .GroupBy(x => x.Student)
+                .Select(y => new StudentWithGroups { Student = y.Key, Groups = y.Select(z => z.Group) });                
+            return studentsWithoutGroups
+                .Union(studentWithGroups)
+                .ToList();                                    
         }
 
         public StudentDto PostStudent(AddStudentDto addStudentDto)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<StudentWithGroupIds>> GetAllStudentsWithGroupIds()
+        {
+            return await _schoolRepository.GetStudentsWithGroupIdsAsync();
+        }
+
+        public async Task<IEnumerable<Group>> GetAllGroups()
+        {
+            return await _schoolRepository.GetGroupsAsync();
         }
     }
 }

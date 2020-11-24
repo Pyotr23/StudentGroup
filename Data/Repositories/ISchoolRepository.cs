@@ -7,6 +7,7 @@ namespace StudentGroup.Infrastracture.Data.Repositories
     public interface ISchoolRepository
     {
         Student PostStudent(Student student);
-        Task<IEnumerable<StudentWithGroups>> GetStudentsWithGroupsAsync();
+        Task<IEnumerable<StudentWithGroupIds>> GetStudentsWithGroupIdsAsync();
+        Task<IEnumerable<Group>> GetGroupsAsync();
     }
 }

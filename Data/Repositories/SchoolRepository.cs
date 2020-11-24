@@ -16,30 +16,25 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<StudentWithGroups>> GetStudentsWithGroupsAsync()
+        public async Task<IEnumerable<Group>> GetGroupsAsync()
         {
-            var studentsWithGroupIds = await _context
+            return await _context
+                .Groups
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<StudentWithGroupIds>> GetStudentsWithGroupIdsAsync()
+        {
+            return await _context
                 .Students
                 .GroupJoin(_context.GroupStudents,
                     s => s.Id,
                     gs => gs.StudentId,
                     (student, groupStudents) => new StudentWithGroupStudents { Student = student, GroupStudents = groupStudents })
                 .SelectMany(
-                    xy => xy.GroupStudents.DefaultIfEmpty(),
-                    (x, y) => new StudentWithGroupIds { Student = x.Student, GroupId = y == null ? null : (int?)y.GroupId })
+                    swgs => swgs.GroupStudents.DefaultIfEmpty(),
+                    (swgs, gs) => new StudentWithGroupIds { Student = swgs.Student, GroupId = gs == null ? null : (int?)gs.GroupId })
                 .ToListAsync();
-            return studentsWithGroupIds
-
-                .Select(f => new StudentWithGroups() { Student = f.Student })
-                //.Join(_context.Groups,
-                //    gs => gs.groupStudent.GroupId,
-                //    g => g.Id,
-                //    (x, y) => new StudentWithGroups 
-                //    {
-                //        Student = x.student,
-                //        Groups = y
-                //    })
-                .ToArray();
         }
 
         public Student PostStudent(Student student)
