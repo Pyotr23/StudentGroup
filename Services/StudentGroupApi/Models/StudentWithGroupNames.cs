@@ -1,6 +1,6 @@
 ﻿namespace StudentGroup.Services.Api.Models
 {
-    public class StudentWithGroups
+    public class StudentWithGroupNames
     {
         public int Id { get; set; }
         public string Surname { get; set; }

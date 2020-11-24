@@ -37,9 +37,9 @@ namespace StudentGroup.Infrastracture.Shared.Managers
                 .ToList();                                    
         }
 
-        public StudentDto PostStudent(AddStudentDto addStudentDto)
+        public async Task<Student> PostStudent(Student addStudentDto)
         {
-            throw new NotImplementedException();
+            return await _schoolRepository.AddStudentAsync(addStudentDto);
         }
 
         public async Task<IEnumerable<StudentWithGroupIds>> GetAllStudentsWithGroupIds()

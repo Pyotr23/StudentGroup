@@ -37,9 +37,13 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                 .ToListAsync();
         }
 
-        public Student PostStudent(Student student)
+        public async Task<Student> AddStudentAsync(Student student)
         {
-            throw new System.NotImplementedException();
-        }
+            await _context
+                .Students
+                .AddAsync(student);
+            await _context.SaveChangesAsync();
+            return student;
+        }        
     }
 }

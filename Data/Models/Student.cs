@@ -13,6 +13,5 @@ namespace StudentGroup.Infrastracture.Data.Models
         public string Name { get; set; }
         public string MiddleName { get; set; }
         public string Nickname { get; set; }
-        //public ICollection<GroupStudent> GroupStudents { get; set; }
     }
 }

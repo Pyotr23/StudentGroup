@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using StudentGroup.Infrastracture.Data.Models;
 using StudentGroup.Infrastracture.Shared.Managers;
 using StudentGroup.Services.Api.Models;
 
@@ -23,7 +24,7 @@ namespace StudentGroup.Services.Api.Controllers
         {
             var studentsWithGroups = await _schoolManager.GetAllStudentsWithGroups();
             var studentsWithGroupNames = studentsWithGroups                
-                .Select(s => new StudentWithGroups 
+                .Select(s => new StudentWithGroupNames
                 {
                     Id = s.Student.Id,
                     Surname = s.Student.Surname,
@@ -44,11 +45,12 @@ namespace StudentGroup.Services.Api.Controllers
         //    return "value";
         //}
 
-        //// POST api/<StudentsController>
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
+        [HttpPost]
+        public async Task <Student> Post([FromBody] Student student)
+        {
+            var newStudent = await _schoolManager.PostStudent(student);
+
+        }
 
         //// PUT api/<StudentsController>/5
         //[HttpPut("{id}")]

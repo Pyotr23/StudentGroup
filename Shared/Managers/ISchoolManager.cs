@@ -7,7 +7,7 @@ namespace StudentGroup.Infrastracture.Shared.Managers
 {
     public interface ISchoolManager
     {
-        StudentDto PostStudent(AddStudentDto addStudentDto);
+        Student PostStudent(Student addStudentDto);
         Task<IEnumerable<StudentWithGroups>> GetAllStudentsWithGroups();
         Task<IEnumerable<StudentWithGroupIds>> GetAllStudentsWithGroupIds();
         Task<IEnumerable<Group>> GetAllGroups();
