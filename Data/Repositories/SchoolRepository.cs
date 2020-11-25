@@ -44,6 +44,13 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                 .AddAsync(student);
             await _context.SaveChangesAsync();
             return student;
-        }        
+        }   
+        
+        public async Task<Student> FindAsync(int id)
+        {
+            return await _context
+                .Students
+                .FindAsync(id);
+        }
     }
 }

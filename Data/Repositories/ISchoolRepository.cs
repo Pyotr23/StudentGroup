@@ -9,5 +9,6 @@ namespace StudentGroup.Infrastracture.Data.Repositories
         Task<Student> AddStudentAsync(Student student);
         Task<IEnumerable<StudentWithGroupIds>> GetStudentsWithGroupIdsAsync();
         Task<IEnumerable<Group>> GetGroupsAsync();
+        Task<Student> FindAsync(int id);
     }
 }

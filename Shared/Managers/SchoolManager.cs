@@ -51,5 +51,10 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         {
             return await _schoolRepository.GetGroupsAsync();
         }
+
+        public async Task<Student> GetStudent(int id)
+        {
+            return await _schoolRepository.FindAsync(id);
+        }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using StudentGroup.Infrastracture.Data.Contexts;
 using StudentGroup.Infrastracture.Data.Repositories;
 using StudentGroup.Infrastracture.Shared.Managers;
@@ -34,7 +35,8 @@ namespace StudentGroup.Services.Api
                 .AddDbContext<SchoolContext>(opt => opt.UseSqlServer(connectionString))
                 .AddTransient<ISchoolManager, SchoolManager>()
                 .AddTransient<ISchoolRepository, SchoolRepository>()
-                .AddControllers();
+                .AddControllersWithViews()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<ApiConfiguration> apiOption)

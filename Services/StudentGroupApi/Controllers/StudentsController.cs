@@ -46,10 +46,20 @@ namespace StudentGroup.Services.Api.Controllers
         //}
 
         [HttpPost]
-        public async Task <Student> Post([FromBody] Student student)
+        public async Task<ActionResult<Student>> Post([FromBody] Student student)
         {
             var newStudent = await _schoolManager.PostStudent(student);
+            return CreatedAtAction("Get", new { id = newStudent.Id }, newStudent);
 
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            var student = await _schoolManager.GetStudent(id);
+            if (student == null)
+                return NotFound();
+            return Ok(student);
         }
 
         //// PUT api/<StudentsController>/5
