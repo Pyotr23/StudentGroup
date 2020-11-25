@@ -10,5 +10,7 @@ namespace StudentGroup.Infrastracture.Data.Repositories
         Task<IEnumerable<StudentWithGroupIds>> GetStudentsWithGroupIdsAsync();
         Task<IEnumerable<Group>> GetGroupsAsync();
         Task<Student> FindAsync(int id);
+        Task RemoveStudent(Student student);
+        Task UpdateStudent(Student student);
     }
 }

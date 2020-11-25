@@ -56,5 +56,15 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         {
             return await _schoolRepository.FindAsync(id);
         }
+
+        public async Task RemoveStudent(Student student)
+        {
+            _schoolRepository.RemoveStudent(student);
+        }
+
+        public async Task UpdateStudent(Student student)
+        {
+            _schoolRepository.UpdateStudent(student);
+        }
     }
 }

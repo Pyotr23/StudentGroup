@@ -12,5 +12,7 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         Task<IEnumerable<StudentWithGroupIds>> GetAllStudentsWithGroupIds();
         Task<IEnumerable<Group>> GetAllGroups();
         Task<Student> GetStudent(int id);
+        Task RemoveStudent(Student student);
+        Task UpdateStudent(Student student);
     }
 }

@@ -52,5 +52,21 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                 .Students
                 .FindAsync(id);
         }
+
+        public async Task RemoveStudent(Student student)
+        {
+            _context
+                .Students
+                .Remove(student);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateStudent(Student student)
+        {
+            _context
+                .Students
+                .Update(student);
+            await _context.SaveChangesAsync();
+        }
     }
 }
