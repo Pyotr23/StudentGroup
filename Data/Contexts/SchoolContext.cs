@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 using StudentGroup.Infrastracture.Data.Models;
 
 #nullable disable
@@ -33,7 +31,7 @@ namespace StudentGroup.Infrastracture.Data.Contexts
 
             modelBuilder.Entity<GroupStudent>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(k => new { k.GroupId, k.StudentId });
 
                 entity.ToTable("GroupStudent");
 

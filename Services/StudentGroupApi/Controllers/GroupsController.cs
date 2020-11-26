@@ -53,5 +53,20 @@ namespace StudentGroup.Services.Api.Controllers
             await _schoolManager.UpdateGroup(group);
             return NoContent();
         }
+
+        [HttpPut("{groupId}/Students/{studentId}")]
+        public async Task<IActionResult> PutStudent(int groupId, int studentId)
+        {
+            var group = await _schoolManager.GetGroup(groupId);
+            if (group == null)
+                return NotFound();
+
+            var student = await _schoolManager.GetStudent(studentId);
+            if (student == null)
+                return NotFound();
+
+            await _schoolManager.AddStudentToGroup(groupId, studentId);
+            return NoContent();
+        }
     }
 }

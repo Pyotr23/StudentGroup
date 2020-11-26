@@ -18,5 +18,6 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         Task<Group> PostGroup(Group group);
         Task RemoveGroup(Group group);
         Task UpdateGroup(Group group);
+        Task AddStudentToGroup(int groupId, int studentId);
     }
 }

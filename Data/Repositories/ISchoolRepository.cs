@@ -16,5 +16,6 @@ namespace StudentGroup.Infrastracture.Data.Repositories
         Task<Group> AddGroupAsync(Group group);
         Task RemoveGroup(Group group);
         Task UpdateGroup(Group group);
+        Task AddStudentToGroupAsync(GroupStudent groupStudent);
     }
 }

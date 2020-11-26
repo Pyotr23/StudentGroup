@@ -100,5 +100,13 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                 .Update(group);
             await _context.SaveChangesAsync();
         }
+
+        public async Task AddStudentToGroupAsync(GroupStudent groupStudent)
+        {
+            await _context
+                .GroupStudents
+                .AddAsync(groupStudent);
+            await _context.SaveChangesAsync();
+        } 
     }
 }

@@ -86,5 +86,15 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         {
             await _schoolRepository.UpdateGroup(group);
         }
+
+        public async Task AddStudentToGroup(int groupId, int studentId)
+        {
+            var groupStudent = new GroupStudent
+            {
+                GroupId = groupId,
+                StudentId = studentId
+            };
+            await _schoolRepository.AddStudentToGroupAsync(groupStudent);
+        }
     }
 }
