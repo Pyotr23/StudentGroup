@@ -39,19 +39,11 @@ namespace StudentGroup.Services.Api.Controllers
             return Ok(studentsWithGroupNames);
         }
 
-        //// GET api/<StudentsController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
         [HttpPost]
         public async Task<ActionResult<Student>> Post([FromBody] Student student)
         {
             var newStudent = await _schoolManager.PostStudent(student);
             return CreatedAtAction("Get", new { id = newStudent.Id }, newStudent);
-
         }
 
         [HttpGet("{id}")]
@@ -87,17 +79,5 @@ namespace StudentGroup.Services.Api.Controllers
             await _schoolManager.UpdateStudent(student);
             return NoContent();
         }
-
-        //// PUT api/<StudentsController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<StudentsController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

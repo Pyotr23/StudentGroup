@@ -37,9 +37,9 @@ namespace StudentGroup.Infrastracture.Shared.Managers
                 .ToList();                                    
         }
 
-        public async Task<Student> PostStudent(Student addStudentDto)
+        public async Task<Student> PostStudent(Student student)
         {
-            return await _schoolRepository.AddStudentAsync(addStudentDto);
+            return await _schoolRepository.AddStudentAsync(student);
         }
 
         public async Task<IEnumerable<StudentWithGroupIds>> GetAllStudentsWithGroupIds()
@@ -54,17 +54,37 @@ namespace StudentGroup.Infrastracture.Shared.Managers
 
         public async Task<Student> GetStudent(int id)
         {
-            return await _schoolRepository.FindAsync(id);
+            return await _schoolRepository.FindStudentAsync(id);
         }
 
         public async Task RemoveStudent(Student student)
         {
-            _schoolRepository.RemoveStudent(student);
+            await _schoolRepository.RemoveStudent(student);
         }
 
         public async Task UpdateStudent(Student student)
         {
-            _schoolRepository.UpdateStudent(student);
+            await _schoolRepository.UpdateStudent(student);
+        }
+
+        public async Task<Group> GetGroup(int id)
+        {
+            return await _schoolRepository.FindGroupAsync(id);
+        }
+
+        public async Task<Group> PostGroup(Group group)
+        {
+            return await _schoolRepository.AddGroupAsync(group);
+        }
+
+        public async Task RemoveGroup(Group group)
+        {
+            await _schoolRepository.RemoveGroup(group);
+        }
+
+        public async Task UpdateGroup(Group group)
+        {
+            await _schoolRepository.UpdateGroup(group);
         }
     }
 }

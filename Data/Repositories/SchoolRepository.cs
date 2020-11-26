@@ -46,7 +46,7 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             return student;
         }   
         
-        public async Task<Student> FindAsync(int id)
+        public async Task<Student> FindStudentAsync(int id)
         {
             return await _context
                 .Students
@@ -66,6 +66,38 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             _context
                 .Students
                 .Update(student);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Group> FindGroupAsync(int id)
+        {
+            return await _context
+                .Groups
+                .FindAsync(id);
+        }
+
+        public async Task<Group> AddGroupAsync(Group group)
+        {
+            await _context
+                .Groups
+                .AddAsync(group);
+            await _context.SaveChangesAsync();
+            return group;
+        }
+
+        public async Task RemoveGroup(Group group)
+        {
+            _context
+                .Groups
+                .Remove(group);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateGroup(Group group)
+        {
+            _context
+                .Groups
+                .Update(group);
             await _context.SaveChangesAsync();
         }
     }

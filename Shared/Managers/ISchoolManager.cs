@@ -14,5 +14,9 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         Task<Student> GetStudent(int id);
         Task RemoveStudent(Student student);
         Task UpdateStudent(Student student);
+        Task<Group> GetGroup(int id);
+        Task<Group> PostGroup(Group group);
+        Task RemoveGroup(Group group);
+        Task UpdateGroup(Group group);
     }
 }
