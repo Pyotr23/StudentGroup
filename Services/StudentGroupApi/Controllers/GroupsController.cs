@@ -2,6 +2,7 @@
 using StudentGroup.Infrastracture.Data.Models;
 using StudentGroup.Infrastracture.Shared.Dto;
 using StudentGroup.Infrastracture.Shared.Managers;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StudentGroup.Services.Api.Controllers
@@ -67,6 +68,24 @@ namespace StudentGroup.Services.Api.Controllers
 
             await _schoolManager.AddStudentToGroup(groupId, studentId);
             return NoContent();
+        }
+
+        [HttpDelete("{groupId}/Students/{studentId}")]
+        public async Task<IActionResult> DeleteStudent(int groupId, int studentId)
+        {
+            var groupStudent = await _schoolManager.GetGroupStudent(groupId, studentId);
+            if (groupStudent == null)
+                return NotFound();
+                        
+            await _schoolManager.RemoveGroupStudent(groupStudent);
+            return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetGroups([FromQuery] string name)
+        {
+            var groups = await _schoolManager.GetAllGroupsWithStudentCount();
+            return Ok(groups);
         }
     }
 }

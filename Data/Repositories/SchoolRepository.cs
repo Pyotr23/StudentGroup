@@ -108,5 +108,35 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                 .AddAsync(groupStudent);
             await _context.SaveChangesAsync();
         } 
+
+        public async Task<GroupStudent> FindGroupStudentAsync(GroupStudent groupStudent)
+        {
+            return await _context
+                .GroupStudents
+                .FirstOrDefaultAsync(x => x.GroupId == groupStudent.GroupId && x.StudentId == groupStudent.StudentId);
+        }
+
+        public async Task RemoveGroupStudent(GroupStudent groupStudent)
+        {
+            _context
+                .GroupStudents
+                .Remove(groupStudent);
+            await _context.SaveChangesAsync();            
+        }
+
+        public async Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsAsync()
+        {
+            return await _context
+                .Groups
+                .GroupJoin(_context.GroupStudents,
+                    g => g.Id,
+                    gs => gs.GroupId,
+                    (x, py) => new { x.Id, x.Name, GroupStudents = py })
+                .SelectMany(
+                    xy => xy.GroupStudents.DefaultIfEmpty(),
+                    (p, t) => new GroupWithStudentCount { Id = p.Id, Name = p.Name, StudentCount = p.GroupStudents == null ? 0 : p.GroupStudents.Count() }
+                )
+                .ToListAsync();
+        }
     }
 }

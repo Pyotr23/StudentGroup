@@ -19,5 +19,8 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         Task RemoveGroup(Group group);
         Task UpdateGroup(Group group);
         Task AddStudentToGroup(int groupId, int studentId);
+        Task<GroupStudent> GetGroupStudent(int groupId, int studentId);
+        Task RemoveGroupStudent(GroupStudent groupStudent);
+        Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount();
     }
 }

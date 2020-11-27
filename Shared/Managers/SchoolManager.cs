@@ -96,5 +96,25 @@ namespace StudentGroup.Infrastracture.Shared.Managers
             };
             await _schoolRepository.AddStudentToGroupAsync(groupStudent);
         }
+
+        public async Task<GroupStudent> GetGroupStudent(int groupId, int studentId)
+        {
+            var groupStudent = new GroupStudent
+            {
+                GroupId = groupId,
+                StudentId = studentId
+            };
+            return await _schoolRepository.FindGroupStudentAsync(groupStudent);
+        }
+
+        public async Task RemoveGroupStudent(GroupStudent groupStudent)
+        {
+            await _schoolRepository.RemoveGroupStudent(groupStudent);
+        }
+
+        public async Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount()
+        {
+            return await _schoolRepository.GetAllGroupsAsync();
+        }
     }
 }
