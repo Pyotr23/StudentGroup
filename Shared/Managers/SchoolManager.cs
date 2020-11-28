@@ -17,34 +17,26 @@ namespace StudentGroup.Infrastracture.Shared.Managers
             _schoolRepository = schoolRepository;
         }
 
-        public async Task<IEnumerable<StudentWithGroups>> GetAllStudentsWithGroups()
-        {
-            var studentWithGroupIds = await GetAllStudentsWithGroupIds();
-            var groups = await GetAllGroups();
-            var studentsWithoutGroups = studentWithGroupIds
-                .Where(s => s.GroupId == null)
-                .Select(s => new StudentWithGroups { Student = s.Student, Groups = null });
-            var studentWithGroups = studentWithGroupIds
-                .Where(s => s.GroupId != null)
-                .Join(groups,
-                    s => s.GroupId,
-                    g => g.Id,
-                    (swgi, g) => new { swgi.Student, Group = g })
-                .GroupBy(x => x.Student)
-                .Select(y => new StudentWithGroups { Student = y.Key, Groups = y.Select(z => z.Group) });                
-            return studentsWithoutGroups
-                .Union(studentWithGroups)
-                .ToList();                                    
-        }
-
         public async Task<Student> PostStudent(Student student)
         {
             return await _schoolRepository.AddStudentAsync(student);
         }
 
-        public async Task<IEnumerable<StudentWithGroupIds>> GetAllStudentsWithGroupIds()
+        public async Task<IEnumerable<StudentWithGroupsDto>> GetAllStudents()
         {
-            return await _schoolRepository.GetStudentsWithGroupIdsAsync();
+            var students = await _schoolRepository.GetAllStudentsWithGroupNameAsync();
+            return students
+                .GroupBy(x => x.Student)
+                .Select(s => new StudentWithGroupsDto
+                {
+                    Id = s.Key.Id,
+                    Surname = s.Key.Surname,
+                    Name = s.Key.Name,
+                    MiddleName = s.Key.MiddleName,
+                    Nickname = s.Key.Nickname,                    
+                    GroupNamesString = string.Join("; ", s.Select(z => z.GroupName))
+                })
+                .ToArray();
         }
 
         public async Task<IEnumerable<Group>> GetAllGroups()

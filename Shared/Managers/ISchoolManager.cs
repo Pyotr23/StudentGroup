@@ -7,9 +7,7 @@ namespace StudentGroup.Infrastracture.Shared.Managers
 {
     public interface ISchoolManager
     {
-        Task<Student> PostStudent(Student addStudentDto);
-        Task<IEnumerable<StudentWithGroups>> GetAllStudentsWithGroups();
-        Task<IEnumerable<StudentWithGroupIds>> GetAllStudentsWithGroupIds();
+        Task<Student> PostStudent(Student addStudentDto);        
         Task<IEnumerable<Group>> GetAllGroups();
         Task<Student> GetStudent(int id);
         Task RemoveStudent(Student student);
@@ -22,5 +20,6 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         Task<GroupStudent> GetGroupStudent(int groupId, int studentId);
         Task RemoveGroupStudent(GroupStudent groupStudent);
         Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount(string whereCondition);
+        Task<IEnumerable<StudentWithGroupsDto>> GetAllStudents();
     }
 }

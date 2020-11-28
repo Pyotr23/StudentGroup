@@ -7,7 +7,6 @@ namespace StudentGroup.Infrastracture.Data.Repositories
     public interface ISchoolRepository
     {
         Task<Student> AddStudentAsync(Student student);
-        Task<IEnumerable<StudentWithGroupIds>> GetStudentsWithGroupIdsAsync();
         Task<IEnumerable<Group>> GetGroupsAsync();
         Task<Student> FindStudentAsync(int id);
         Task RemoveStudent(Student student);
@@ -21,5 +20,6 @@ namespace StudentGroup.Infrastracture.Data.Repositories
         Task RemoveGroupStudent(GroupStudent groupStudent);        
         Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync();
         Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync(string whereCondition);
+        Task<IEnumerable<StudentWithGroupName>> GetAllStudentsWithGroupNameAsync();
     }
 }

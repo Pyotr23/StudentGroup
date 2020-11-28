@@ -23,20 +23,8 @@ namespace StudentGroup.Services.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<StudentWithGroups>>> GetAllStudents()
         {
-            var studentsWithGroups = await _schoolManager.GetAllStudentsWithGroups();
-            var studentsWithGroupNames = studentsWithGroups                
-                .Select(s => new StudentWithGroupNames
-                {
-                    Id = s.Student.Id,
-                    Surname = s.Student.Surname,
-                    Name = s.Student.Name,
-                    MiddleName = s.Student.MiddleName,
-                    Nickname = s.Student.Nickname,
-                    GroupNames = s.Groups == null 
-                        ? string.Empty 
-                        : string.Join(", ", s.Groups.Select(g => g?.Name))
-                });
-            return Ok(studentsWithGroupNames);
+            var students = await _schoolManager.GetAllStudents();            
+            return Ok(students);
         }
 
         [HttpPost]

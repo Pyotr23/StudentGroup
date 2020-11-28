@@ -23,18 +23,32 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<StudentWithGroupIds>> GetStudentsWithGroupIdsAsync()
+        public async Task<IEnumerable<StudentWithGroupName>> GetAllStudentsWithGroupNameAsync()
         {
-            return await _context
-                .Students
-                .GroupJoin(_context.GroupStudents,
-                    s => s.Id,
-                    gs => gs.StudentId,
-                    (student, groupStudents) => new StudentWithGroupStudents { Student = student, GroupStudents = groupStudents })
-                .SelectMany(
-                    swgs => swgs.GroupStudents.DefaultIfEmpty(),
-                    (swgs, gs) => new StudentWithGroupIds { Student = swgs.Student, GroupId = gs == null ? null : (int?)gs.GroupId })
-                .ToListAsync();
+            var query = from student in _context.Students
+                        join groupStudent in _context.GroupStudents
+                            on student.Id equals groupStudent.StudentId into grst
+
+                        from gs in grst.DefaultIfEmpty()
+                        join gr in _context.Groups
+                            on gs.GroupId equals gr.Id into groups
+
+                        from g in groups.DefaultIfEmpty()
+                        select new StudentWithGroupName { Student = student, GroupName = g.Name };
+
+            return await query.ToArrayAsync();
+
+
+            //return await _context
+            //    .Students
+            //    .GroupJoin(_context.GroupStudents,
+            //        s => s.Id,
+            //        gs => gs.StudentId,
+            //        (student, groupStudents) => new StudentWithGroupStudents { Student = student, GroupStudents = groupStudents })
+            //    .SelectMany(
+            //        swgs => swgs.GroupStudents.DefaultIfEmpty(),
+            //        (swgs, gs) => new StudentWithGroupIds { Student = swgs.Student, GroupId = gs == null ? null : (int?)gs.GroupId })
+            //    .ToListAsync();
         }
 
         public async Task<Student> AddStudentAsync(Student student)
