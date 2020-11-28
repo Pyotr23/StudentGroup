@@ -18,7 +18,8 @@ namespace StudentGroup.Infrastracture.Data.Repositories
         Task UpdateGroup(Group group);
         Task AddStudentToGroupAsync(GroupStudent groupStudent);
         Task<GroupStudent> FindGroupStudentAsync(GroupStudent groupStudent);
-        Task RemoveGroupStudent(GroupStudent groupStudent);
-        Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsAsync();
+        Task RemoveGroupStudent(GroupStudent groupStudent);        
+        Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync();
+        Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync(string whereCondition);
     }
 }

@@ -112,9 +112,23 @@ namespace StudentGroup.Infrastracture.Shared.Managers
             await _schoolRepository.RemoveGroupStudent(groupStudent);
         }
 
-        public async Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount()
+        public async Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount(string whereCondition)
         {
-            return await _schoolRepository.GetAllGroupsAsync();
+            var groups =  string.IsNullOrEmpty(whereCondition)
+                ? await _schoolRepository.GetAllGroupsAsync()
+                : await _schoolRepository.GetAllGroupsAsync(whereCondition);
+            return groups
+                .GroupBy(x => new Group
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .Select(y => new GroupWithStudentCount
+                {
+                    Id = y.Key.Id,
+                    Name = y.Key.Name,
+                    StudentCount = y.Count(z => z.StudentId != null)
+                });
         }
     }
 }

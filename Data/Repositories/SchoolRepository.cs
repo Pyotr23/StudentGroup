@@ -124,19 +124,39 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             await _context.SaveChangesAsync();            
         }
 
-        public async Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsAsync()
+        public async Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync()
         {
-            return await _context
-                .Groups
-                .GroupJoin(_context.GroupStudents,
-                    g => g.Id,
-                    gs => gs.GroupId,
-                    (x, py) => new { x.Id, x.Name, GroupStudents = py })
-                .SelectMany(
-                    xy => xy.GroupStudents.DefaultIfEmpty(),
-                    (p, t) => new GroupWithStudentCount { Id = p.Id, Name = p.Name, StudentCount = p.GroupStudents == null ? 0 : p.GroupStudents.Count() }
-                )
-                .ToListAsync();
+            var query = from gr in _context.Groups
+                        join groupStudent in _context.GroupStudents
+                            on gr.Id equals groupStudent.GroupId into ggs
+                        from gs in ggs.DefaultIfEmpty()
+                        select new GroupWithStudentId
+                        {
+                            Id = gr.Id,
+                            Name = gr.Name,
+                            StudentId = gs == null
+                                ? null
+                                : (int?)gs.StudentId
+                        };
+            return await query.ToListAsync();            
         }
+
+        public async Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync(string whereCondition)
+        {
+            var query = from gr in _context.Groups
+                        where gr.Name == whereCondition
+                        join groupStudent in _context.GroupStudents
+                            on gr.Id equals groupStudent.GroupId into ggs
+                        from gs in ggs.DefaultIfEmpty()
+                        select new GroupWithStudentId 
+                        { 
+                            Id = gr.Id, 
+                            Name = gr.Name, 
+                            StudentId = gs == null 
+                                ? null
+                                : (int?)gs.StudentId 
+                        };
+            return await query.ToListAsync();
+        }                
     }
 }

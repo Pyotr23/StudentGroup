@@ -84,7 +84,7 @@ namespace StudentGroup.Services.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetGroups([FromQuery] string name)
         {
-            var groups = await _schoolManager.GetAllGroupsWithStudentCount();
+            var groups = await _schoolManager.GetAllGroupsWithStudentCount(name);
             return Ok(groups);
         }
     }
