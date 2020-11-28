@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StudentGroup.Infrastracture.Data.Models;
 using StudentGroup.Infrastracture.Shared.Dto;
 using StudentGroup.Infrastracture.Shared.Managers;
-using StudentGroup.Services.Api.Models;
 
 namespace StudentGroup.Services.Api.Controllers
 {
@@ -21,9 +19,15 @@ namespace StudentGroup.Services.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StudentWithGroups>>> GetAllStudents()
+        public async Task<ActionResult<IEnumerable<StudentWithGroups>>> GetStudents(
+            [FromQuery] string sex,
+            [FromQuery] string surname,
+            [FromQuery] string name,
+            [FromQuery] string middleName,
+            [FromQuery] string nickname
+            )
         {
-            var students = await _schoolManager.GetAllStudents();            
+            var students = await _schoolManager.GetAllStudents(sex, surname, name, middleName, nickname);            
             return Ok(students);
         }
 

@@ -20,6 +20,6 @@ namespace StudentGroup.Infrastracture.Data.Repositories
         Task RemoveGroupStudent(GroupStudent groupStudent);        
         Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync();
         Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync(string whereCondition);
-        Task<IEnumerable<StudentWithGroupName>> GetAllStudentsWithGroupNameAsync();
+        Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(string sex, string surname, string name, string middleName, string nickname);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StudentGroup.Infrastracture.Data.Builders;
 using StudentGroup.Infrastracture.Data.Contexts;
 using StudentGroup.Infrastracture.Data.Models;
 using System.Collections.Generic;
@@ -23,9 +24,28 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<StudentWithGroupName>> GetAllStudentsWithGroupNameAsync()
+        public async Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(
+            string sex,
+            string surname,
+            string name,
+            string middleName,
+            string nickname
+            )
         {
-            var query = from student in _context.Students
+            var studentQueryBuilder = new StudentQueryBuilder(_context.Students);
+
+            if (!string.IsNullOrEmpty(sex))
+                studentQueryBuilder.WithSexCondition(sex);
+            if (!string.IsNullOrEmpty(surname))
+                studentQueryBuilder.WithSurnameCondition(surname);
+            if (!string.IsNullOrEmpty(name))
+                studentQueryBuilder.WithNameCondition(name);
+            if (!string.IsNullOrEmpty(middleName))
+                studentQueryBuilder.WithMiddleNameCondition(middleName);
+            if (!string.IsNullOrEmpty(nickname))
+                studentQueryBuilder.WithNicknameCondition(nickname);
+
+            var query = from student in studentQueryBuilder.Query                       
                         join groupStudent in _context.GroupStudents
                             on student.Id equals groupStudent.StudentId into grst
 
@@ -36,20 +56,26 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                         from g in groups.DefaultIfEmpty()
                         select new StudentWithGroupName { Student = student, GroupName = g.Name };
 
-            return await query.ToArrayAsync();
-
-
-            //return await _context
-            //    .Students
-            //    .GroupJoin(_context.GroupStudents,
-            //        s => s.Id,
-            //        gs => gs.StudentId,
-            //        (student, groupStudents) => new StudentWithGroupStudents { Student = student, GroupStudents = groupStudents })
-            //    .SelectMany(
-            //        swgs => swgs.GroupStudents.DefaultIfEmpty(),
-            //        (swgs, gs) => new StudentWithGroupIds { Student = swgs.Student, GroupId = gs == null ? null : (int?)gs.GroupId })
-            //    .ToListAsync();
+            return await query.ToArrayAsync();            
         }
+
+        //public async Task<IEnumerable<StudentWithGroupName>> GetAllStudentsWithGroupNameAsync(
+        //    string sex = "%%")
+        //{
+        //    var query = from student in _context.Students
+        //                where student.Name == "Колесников"
+        //                join groupStudent in _context.GroupStudents
+        //                    on student.Id equals groupStudent.StudentId into grst
+
+        //                from gs in grst.DefaultIfEmpty()
+        //                join gr in _context.Groups
+        //                    on gs.GroupId equals gr.Id into groups
+
+        //                from g in groups.DefaultIfEmpty()
+        //                select new StudentWithGroupName { Student = student, GroupName = g.Name };
+
+        //    return await query.ToArrayAsync();
+        //}
 
         public async Task<Student> AddStudentAsync(Student student)
         {

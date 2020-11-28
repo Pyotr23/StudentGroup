@@ -22,9 +22,14 @@ namespace StudentGroup.Infrastracture.Shared.Managers
             return await _schoolRepository.AddStudentAsync(student);
         }
 
-        public async Task<IEnumerable<StudentWithGroupsDto>> GetAllStudents()
+        public async Task<IEnumerable<StudentWithGroupsDto>> GetAllStudents(
+            string sex,
+            string surname,
+            string name,
+            string middleName,
+            string nickname)
         {
-            var students = await _schoolRepository.GetAllStudentsWithGroupNameAsync();
+            var students = await _schoolRepository.GetStudentsWithGroupNameAsync(sex, surname, name, middleName, nickname);
             return students
                 .GroupBy(x => x.Student)
                 .Select(s => new StudentWithGroupsDto

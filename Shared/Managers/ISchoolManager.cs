@@ -20,6 +20,6 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         Task<GroupStudent> GetGroupStudent(int groupId, int studentId);
         Task RemoveGroupStudent(GroupStudent groupStudent);
         Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount(string whereCondition);
-        Task<IEnumerable<StudentWithGroupsDto>> GetAllStudents();
+        Task<IEnumerable<StudentWithGroupsDto>> GetAllStudents(string sex, string surname, string name, string middleName, string nickname);
     }
 }
