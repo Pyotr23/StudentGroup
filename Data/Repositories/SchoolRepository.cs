@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StudentGroup.Infrastracture.Data.Builders;
 using StudentGroup.Infrastracture.Data.Contexts;
+using StudentGroup.Infrastracture.Data.Filters;
 using StudentGroup.Infrastracture.Data.Models;
 using StudentGroup.Infrastracture.Data.Models.Database;
+using StudentGroup.Infrastracture.Data.Models.Filtration;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,39 +26,37 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                 .ToListAsync();
         }
 
+        /// <summary>
+        ///     Получить отфильтрованный список студентов с именем группы.
+        /// </summary>
+        /// <param name="filteringParameters">Параметры фильтрации</param>
+        /// <returns>Отфильтрованный список студентов с именем группы</returns>
         public async Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(
-            string sex,
-            string surname,
-            string name,
-            string middleName,
-            string nickname
+            FilteringParameters filteringParameters
             )
         {
-            var studentQueryBuilder = new StudentQueryBuilder(_context.Students);
+            var studentFilter = new StudentFilter(_context.Students, filteringParameters.StudentFilteringParameters);
+            studentFilter.ApplyFilter();
 
-            if (!string.IsNullOrEmpty(sex))
-                studentQueryBuilder.WithSexCondition(sex);
-            if (!string.IsNullOrEmpty(surname))
-                studentQueryBuilder.WithSurnameCondition(surname);
-            if (!string.IsNullOrEmpty(name))
-                studentQueryBuilder.WithNameCondition(name);
-            if (!string.IsNullOrEmpty(middleName))
-                studentQueryBuilder.WithSexCondition(middleName);
-            if (!string.IsNullOrEmpty(nickname))
-                studentQueryBuilder.WithSexCondition(nickname);
+            var groupFilter = new GroupFilter(_context.Groups, filteringParameters.GroupFilteringParameters);
+            groupFilter.ApplyFilter();
 
-            var query = from student in studentQueryBuilder.Query                       
+            var query = from student in studentFilter.Query                      
                         join groupStudent in _context.GroupStudents
                             on student.Id equals groupStudent.StudentId into grst
 
                         from gs in grst.DefaultIfEmpty()
-                        join gr in _context.Groups
+                        join gr in groupFilter.Query
                             on gs.GroupId equals gr.Id into groups
 
                         from g in groups.DefaultIfEmpty()
                         select new StudentWithGroupName { Student = student, GroupName = g.Name };
 
-            return await query.ToArrayAsync();            
+            return filteringParameters.PageSize == null
+                ? await query.ToArrayAsync()
+                : await query
+                    .Take((int)filteringParameters.PageSize)
+                    .ToArrayAsync();
         }        
 
         public async Task<Student> AddStudentAsync(Student student)

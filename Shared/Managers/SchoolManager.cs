@@ -1,5 +1,6 @@
 ﻿using StudentGroup.Infrastracture.Data.Models;
 using StudentGroup.Infrastracture.Data.Models.Database;
+using StudentGroup.Infrastracture.Data.Models.Filtration;
 using StudentGroup.Infrastracture.Data.Repositories;
 using StudentGroup.Infrastracture.Shared.Dto;
 using System;
@@ -23,17 +24,17 @@ namespace StudentGroup.Infrastracture.Shared.Managers
             return await _schoolRepository.AddStudentAsync(student);
         }
 
-        public async Task<IEnumerable<StudentWithGroupsDto>> GetAllStudents(
-            string sex,
-            string surname,
-            string name,
-            string middleName,
-            string nickname)
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="filteringParameters"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<GetStudentsResponse>> GetAllStudents(FilteringParameters filteringParameters)
         {
-            var students = await _schoolRepository.GetStudentsWithGroupNameAsync(sex, surname, name, middleName, nickname);
+            var students = await _schoolRepository.GetStudentsWithGroupNameAsync(filteringParameters);
             return students
                 .GroupBy(x => x.Student)
-                .Select(s => new StudentWithGroupsDto
+                .Select(s => new GetStudentsResponse
                 {
                     Id = s.Key.Id,
                     Surname = s.Key.Surname,

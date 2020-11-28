@@ -1,5 +1,6 @@
 ﻿using StudentGroup.Infrastracture.Data.Models;
 using StudentGroup.Infrastracture.Data.Models.Database;
+using StudentGroup.Infrastracture.Data.Models.Filtration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -21,6 +22,6 @@ namespace StudentGroup.Infrastracture.Data.Repositories
         Task RemoveGroupStudent(GroupStudent groupStudent);        
         Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync();
         Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync(string whereCondition);
-        Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(string sex, string surname, string name, string middleName, string nickname);
+        Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(FilteringParameters filteringParameters);
     }
 }
