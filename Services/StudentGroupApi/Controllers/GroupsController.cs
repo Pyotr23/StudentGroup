@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentGroup.Infrastracture.Data.Models;
+using StudentGroup.Infrastracture.Data.Models.Database;
 using StudentGroup.Infrastracture.Shared.Dto;
 using StudentGroup.Infrastracture.Shared.Managers;
 using System.Collections.Generic;

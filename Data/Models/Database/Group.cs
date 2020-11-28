@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-#nullable disable
-
-namespace StudentGroup.Infrastracture.Data.Models
+﻿namespace StudentGroup.Infrastracture.Data.Models.Database
 {
     public partial class Group
     {

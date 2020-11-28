@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using StudentGroup.Infrastracture.Data.Models.Database;
+using System.Collections.Generic;
 
 namespace StudentGroup.Infrastracture.Data.Models
 {

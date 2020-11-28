@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StudentGroup.Infrastracture.Data.Models;
+using StudentGroup.Infrastracture.Data.Models.Database;
 using System.Linq;
 
 namespace StudentGroup.Infrastracture.Data.Builders

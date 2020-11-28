@@ -1,4 +1,5 @@
 ﻿using StudentGroup.Infrastracture.Data.Models;
+using StudentGroup.Infrastracture.Data.Models.Database;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

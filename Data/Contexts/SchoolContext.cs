@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using StudentGroup.Infrastracture.Data.Models;
+using StudentGroup.Infrastracture.Data.Models.Database;
 
 #nullable disable
 

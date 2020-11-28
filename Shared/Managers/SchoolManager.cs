@@ -1,4 +1,5 @@
 ﻿using StudentGroup.Infrastracture.Data.Models;
+using StudentGroup.Infrastracture.Data.Models.Database;
 using StudentGroup.Infrastracture.Data.Repositories;
 using StudentGroup.Infrastracture.Shared.Dto;
 using System;

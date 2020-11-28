@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using StudentGroup.Infrastracture.Data.Models;
+using StudentGroup.Infrastracture.Data.Models.Database;
 using StudentGroup.Infrastracture.Shared.Dto;
 using StudentGroup.Infrastracture.Shared.Managers;
 
@@ -19,7 +20,7 @@ namespace StudentGroup.Services.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StudentWithGroups>>> GetStudents(
+        public async Task<ActionResult<IEnumerable<StudentWithGroupsDto>>> GetStudents(
             [FromQuery] string sex,
             [FromQuery] string surname,
             [FromQuery] string name,
@@ -33,7 +34,7 @@ namespace StudentGroup.Services.Api.Controllers
 
         [HttpPost]
         public async Task<ActionResult<Student>> Post([FromBody] Student student)
-        {
+        {  
             var newStudent = await _schoolManager.PostStudent(student);
             return CreatedAtAction("Get", new { id = newStudent.Id }, newStudent);
         }
