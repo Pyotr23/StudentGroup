@@ -30,12 +30,48 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         /// <returns></returns>
         Task UpdateStudent(Student student);
 
+        /// <summary>
+        ///     Поиск группы.
+        /// </summary>
+        /// <param name="id">Идентификатор</param>
+        /// <returns>Найденная группа или null.</returns>
         Task<Group> GetGroup(int id);
-        Task<Group> PostGroup(Group group);
+
+        /// <summary>
+        ///     Удаление группы.
+        /// </summary>
+        /// <param name="group">Группа</param>
+        /// <returns></returns>
         Task RemoveGroup(Group group);
+
+        /// <summary>
+        ///     Обновить группу.
+        /// </summary>
+        /// <param name="group">Группа</param>
+        /// <returns></returns>
         Task UpdateGroup(Group group);
+
+        /// <summary>
+        ///     Добавить студента в группу.
+        /// </summary>
+        /// <param name="groupId">Идентификатор группы</param>
+        /// <param name="studentId">Идентификатор студента</param>
+        /// <returns></returns>
         Task AddStudentToGroup(int groupId, int studentId);
+
+        /// <summary>
+        ///     Получить запись из таблицы "группа - студент".
+        /// </summary>
+        /// <param name="groupId">Идентификатор группы</param>
+        /// <param name="studentId">Идентификатор студента</param>
+        /// <returns>Найденная запись или null.</returns>
         Task<GroupStudent> GetGroupStudent(int groupId, int studentId);
+
+        /// <summary>
+        ///     Удалить студента из группы. 
+        /// </summary>
+        /// <param name="groupStudent">Связь "группа - студент"</param>
+        /// <returns></returns>
         Task RemoveGroupStudent(GroupStudent groupStudent);
         Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount(string whereCondition);
 
@@ -52,5 +88,12 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         /// <param name="studentDto">DTO студента</param>
         /// <returns>Студент</returns>
         Task<Student> PostStudent(StudentDto studentDto);
+
+        /// <summary>
+        ///     Добавление группы.
+        /// </summary>
+        /// <param name="groupDto">DTO группы</param>
+        /// <returns>Созданная группа.</returns>
+        Task<Group> PostGroup(GroupDto groupDto);
     }
 }

@@ -110,6 +110,11 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        ///     Найти группу.
+        /// </summary>
+        /// <param name="id">Идентификатор</param>
+        /// <returns>Найденная группа или null.</returns>
         public async Task<Group> FindGroupAsync(int id)
         {
             return await _context
@@ -117,6 +122,11 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                 .FindAsync(id);
         }
 
+        /// <summary>
+        ///     Добавление группы.
+        /// </summary>
+        /// <param name="group">Группа</param>
+        /// <returns>Добавленная группа.</returns>
         public async Task<Group> AddGroupAsync(Group group)
         {
             await _context
@@ -126,6 +136,11 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             return group;
         }
 
+        /// <summary>
+        ///     Удаление группы.
+        /// </summary>
+        /// <param name="group">Группа</param>
+        /// <returns></returns>
         public async Task RemoveGroup(Group group)
         {
             _context
@@ -134,6 +149,11 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        ///     Обновить группу.
+        /// </summary>
+        /// <param name="group">Группа</param>
+        /// <returns></returns>
         public async Task UpdateGroup(Group group)
         {
             _context
@@ -142,6 +162,11 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        ///     Добавить студента в группу.
+        /// </summary>
+        /// <param name="groupStudent">Связь "группа - студент"</param>
+        /// <returns></returns>
         public async Task AddStudentToGroupAsync(GroupStudent groupStudent)
         {
             await _context
@@ -150,6 +175,11 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             await _context.SaveChangesAsync();
         } 
 
+        /// <summary>
+        ///     Найти запись в таблице связи "группа - студент".
+        /// </summary>
+        /// <param name="groupStudent">Сущность "группа - студент"</param>
+        /// <returns>Найденная запись или null.</returns>
         public async Task<GroupStudent> FindGroupStudentAsync(GroupStudent groupStudent)
         {
             return await _context
@@ -157,6 +187,11 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                 .FirstOrDefaultAsync(x => x.GroupId == groupStudent.GroupId && x.StudentId == groupStudent.StudentId);
         }
 
+        /// <summary>
+        ///     Удалить студента из группы.
+        /// </summary>
+        /// <param name="groupStudent">Связь "группа - студент"</param>
+        /// <returns></returns>
         public async Task RemoveGroupStudent(GroupStudent groupStudent)
         {
             _context

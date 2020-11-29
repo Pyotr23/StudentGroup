@@ -86,26 +86,52 @@ namespace StudentGroup.Infrastracture.Shared.Managers
             await _schoolRepository.UpdateStudent(student);
         }
 
+        /// <summary>
+        ///     Поиск группы.
+        /// </summary>
+        /// <param name="id">Идентификатор</param>
+        /// <returns>Найденная группа или null.</returns>
         public async Task<Group> GetGroup(int id)
         {
             return await _schoolRepository.FindGroupAsync(id);
         }
 
-        public async Task<Group> PostGroup(Group group)
+        /// <summary>
+        ///     Добавление группы.
+        /// </summary>
+        /// <param name="groupDto">DTO группы</param>
+        /// <returns>Созданная группа.</returns>
+        public async Task<Group> PostGroup(GroupDto groupDto)
         {
-            return await _schoolRepository.AddGroupAsync(group);
+            return await _schoolRepository.AddGroupAsync(groupDto.ToGroup());
         }
 
+        /// <summary>
+        ///     Удаление группы.
+        /// </summary>
+        /// <param name="group">Группа</param>
+        /// <returns></returns>
         public async Task RemoveGroup(Group group)
         {
             await _schoolRepository.RemoveGroup(group);
         }
 
+        /// <summary>
+        ///     Обновить группу.
+        /// </summary>
+        /// <param name="group">Группа</param>
+        /// <returns></returns>
         public async Task UpdateGroup(Group group)
         {
             await _schoolRepository.UpdateGroup(group);
         }
 
+        /// <summary>
+        ///     Добавить студента в группу.
+        /// </summary>
+        /// <param name="groupId">Идентификатор группы</param>
+        /// <param name="studentId">Идентификатор студента</param>
+        /// <returns></returns>
         public async Task AddStudentToGroup(int groupId, int studentId)
         {
             var groupStudent = new GroupStudent
@@ -116,6 +142,12 @@ namespace StudentGroup.Infrastracture.Shared.Managers
             await _schoolRepository.AddStudentToGroupAsync(groupStudent);
         }
 
+        /// <summary>
+        ///     Получить запись из таблицы "группа - студент".
+        /// </summary>
+        /// <param name="groupId">Идентификатор группы</param>
+        /// <param name="studentId">Идентификатор студента</param>
+        /// <returns>Найденная запись или null.</returns>
         public async Task<GroupStudent> GetGroupStudent(int groupId, int studentId)
         {
             var groupStudent = new GroupStudent
@@ -126,6 +158,11 @@ namespace StudentGroup.Infrastracture.Shared.Managers
             return await _schoolRepository.FindGroupStudentAsync(groupStudent);
         }
 
+        /// <summary>
+        ///     Удалить студента из группы. 
+        /// </summary>
+        /// <param name="groupStudent">Связь "группа - студент"</param>
+        /// <returns></returns>
         public async Task RemoveGroupStudent(GroupStudent groupStudent)
         {
             await _schoolRepository.RemoveGroupStudent(groupStudent);
