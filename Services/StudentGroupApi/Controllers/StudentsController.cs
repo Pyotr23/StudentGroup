@@ -76,6 +76,11 @@ namespace StudentGroup.Services.Api.Controllers
             return CreatedAtAction("Get", new { id = newStudent.Id }, newStudent);
         }
 
+        /// <summary>
+        ///     Получение студента.
+        /// </summary>
+        /// <param name="id">Идентификатор</param>
+        /// <returns>Найденный студент</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -85,6 +90,11 @@ namespace StudentGroup.Services.Api.Controllers
             return Ok(student);
         }
 
+        /// <summary>
+        ///     Удаление студента.
+        /// </summary>
+        /// <param name="id">Идентификатор</param>
+        /// <returns>Удалённый студент, если такой существовал.</returns>
         [HttpDelete("{id}")]
         public async Task<ActionResult<Student>> Delete(int id)
         {

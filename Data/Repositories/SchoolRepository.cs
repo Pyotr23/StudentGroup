@@ -72,6 +72,11 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             return student;
         }   
         
+        /// <summary>
+        ///     Поиск студента по идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор</param>
+        /// <returns>Найденный студент или null</returns>
         public async Task<Student> FindStudentAsync(int id)
         {
             return await _context
@@ -79,6 +84,11 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                 .FindAsync(id);
         }
 
+        /// <summary>
+        ///     Удаление студента.
+        /// </summary>
+        /// <param name="student">Студент</param>
+        /// <returns></returns>
         public async Task RemoveStudent(Student student)
         {
             _context

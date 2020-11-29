@@ -20,7 +20,7 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         }
 
         /// <summary>
-        ///     Добавить ново7го студента.
+        ///     Добавить нового студента.
         /// </summary>
         /// <param name="studentDto">DTO студента</param>
         /// <returns>Студент</returns>
@@ -56,11 +56,21 @@ namespace StudentGroup.Infrastracture.Shared.Managers
             return await _schoolRepository.GetGroupsAsync();
         }
 
+        /// <summary>
+        ///     Получение студента по идентификатору.
+        /// </summary>
+        /// <param name="id">Идентификатор</param>
+        /// <returns>Студент, если существует с таким идентификатором; в противном случае - null.</returns>
         public async Task<Student> GetStudent(int id)
         {
             return await _schoolRepository.FindStudentAsync(id);
         }
 
+        /// <summary>
+        ///     Удаление студента.
+        /// </summary>
+        /// <param name="student">Студент</param>
+        /// <returns></returns>
         public async Task RemoveStudent(Student student)
         {
             await _schoolRepository.RemoveStudent(student);
