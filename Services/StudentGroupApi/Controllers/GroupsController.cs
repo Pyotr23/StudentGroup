@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentGroup.Infrastracture.Data.Models;
 using StudentGroup.Infrastracture.Data.Models.Database;
+using StudentGroup.Infrastracture.Data.Models.Filtration;
 using StudentGroup.Infrastracture.Shared.Dto;
 using StudentGroup.Infrastracture.Shared.Extensions;
 using StudentGroup.Infrastracture.Shared.Managers;
@@ -117,10 +118,19 @@ namespace StudentGroup.Services.Api.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        ///     Получить список групп с возможностью фильтрации по названию группы.
+        /// </summary>
+        /// <param name="name">Название группы для фильтрации</param>
+        /// <returns>Список групп с ID, именем группы и количеством студентов в группе.</returns>
         [HttpGet]
         public async Task<IActionResult> GetGroups([FromQuery] string name)
         {
-            var groups = await _schoolManager.GetAllGroupsWithStudentCount(name);
+            var filteringParameters = new GroupFilteringParameters()
+            {
+                Name = name
+            };
+            var groups = await _schoolManager.GetAllGroupsWithStudentCount(filteringParameters);
             return Ok(groups);
         }
     }

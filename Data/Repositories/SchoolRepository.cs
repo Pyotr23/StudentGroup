@@ -200,9 +200,15 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             await _context.SaveChangesAsync();            
         }
 
-        public async Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync()
+        /// <summary>
+        ///     Получить отфильтрованный по имени список групп.
+        /// </summary>
+        /// <param name="filteringParameters">Параметры фильтрации</param>
+        /// <returns>Список групп из таблицы "Группы" с идентификатором студента.</returns>
+        public async Task<IEnumerable<GroupWithStudentId>> GetGroupsAsync(GroupFilteringParameters filteringParameters)
         {
-            var query = from gr in _context.Groups
+            var filter = new GroupFilter(_context.Groups, filteringParameters);
+            var query = from gr in filter.ApplyFilter()
                         join groupStudent in _context.GroupStudents
                             on gr.Id equals groupStudent.GroupId into ggs
                         from gs in ggs.DefaultIfEmpty()
@@ -216,23 +222,5 @@ namespace StudentGroup.Infrastracture.Data.Repositories
                         };
             return await query.ToListAsync();            
         }
-
-        public async Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync(string whereCondition)
-        {
-            var query = from gr in _context.Groups
-                        where gr.Name == whereCondition
-                        join groupStudent in _context.GroupStudents
-                            on gr.Id equals groupStudent.GroupId into ggs
-                        from gs in ggs.DefaultIfEmpty()
-                        select new GroupWithStudentId 
-                        { 
-                            Id = gr.Id, 
-                            Name = gr.Name, 
-                            StudentId = gs == null 
-                                ? null
-                                : (int?)gs.StudentId 
-                        };
-            return await query.ToListAsync();
-        }                
     }
 }

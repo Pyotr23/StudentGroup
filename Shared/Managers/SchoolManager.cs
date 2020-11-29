@@ -168,11 +168,14 @@ namespace StudentGroup.Infrastracture.Shared.Managers
             await _schoolRepository.RemoveGroupStudent(groupStudent);
         }
 
-        public async Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount(string whereCondition)
-        {
-            var groups =  string.IsNullOrEmpty(whereCondition)
-                ? await _schoolRepository.GetAllGroupsAsync()
-                : await _schoolRepository.GetAllGroupsAsync(whereCondition);
+        /// <summary>
+        ///     Получить список групп с количеством студентов в них.
+        /// </summary>
+        /// <param name="whereCondition">Условие фильтрации имени</param>
+        /// <returns>Список групп.</returns>
+        public async Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount(GroupFilteringParameters filteringParameters)
+        {                       
+            var groups =  await _schoolRepository.GetGroupsAsync(filteringParameters);
             return groups
                 .GroupBy(x => new Group
                 {

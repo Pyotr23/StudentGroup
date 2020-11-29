@@ -85,9 +85,14 @@ namespace StudentGroup.Infrastracture.Data.Repositories
         /// </summary>
         /// <param name="groupStudent">Связь "группа - студент"</param>
         /// <returns></returns>
-        Task RemoveGroupStudent(GroupStudent groupStudent);        
-        Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync();
-        Task<IEnumerable<GroupWithStudentId>> GetAllGroupsAsync(string whereCondition);
+        Task RemoveGroupStudent(GroupStudent groupStudent);
+
+        /// <summary>
+        ///     Получить отфильтрованный по имени список групп.
+        /// </summary>
+        /// <param name="filteringParameters">Параметры фильтрации</param>
+        /// <returns>Список групп из таблицы "Группы" с идентификатором студента.</returns>
+        Task<IEnumerable<GroupWithStudentId>> GetGroupsAsync(GroupFilteringParameters filteringParameters);
 
         /// <summary>
         ///     Получить отфильтрованный список студентов с именем группы.
