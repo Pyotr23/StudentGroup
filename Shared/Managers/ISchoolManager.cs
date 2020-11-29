@@ -73,14 +73,7 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         /// <param name="groupStudent">Связь "группа - студент"</param>
         /// <returns></returns>
         Task RemoveGroupStudent(GroupStudent groupStudent);
-
-        /// <summary>
-        ///     Получить список групп с количеством студентов в них.
-        /// </summary>
-        /// <param name="whereCondition">Условие фильтрации имени</param>
-        /// <returns>Список групп.</returns>
-        Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount(string whereCondition);
-
+        
         /// <summary>
         ///     Получить список студентов после необязательной фильтрации.
         /// </summary>
@@ -101,5 +94,12 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         /// <param name="groupDto">DTO группы</param>
         /// <returns>Созданная группа.</returns>
         Task<Group> PostGroup(GroupDto groupDto);
+
+        /// <summary>
+        ///     Получить список групп с количеством студентов в них.
+        /// </summary>
+        /// <param name="whereCondition">Условие фильтрации имени</param>
+        /// <returns>Список групп.</returns>
+        Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount(GroupFilteringParameters filteringParameters);
     }
 }

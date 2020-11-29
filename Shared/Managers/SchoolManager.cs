@@ -174,7 +174,7 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         /// <param name="whereCondition">Условие фильтрации имени</param>
         /// <returns>Список групп.</returns>
         public async Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount(GroupFilteringParameters filteringParameters)
-        {                       
+        {                        
             var groups =  await _schoolRepository.GetGroupsAsync(filteringParameters);
             return groups
                 .GroupBy(x => new Group

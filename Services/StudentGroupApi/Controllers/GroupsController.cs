@@ -1,21 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StudentGroup.Infrastracture.Data.Models;
 using StudentGroup.Infrastracture.Data.Models.Database;
 using StudentGroup.Infrastracture.Data.Models.Filtration;
 using StudentGroup.Infrastracture.Shared.Dto;
 using StudentGroup.Infrastracture.Shared.Extensions;
 using StudentGroup.Infrastracture.Shared.Managers;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace StudentGroup.Services.Api.Controllers
 {
+    /// <summary>
+    ///     Контроллер для управления группами
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class GroupsController : ControllerBase
     {
         private ISchoolManager _schoolManager;
 
+        /// <summary>
+        ///     Конструктор контроллера групп
+        /// </summary>
+        /// <param name="schoolManager">Интерфейс менеджера</param>
         public GroupsController(ISchoolManager schoolManager)
         {
             _schoolManager = schoolManager;

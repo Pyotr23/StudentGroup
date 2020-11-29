@@ -12,11 +12,18 @@ using StudentGroup.Infrastracture.Data.Repositories;
 using StudentGroup.Infrastracture.Shared.Managers;
 using StudentGroup.Services.Api.Configurations;
 using StudentGroup.Services.Api.Extensions;
+using System.IO;
 
 namespace StudentGroup.Services.Api
 {
+    /// <summary>
+    ///     Настройка веб-приложения
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        ///     Конфигурация
+        /// </summary>
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -27,8 +34,17 @@ namespace StudentGroup.Services.Api
         public void ConfigureServices(IServiceCollection services)
         {
             var apiConfiguration = GetApiConfiguration(services);
-            services.AddSwaggerGen(options =>
-                options.SwaggerDoc(apiConfiguration.Version, (OpenApiInfo)apiConfiguration));
+            services
+                .AddSwaggerGen(options =>
+                    options.SwaggerDoc(apiConfiguration.Version, (OpenApiInfo)apiConfiguration))
+                .ConfigureSwaggerGen(options => 
+                {
+                    options.CustomSchemaIds(x => x.FullName);
+                    var basePath = Directory.GetCurrentDirectory();
+                    var xmlFileName = typeof(Startup).Namespace;
+                    var xmlPath = Path.Combine(basePath, $"{xmlFileName}.xml");
+                    options.IncludeXmlComments(xmlPath);
+                });
 
             var connectionString = Configuration.GetConnectionString("Default");
             services

@@ -9,12 +9,19 @@ using StudentGroup.Infrastracture.Shared.Managers;
 
 namespace StudentGroup.Services.Api.Controllers
 {
+    /// <summary>
+    ///     Контроллер для управления студентами
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class StudentsController : ControllerBase
     {
         private readonly ISchoolManager _schoolManager;
 
+        /// <summary>
+        ///     Конструктор контроллера
+        /// </summary>
+        /// <param name="schoolManager">Интерфейс менеджера</param>
         public StudentsController(ISchoolManager schoolManager)
         {
             _schoolManager = schoolManager;

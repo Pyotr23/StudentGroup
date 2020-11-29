@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Api</name>
+    </assembly>
+    <members>
+        <member name="M:StudentGroup.Services.Api.Controllers.GroupsController.Get(System.Int32)">
+            <summary>
+                Получение группы.
+            </summary>
+            <param name="id">Идентификатор</param>
+            <returns>Найденная группа</returns>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.GroupsController.Post(StudentGroup.Infrastracture.Shared.Dto.AddUpdateGroupRequest)">
+            <summary>
+                Добавление группы.
+            </summary>
+            <param name="group">Характеристики группы</param>
+            <returns>Созданная группа.</returns>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.GroupsController.Delete(System.Int32)">
+            <summary>
+                Удаление группы.
+            </summary>
+            <param name="id">Идентификатор</param>
+            <returns>Удалённая группа.</returns>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.GroupsController.Update(System.Int32,StudentGroup.Infrastracture.Shared.Dto.AddUpdateGroupRequest)">
+            <summary>
+                Обновить группу.
+            </summary>
+            <param name="id">Идентификатор</param>
+            <param name="bodyGroup">новые параметры группы</param>
+            <returns></returns>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.GroupsController.PutStudent(System.Int32,System.Int32)">
+            <summary>
+                Добавить в группу студента.
+            </summary>
+            <param name="groupId">Идентификатор группы</param>
+            <param name="studentId">Идентификатор студента</param>
+            <returns></returns>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.GroupsController.DeleteStudent(System.Int32,System.Int32)">
+            <summary>
+                Удалить студента из группы.
+            </summary>
+            <param name="groupId">Идентификатор группы</param>
+            <param name="studentId">Студент группы</param>
+            <returns></returns>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.GroupsController.GetGroups(System.String)">
+            <summary>
+                Получить список групп с возможностью фильтрации по названию группы.
+            </summary>
+            <param name="name">Название группы для фильтрации</param>
+            <returns>Список групп с ID, именем группы и количеством студентов в группе.</returns>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.StudentsController.GetStudents(System.String,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Int32})">
+            <summary>
+                Выборка студентов с фильтрацией
+            </summary>
+            <param name="sex">Текст фильтрации по полу студента</param>
+            <param name="surname">Текст фильтрации по фамилии студента</param>
+            <param name="name">Текст фильтрации по имени студента</param>
+            <param name="middleName">Текст фильтрации по отчеству студента</param>
+            <param name="nickname">Текст фильтрации по прозвищу студента</param>
+            <param name="groupName">Текст фильтрации по названию группы</param>
+            <param name="pageSize">Ограничение по количеству студентов</param>
+            <returns>Результат выполнения запроса со списком, где каждый элемент содержит поля: 
+            ID, ФИО, уникальный идентификатор, список групп через запятую.</returns>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.StudentsController.Post(StudentGroup.Infrastracture.Shared.Dto.AddUpdateStudentRequest)">
+            <summary>
+                Добавить нового студента.
+            </summary>
+            <param name="student">Добавляемый студент</param>
+            <returns>Добавленный студент</returns>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.StudentsController.Get(System.Int32)">
+            <summary>
+                Получение студента.
+            </summary>
+            <param name="id">Идентификатор</param>
+            <returns>Найденный студент</returns>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.StudentsController.Delete(System.Int32)">
+            <summary>
+                Удаление студента.
+            </summary>
+            <param name="id">Идентификатор</param>
+            <returns>Удалённый студент, если такой существовал.</returns>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.StudentsController.Update(System.Int32,StudentGroup.Infrastracture.Shared.Dto.AddUpdateStudentRequest)">
+            <summary>
+                Обновить студента.
+            </summary>
+            <param name="id">Идентификатор студента</param>
+            <param name="studentParameters">Параметры студента для обновления</param>
+            <returns>Результат обновления</returns>
+        </member>
+    </members>
+</doc>
