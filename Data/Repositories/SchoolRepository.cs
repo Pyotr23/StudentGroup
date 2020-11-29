@@ -35,28 +35,27 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             FilteringParameters filteringParameters
             )
         {
-            var studentFilter = new StudentFilter(_context.Students, filteringParameters.StudentFilteringParameters);
-            studentFilter.ApplyFilter();
+            var studentFilter = new StudentFilter(_context.Students, filteringParameters.StudentFilteringParameters);                       
 
-            var groupFilter = new GroupFilter(_context.Groups, filteringParameters.GroupFilteringParameters);
-            groupFilter.ApplyFilter();
-
-            var query = from student in studentFilter.Query                      
+            var query = from student in studentFilter.ApplyFilter()
                         join groupStudent in _context.GroupStudents
                             on student.Id equals groupStudent.StudentId into grst
 
                         from gs in grst.DefaultIfEmpty()
-                        join gr in groupFilter.Query
+                        join gr in _context.Groups
                             on gs.GroupId equals gr.Id into groups
 
                         from g in groups.DefaultIfEmpty()
                         select new StudentWithGroupName { Student = student, GroupName = g.Name };
 
-            return filteringParameters.PageSize == null
-                ? await query.ToArrayAsync()
-                : await query
-                    .Take((int)filteringParameters.PageSize)
-                    .ToArrayAsync();
+            var studentWithGroupNameFilter = new StudentWithGroupNameFilter(query, filteringParameters.GroupFilteringParameters);
+            query = studentWithGroupNameFilter.ApplyFilter();           
+
+            query = filteringParameters.PageSize == null
+                ? query
+                : query.Take((int)filteringParameters.PageSize);
+
+            return await query.ToArrayAsync();
         }        
 
         public async Task<Student> AddStudentAsync(Student student)

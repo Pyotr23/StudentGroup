@@ -7,6 +7,6 @@ namespace StudentGroup.Infrastracture.Data.Filters
     {
         IQueryable<T> Query { get; }
 
-        void ApplyFilter();
+        IQueryable<T> ApplyFilter();
     }
 }

@@ -11,13 +11,13 @@ namespace StudentGroup.Infrastracture.Data.Filters
 
         public IQueryable<Student> Query { get; private set; }
 
-        public StudentFilter(DbSet<Student> dbSet, StudentFilteringParameters filteringParameters)
+        public StudentFilter(IQueryable<Student> students, StudentFilteringParameters filteringParameters)
         {
-            Query = dbSet.AsQueryable();
+            Query = students;
             _filter = filteringParameters;
         }
 
-        public void ApplyFilter()
+        public IQueryable<Student> ApplyFilter()
         {
             if (!string.IsNullOrEmpty(_filter.Sex))
                 Query = Query.Where(s => s.Sex == _filter.Sex);
@@ -33,6 +33,8 @@ namespace StudentGroup.Infrastracture.Data.Filters
 
             if (!string.IsNullOrEmpty(_filter.Nickname))
                 Query = Query.Where(s => s.Nickname == _filter.Nickname);
+
+            return Query;
         }        
     }
 }
