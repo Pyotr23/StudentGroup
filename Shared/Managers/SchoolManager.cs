@@ -3,7 +3,7 @@ using StudentGroup.Infrastracture.Data.Models.Database;
 using StudentGroup.Infrastracture.Data.Models.Filtration;
 using StudentGroup.Infrastracture.Data.Repositories;
 using StudentGroup.Infrastracture.Shared.Dto;
-using System;
+using StudentGroup.Infrastracture.Shared.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,16 +19,21 @@ namespace StudentGroup.Infrastracture.Shared.Managers
             _schoolRepository = schoolRepository;
         }
 
-        public async Task<Student> PostStudent(Student student)
+        /// <summary>
+        ///     Добавить ново7го студента.
+        /// </summary>
+        /// <param name="studentDto">DTO студента</param>
+        /// <returns>Студент</returns>
+        public async Task<Student> PostStudent(StudentDto studentDto)
         {
-            return await _schoolRepository.AddStudentAsync(student);
+            return await _schoolRepository.AddStudentAsync(studentDto.ToStudent());
         }
 
         /// <summary>
-        ///     
+        ///     Получить список студентов после необязательной фильтрации.
         /// </summary>
-        /// <param name="filteringParameters"></param>
-        /// <returns></returns>
+        /// <param name="filteringParameters">Параметры фильтрации</param>
+        /// <returns>Список студнтов с полями: ID, ФИО, уникальный идентификатор, список групп через запятую</returns>
         public async Task<IEnumerable<GetStudentsResponse>> GetAllStudents(FilteringParameters filteringParameters)
         {
             var students = await _schoolRepository.GetStudentsWithGroupNameAsync(filteringParameters);

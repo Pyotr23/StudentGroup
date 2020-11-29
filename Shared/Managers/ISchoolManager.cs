@@ -9,8 +9,6 @@ namespace StudentGroup.Infrastracture.Shared.Managers
 {
     public interface ISchoolManager
     {
-        Task<Student> PostStudent(Student addStudentDto);        
-        Task<IEnumerable<Group>> GetAllGroups();
         Task<Student> GetStudent(int id);
         Task RemoveStudent(Student student);
         Task UpdateStudent(Student student);
@@ -23,5 +21,6 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         Task RemoveGroupStudent(GroupStudent groupStudent);
         Task<IEnumerable<GroupWithStudentCount>> GetAllGroupsWithStudentCount(string whereCondition);
         Task<IEnumerable<GetStudentsResponse>> GetAllStudents(FilteringParameters filteringParameters);
+        Task<Student> PostStudent(StudentDto studentDto);
     }
 }

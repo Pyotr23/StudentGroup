@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using StudentGroup.Infrastracture.Data.Models;
 using StudentGroup.Infrastracture.Data.Models.Database;
 using StudentGroup.Infrastracture.Data.Models.Filtration;
 using StudentGroup.Infrastracture.Shared.Dto;
+using StudentGroup.Infrastracture.Shared.Extensions;
 using StudentGroup.Infrastracture.Shared.Managers;
 
 namespace StudentGroup.Services.Api.Controllers
@@ -13,7 +13,7 @@ namespace StudentGroup.Services.Api.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private ISchoolManager _schoolManager;
+        private readonly ISchoolManager _schoolManager;
 
         public StudentsController(ISchoolManager schoolManager)
         {
@@ -59,14 +59,20 @@ namespace StudentGroup.Services.Api.Controllers
                 },
                 PageSize = pageSize
             };
+
             var students = await _schoolManager.GetAllStudents(filteringParameters);            
             return Ok(students);
         }
 
+        /// <summary>
+        ///     Добавить нового студента.
+        /// </summary>
+        /// <param name="student">Добавляемый студент</param>
+        /// <returns>Добавленный студент</returns>
         [HttpPost]
-        public async Task<ActionResult<Student>> Post([FromBody] Student student)
-        {  
-            var newStudent = await _schoolManager.PostStudent(student);
+        public async Task<ActionResult<Student>> Post([FromBody] AddUpdateStudentRequest student)
+        {              
+            var newStudent = await _schoolManager.PostStudent(student.ToDto());
             return CreatedAtAction("Get", new { id = newStudent.Id }, newStudent);
         }
 

@@ -58,6 +58,11 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             return await query.ToArrayAsync();
         }        
 
+        /// <summary>
+        ///     Добавить нового студента.
+        /// </summary>
+        /// <param name="student">Добавляемый студент</param>
+        /// <returns>Добавленный студент</returns>
         public async Task<Student> AddStudentAsync(Student student)
         {
             await _context
