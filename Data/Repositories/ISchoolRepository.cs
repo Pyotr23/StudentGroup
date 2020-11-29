@@ -30,6 +30,12 @@ namespace StudentGroup.Infrastracture.Data.Repositories
         /// <param name="student">Студент</param>
         /// <returns></returns>
         Task RemoveStudent(Student student);
+
+        /// <summary>
+        ///     Обновление студента.
+        /// </summary>
+        /// <param name="student">Студент</param>
+        /// <returns></returns>
         Task UpdateStudent(Student student);
         Task<Group> FindGroupAsync(int id);
         Task<Group> AddGroupAsync(Group group);

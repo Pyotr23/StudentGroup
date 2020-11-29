@@ -76,6 +76,11 @@ namespace StudentGroup.Infrastracture.Shared.Managers
             await _schoolRepository.RemoveStudent(student);
         }
 
+        /// <summary>
+        ///     Обновление студента.
+        /// </summary>
+        /// <param name="student">Студент</param>
+        /// <returns></returns>
         public async Task UpdateStudent(Student student)
         {
             await _schoolRepository.UpdateStudent(student);

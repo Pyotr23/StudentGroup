@@ -23,7 +23,13 @@ namespace StudentGroup.Infrastracture.Shared.Managers
         /// <returns></returns>
         Task RemoveStudent(Student student);
 
+        /// <summary>
+        ///     Обновление студента.
+        /// </summary>
+        /// <param name="student">Студент</param>
+        /// <returns></returns>
         Task UpdateStudent(Student student);
+
         Task<Group> GetGroup(int id);
         Task<Group> PostGroup(Group group);
         Task RemoveGroup(Group group);

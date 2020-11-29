@@ -97,6 +97,11 @@ namespace StudentGroup.Infrastracture.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        ///     Обновление студента.
+        /// </summary>
+        /// <param name="student">Студент</param>
+        /// <returns></returns>
         public async Task UpdateStudent(Student student)
         {
             _context

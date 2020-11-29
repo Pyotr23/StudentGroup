@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using StudentGroup.Infrastracture.Data.Models.Database;
+using System.ComponentModel.DataAnnotations;
 
 namespace StudentGroup.Infrastracture.Shared.Dto
 {
@@ -28,6 +29,19 @@ namespace StudentGroup.Infrastracture.Shared.Dto
         /// <summary> Прозвище </summary>
         [MinLength(6)]
         [MaxLength(16)]
-        public string Nickname { get; set; }
+        public string Nickname { get; set; }   
+        
+        /// <summary>
+        ///     Обновить студента параметрами из запроса.
+        /// </summary>
+        /// <param name="student"></param>
+        public void UpdateStudent(Student student)
+        {
+            student.Sex = Sex;
+            student.Surname = Surname;
+            student.Name = Name;
+            student.MiddleName = MiddleName;
+            student.Nickname = Nickname;
+        }
     }
 }

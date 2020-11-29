@@ -104,18 +104,20 @@ namespace StudentGroup.Services.Api.Controllers
             await _schoolManager.RemoveStudent(student);
             return Ok(student);
         }
-
+                
+        /// <summary>
+        ///     Обновить студента.
+        /// </summary>
+        /// <param name="id">Идентификатор студента</param>
+        /// <param name="studentParameters">Параметры студента для обновления</param>
+        /// <returns>Результат обновления</returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] StudentDto studentDto)
+        public async Task<IActionResult> Update(int id, [FromBody] AddUpdateStudentRequest studentParameters)
         {
             var student = await _schoolManager.GetStudent(id);
             if (student == null)
                 return NotFound();
-            student.MiddleName = studentDto.MiddleName;
-            student.Name = studentDto.Name;
-            student.Nickname = studentDto.Nickname;
-            student.Sex = studentDto.Sex;
-            student.Surname = studentDto.Surname;
+            studentParameters.UpdateStudent(student);           
             await _schoolManager.UpdateStudent(student);
             return NoContent();
         }
