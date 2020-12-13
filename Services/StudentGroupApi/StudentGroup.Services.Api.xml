@@ -4,6 +4,17 @@
         <name>Api</name>
     </assembly>
     <members>
+        <member name="T:StudentGroup.Services.Api.Controllers.GroupsController">
+            <summary>
+                Контроллер для управления группами
+            </summary>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.GroupsController.#ctor(StudentGroup.Infrastracture.Shared.Managers.ISchoolManager)">
+            <summary>
+                Конструктор контроллера групп
+            </summary>
+            <param name="schoolManager">Интерфейс менеджера</param>
+        </member>
         <member name="M:StudentGroup.Services.Api.Controllers.GroupsController.Get(System.Int32)">
             <summary>
                 Получение группы.
@@ -56,6 +67,17 @@
             <param name="name">Название группы для фильтрации</param>
             <returns>Список групп с ID, именем группы и количеством студентов в группе.</returns>
         </member>
+        <member name="T:StudentGroup.Services.Api.Controllers.StudentsController">
+            <summary>
+                Контроллер для управления студентами
+            </summary>
+        </member>
+        <member name="M:StudentGroup.Services.Api.Controllers.StudentsController.#ctor(StudentGroup.Infrastracture.Shared.Managers.ISchoolManager)">
+            <summary>
+                Конструктор контроллера
+            </summary>
+            <param name="schoolManager">Интерфейс менеджера</param>
+        </member>
         <member name="M:StudentGroup.Services.Api.Controllers.StudentsController.GetStudents(System.String,System.String,System.String,System.String,System.String,System.String,System.Nullable{System.Int32})">
             <summary>
                 Выборка студентов с фильтрацией
@@ -98,6 +120,16 @@
             <param name="id">Идентификатор студента</param>
             <param name="studentParameters">Параметры студента для обновления</param>
             <returns>Результат обновления</returns>
+        </member>
+        <member name="T:StudentGroup.Services.Api.Startup">
+            <summary>
+                Настройка веб-приложения
+            </summary>
+        </member>
+        <member name="P:StudentGroup.Services.Api.Startup.Configuration">
+            <summary>
+                Конфигурация
+            </summary>
         </member>
     </members>
 </doc>

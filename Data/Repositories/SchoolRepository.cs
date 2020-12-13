@@ -12,7 +12,7 @@ namespace StudentGroup.Infrastracture.Data.Repositories
 {
     public class SchoolRepository : ISchoolRepository
     {
-        private SchoolContext _context;
+        private readonly SchoolContext _context;
 
         public SchoolRepository(SchoolContext context)
         {

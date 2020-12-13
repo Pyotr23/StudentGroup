@@ -6,7 +6,7 @@ namespace StudentGroup.Infrastracture.Data.Filters
 {
     public class StudentWithGroupNameFilter : IFilter<StudentWithGroupName>
     {
-        private GroupFilteringParameters _filter;
+        private readonly GroupFilteringParameters _filter;
 
         public IQueryable<StudentWithGroupName> Query { get; private set; }
 
