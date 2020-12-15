@@ -8,7 +8,7 @@ namespace School.Core.Services
 {
     public interface IStudentService
     {
-        Task<IEnumerable<StudentWithGroupsDto>> GetAllWithGroups(StudentFilter filter);
+        Task<IEnumerable<StudentWithGroupsDto>> GetAllWithGroups(StudentFilterParameters filter);
         Task<Student> GetStudentById(int id);
         Task<Student> CreateStudent(Student newStudent);
         Task UpdateStudent(Student studentToBeUpdated, Student student);

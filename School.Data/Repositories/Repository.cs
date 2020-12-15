@@ -4,19 +4,23 @@ using System.Threading.Tasks;
 
 namespace School.Data.Repositories
 {
-    public class Repository<TEntity> : BaseRepository<TEntity>, IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        public Repository(DbContext context) : base(context)
-        { }
-        
-        public async ValueTask<TEntity> GetByIdAsync(int id)
+        protected DbContext Context { get; private set; }
+
+        public Repository(DbContext context)
         {
-            return await DbSet.FindAsync(id);
+            Context = context;
         }
 
-        public ValueTask<TEntity> Update(TEntity entity)
+        public async Task AddAsync(TEntity entity)
         {
-            throw new System.NotImplementedException();
+            await Context.Set<TEntity>().AddAsync(entity);
+        }
+
+        public void Remove(TEntity entity)
+        {
+            Context.Set<TEntity>().Remove(entity);
         }
     }
 }
