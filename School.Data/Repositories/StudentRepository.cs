@@ -2,13 +2,14 @@
 using School.Core.Filtration.Filters;
 using School.Core.Filtration.Parameters;
 using School.Core.Models;
+using School.Core.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace School.Data.Repositories
 {
-    public class StudentRepository : Repository<Student>
+    public class StudentRepository : Repository<Student>, IStudentRepository
     {
         public StudentRepository(SchoolDbContext context) : base(context)
         { }

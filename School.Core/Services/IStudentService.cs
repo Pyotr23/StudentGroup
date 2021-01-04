@@ -1,5 +1,5 @@
 ﻿using School.Core.DTOes;
-using School.Core.Filters;
+using School.Core.Filtration.Parameters;
 using School.Core.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
