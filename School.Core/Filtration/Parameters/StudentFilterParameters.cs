@@ -8,5 +8,6 @@
         public string MiddleName { get; set; }
         public string Nickname { get; set; }
         public string GroupName { get; set; }
+        public int PageSize { get; set; }
     }
 }

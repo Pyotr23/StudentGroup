@@ -5,6 +5,7 @@ using School.Core.Models;
 using School.Core.Repositories;
 using School.Core.Services;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace School.Services
@@ -33,9 +34,21 @@ namespace School.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public Task<IEnumerable<StudentWithGroupsDto>> GetAllWithGroups(StudentFilterParameters filter)
+        public async Task<IEnumerable<StudentWithGroupsDto>> GetAllWithGroups(StudentFilterParameters filterParameters)
         {
-            throw new System.NotImplementedException();
+            var students = await _students.GetStudentsWithGroupNameAsync(filterParameters);
+            return students
+                .GroupBy(s => s.Student)
+                .Select(x => new StudentWithGroupsDto
+                {
+                    Id = x.Key.Id,
+                    Sex = x.Key.Sex,
+                    Name = x.Key.Name,
+                    MiddleName = x.Key.MiddleName,
+                    LastName = x.Key.LastName,
+                    GroupNames = string.Join(", ", x.Select(y => y.GroupName))
+                })
+                .Take(filterParameters.PageSize);             
         }
 
         public async Task<Student> GetStudentById(int id)
@@ -43,10 +56,14 @@ namespace School.Services
             return await _students.GetByIdAsync(id);
         }
 
-        public Task UpdateStudent(Student studentToBeUpdated, Student student)
+        public async Task UpdateStudent(Student studentToBeUpdated, Student student)
         {
             studentToBeUpdated.Name = student.Name;
-
+            studentToBeUpdated.LastName = student.LastName;
+            studentToBeUpdated.MiddleName = student.MiddleName;
+            studentToBeUpdated.Nickname = student.Nickname;
+            studentToBeUpdated.Sex = student.Sex;
+            await _unitOfWork.CommitAsync();
         }
     }
 }

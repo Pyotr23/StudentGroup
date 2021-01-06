@@ -16,6 +16,15 @@ namespace School.Core.Filtration.Filters
             _filterParameters = filterParameters;
         }
 
+        public GroupFilter(IQueryable<Group> groups, string groupName)
+        {
+            Query = groups;
+            _filterParameters = new GroupFilterParameters()
+            {
+                Name = groupName
+            };            
+        }
+
         public IQueryable<Group> ApplyFilter()
         {
             if (!string.IsNullOrEmpty(_filterParameters.Name))
