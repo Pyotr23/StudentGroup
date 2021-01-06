@@ -1,10 +1,19 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using School.Api.Configurations;
+using School.Api.Extensions;
+using School.Core;
+using School.Core.Services;
 using School.Data;
+using School.Services;
+using System.IO;
 
 namespace School.Api
 {
@@ -19,11 +28,34 @@ namespace School.Api
                 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("Default");
+            var apiConfiguration = GetApiConfiguration(services);
             services                
+                .AddSwaggerGen(options =>
+                {
+                    options.SwaggerDoc(apiConfiguration.Version, (OpenApiInfo)apiConfiguration);
+                })
+                .ConfigureSwaggerGen(options =>
+                {
+                    options.CustomSchemaIds(x => x.FullName);
+                    var basePath = Directory.GetCurrentDirectory();
+                    var xmlFileName = typeof(Startup).Namespace;
+                    var xmlPath = Path.Combine(basePath, $"{xmlFileName}.xml");
+                    options.IncludeXmlComments(xmlPath);
+                });
+
+            services
+                .AddAutoMapper(typeof(Startup));
+
+            var connectionString = Configuration.GetConnectionString("Default");
+            services
                 .AddDbContext<SchoolDbContext>(options =>
-                    options.UseSqlServer(connectionString, builder => builder.MigrationsAssembly("School.Data"))
-                );
+                    options.UseSqlServer(
+                        connectionString,
+                        builder => builder.MigrationsAssembly("School.Data"))
+                )
+                .AddScoped<IUnitOfWork, UnitOfWork>()
+                .AddTransient<IStudentService, StudentService>()
+                .AddControllers();
         }
 
         
@@ -40,6 +72,14 @@ namespace School.Api
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private ApiConfiguration GetApiConfiguration(IServiceCollection services)
+        {
+            return services
+                .AddCustomOptions(Configuration)
+                .GetRequiredService<IOptions<ApiConfiguration>>()
+                .Value;
         }
     }
 }

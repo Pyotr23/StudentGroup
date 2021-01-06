@@ -6,9 +6,9 @@ namespace School.Core
 {
     public interface IUnitOfWork : IDisposable
     {
-        IStudentRepository Students { get; set; }
-        IGroupRepository Groups { get; set; }
-        IStudentGroupRepository StudentGroups { get ; set; }
+        IStudentRepository Students { get; }
+        IGroupRepository Groups { get; }
+        IStudentGroupRepository StudentGroups { get ; }
         Task<int> CommitAsync();
     }
 }
