@@ -1,4 +1,5 @@
-﻿using School.Core;
+﻿using AutoMapper;
+using School.Core;
 using School.Core.DTOes;
 using School.Core.Filtration.Parameters;
 using School.Core.Models;
@@ -14,11 +15,13 @@ namespace School.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStudentRepository _students;
+        private readonly IMapper _mapper;
 
-        public StudentService(IUnitOfWork unitOfWork)
+        public StudentService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _students = unitOfWork.Students;
+            _mapper = mapper;
         }
 
         public async Task<Student> CreateStudent(Student newStudent)
@@ -34,9 +37,26 @@ namespace School.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<IEnumerable<StudentWithGroupsDto>> GetAllWithGroups(StudentFilterParameters filterParameters)
+        public async Task<IEnumerable<StudentWithGroupsDto>> GetAllWithGroupNames(StudentFilterParameters filterParameters)
         {
             var students = await _students.GetStudentsWithGroupNameAsync(filterParameters);
+            return students
+                .GroupBy(s => s.Student)
+                .Select(x =>
+                {
+                    var studentDto = _mapper.Map<Student, StudentWithGroupsDto>(x.Key);
+                    studentDto.GroupNames = string.Join(", ", x.Select(y => y.GroupName));
+                    return studentDto;
+                })
+                .Take(filterParameters.PageSize)
+                .ToList();             
+        }
+
+        public async Task<StudentWithGroupsDto> GetWithGroupNames(int id)
+        {
+            var students = await _students.GetStudentWithGroupNameAsync(id);
+            if (students == null)
+                return null;
             return students
                 .GroupBy(s => s.Student)
                 .Select(x => new StudentWithGroupsDto
@@ -44,11 +64,18 @@ namespace School.Services
                     Id = x.Key.Id,
                     Sex = x.Key.Sex,
                     Name = x.Key.Name,
-                    MiddleName = x.Key.MiddleName,
                     LastName = x.Key.LastName,
+                    MiddleName = x.Key.MiddleName,
+                    Nickname = x.Key.Nickname,
                     GroupNames = string.Join(", ", x.Select(y => y.GroupName))
-                })
-                .Take(filterParameters.PageSize);             
+                }
+                //{
+                //    var studentDto = _mapper.Map<Student, StudentWithGroupsDto>(x.Key);
+                //    studentDto.GroupNames = string.Join(", ", x.Select(y => y.GroupName));
+                //    return studentDto;
+                //}
+                )
+                .FirstOrDefault();
         }
 
         public async Task<Student> GetStudentById(int id)

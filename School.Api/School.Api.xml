@@ -4,5 +4,23 @@
         <name>School.Api</name>
     </assembly>
     <members>
+        <member name="T:School.Api.Controllers.StudentController">
+            <summary>
+                Контроллер для управления студентами.
+            </summary>
+        </member>
+        <member name="M:School.Api.Controllers.StudentController.#ctor(School.Core.Services.IStudentService,AutoMapper.IMapper)">
+            <summary>
+                Конструктор контроллера Student.
+            </summary>
+            <param name="studentService"> Сервис для управления студентами. </param>
+            <param name="mapper"> Интерфейс маппера. </param>
+        </member>
+        <member name="M:School.Api.Controllers.StudentController.GetStudentById(System.Int32)">
+            <summary>
+                Получить студента по идентификатору.
+            </summary>
+            <param name="id"> Идентификатор. </param>
+        </member>
     </members>
 </doc>

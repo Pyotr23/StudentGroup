@@ -9,5 +9,6 @@ namespace School.Core.Repositories
     {
         Task<Student> GetByIdAsync(int id);
         Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(StudentFilterParameters filterParameters);
+        Task<IEnumerable<StudentWithGroupName>> GetStudentWithGroupNameAsync(int id);
     }
 }

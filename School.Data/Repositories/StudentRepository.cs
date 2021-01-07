@@ -40,6 +40,22 @@ namespace School.Data.Repositories
             return await query.ToListAsync();
         }
 
+        public async Task<IEnumerable<StudentWithGroupName>> GetStudentWithGroupNameAsync(int id)
+        {
+            var query = from student in SchoolDbContext.Students
+                        where student.Id == id
+                        join studentGroup in SchoolDbContext.StudentGroups
+                            on student.Id equals studentGroup.StudentId into stgr
+
+                        from gs in stgr.DefaultIfEmpty()
+                        join gr in SchoolDbContext.Groups
+                            on gs.GroupId equals gr.Id into groups
+
+                        from g in groups.DefaultIfEmpty()
+                        select new StudentWithGroupName { Student = student, GroupName = g.Name };
+            return await query.ToListAsync();
+        }
+
         private SchoolDbContext SchoolDbContext => Context as SchoolDbContext;
     }
 }
