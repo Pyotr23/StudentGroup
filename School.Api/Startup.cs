@@ -59,14 +59,26 @@ namespace School.Api
         }
 
         
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptions<ApiConfiguration> apiOption)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
+
             app.UseRouting();
+
+            app.UseAuthorization();
+
+            var apiConfiguration = apiOption.Value;
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.RoutePrefix = "";
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", apiConfiguration.Name);
+            });
 
             app.UseEndpoints(endpoints =>
             {

@@ -15,10 +15,10 @@ namespace School.Services
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStudentRepository _students;
 
-        public StudentService(IUnitOfWork unitOfWork, IStudentRepository studentRepository)
+        public StudentService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _students = studentRepository;
+            _students = unitOfWork.Students;
         }
 
         public async Task<Student> CreateStudent(Student newStudent)
