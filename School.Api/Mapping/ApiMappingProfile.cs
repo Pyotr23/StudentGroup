@@ -11,6 +11,7 @@ namespace School.Api.Mapping
         {
             CreateMap<Student, StudentResource>();
             CreateMap<StudentWithGroupsDto, StudentResource>();
+            CreateMap<SaveStudentResource, Student>();
         }
     }
 }

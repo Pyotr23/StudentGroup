@@ -50,6 +50,43 @@ namespace School.Api.Controllers
             return Ok(studentResource);
         }
 
-        //public async Task<ActionResult<>>
+        /// <summary>
+        ///     Создать студента.
+        /// </summary>
+        /// <param name="saveStudentResource"> Создаваемый студент. </param>
+        [HttpPost]
+        public async Task<ActionResult<StudentResource>> CreateStudent([FromBody] SaveStudentResource saveStudentResource)
+        {
+            var studentToCreate = _mapper.Map<Student>(saveStudentResource);
+            var newStudent = await _studentService.CreateStudent(studentToCreate);
+            var student = await _studentService.GetStudentById(newStudent.Id);
+            var studentResource = _mapper.Map<StudentResource>(student);
+            return Ok(studentResource);
+        }
+
+        /// <summary>
+        ///     Обновить информацию студента.
+        /// </summary>
+        /// <param name="id"> Идентификатор обновляемого студента. </param>
+        /// <param name="saveStudentResource"> Новое описание студента. </param>
+        [HttpPut("{id}")]
+        public async Task<ActionResult<StudentResource>> UpdateStudent(int id, 
+            [FromBody] SaveStudentResource saveStudentResource)
+        {
+            var isValidRequest = id > 0;
+            if (!isValidRequest)
+                return BadRequest();
+
+            var studentForUpdate = await _studentService.GetStudentById(id);
+            if (studentForUpdate == null)
+                return NotFound();
+
+            var student = _mapper.Map<Student>(saveStudentResource);
+            await _studentService.UpdateStudent(studentForUpdate, student);
+
+            var updatedStudent = await _studentService.GetStudentById(id);
+            var updatedStudentResource = _mapper.Map<StudentResource>(updatedStudent);
+            return Ok(updatedStudentResource);
+        }
     }
 }
