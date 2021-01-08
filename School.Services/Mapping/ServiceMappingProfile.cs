@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using School.Core.DTOes;
 using School.Core.Models;
+using System.Linq;
 
 namespace School.Services.Mapping
 {
@@ -9,6 +10,10 @@ namespace School.Services.Mapping
         public ServiceMappingProfile()
         {
             CreateMap<Student, StudentWithGroupsDto>();
+            CreateMap<IGrouping<Student, StudentWithGroupName>, StudentWithGroupsDto>()
+                .ForMember(dest => dest.GroupNamesToString,
+                    opt => opt.MapFrom(src => string.Join(", ", src.Select(s => s.GroupName))))
+                .IncludeMembers(src => src.Key);
         }        
     }
 }

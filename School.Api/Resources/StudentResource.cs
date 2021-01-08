@@ -8,6 +8,6 @@
         public string Name { get; set; }
         public string MiddleName { get; set; }
         public string Nickname { get; set; }
-        public string GroupNames { get; set; }
+        public string GroupNamesToString { get; set; }
     }
 }

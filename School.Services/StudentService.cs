@@ -45,7 +45,7 @@ namespace School.Services
                 .Select(x =>
                 {
                     var studentDto = _mapper.Map<Student, StudentWithGroupsDto>(x.Key);
-                    studentDto.GroupNames = string.Join(", ", x.Select(y => y.GroupName));
+                    studentDto.GroupNamesToString = string.Join(", ", x.Select(y => y.GroupName));
                     return studentDto;
                 })
                 .Take(filterParameters.PageSize)
@@ -59,23 +59,7 @@ namespace School.Services
                 return null;
             return students
                 .GroupBy(s => s.Student)
-                .Select(x => 
-                //new StudentWithGroupsDto
-                //{
-                //    Id = x.Key.Id,
-                //    Sex = x.Key.Sex,
-                //    Name = x.Key.Name,
-                //    LastName = x.Key.LastName,
-                //    MiddleName = x.Key.MiddleName,
-                //    Nickname = x.Key.Nickname,
-                //    GroupNames = string.Join(", ", x.Select(y => y.GroupName))
-                //}
-                {
-                    var studentDto = _mapper.Map<StudentWithGroupsDto>(x.Key);
-                    studentDto.GroupNames = string.Join(", ", x.Select(y => y.GroupName));
-                    return studentDto;
-                }
-                )
+                .Select(grouping => _mapper.Map<StudentWithGroupsDto>(grouping))
                 .FirstOrDefault();
         }
 
