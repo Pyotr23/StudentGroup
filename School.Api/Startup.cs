@@ -9,10 +9,12 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using School.Api.Configurations;
 using School.Api.Extensions;
+using School.Api.Mapping;
 using School.Core;
 using School.Core.Services;
 using School.Data;
 using School.Services;
+using School.Services.Mapping;
 using System.IO;
 
 namespace School.Api
@@ -43,8 +45,16 @@ namespace School.Api
                     options.IncludeXmlComments(xmlPath);
                 });
 
-            services
-                .AddAutoMapper(typeof(Startup));
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ApiMappingProfile());
+                mc.AddProfile(new ServiceMappingProfile());                 
+            });
+            var mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
+            //services
+            //    .AddAutoMapper(typeof(Startup));
 
             var connectionString = Configuration.GetConnectionString("Default");
             services

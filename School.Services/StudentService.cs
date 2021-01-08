@@ -59,21 +59,22 @@ namespace School.Services
                 return null;
             return students
                 .GroupBy(s => s.Student)
-                .Select(x => new StudentWithGroupsDto
-                {
-                    Id = x.Key.Id,
-                    Sex = x.Key.Sex,
-                    Name = x.Key.Name,
-                    LastName = x.Key.LastName,
-                    MiddleName = x.Key.MiddleName,
-                    Nickname = x.Key.Nickname,
-                    GroupNames = string.Join(", ", x.Select(y => y.GroupName))
-                }
+                .Select(x => 
+                //new StudentWithGroupsDto
                 //{
-                //    var studentDto = _mapper.Map<Student, StudentWithGroupsDto>(x.Key);
-                //    studentDto.GroupNames = string.Join(", ", x.Select(y => y.GroupName));
-                //    return studentDto;
+                //    Id = x.Key.Id,
+                //    Sex = x.Key.Sex,
+                //    Name = x.Key.Name,
+                //    LastName = x.Key.LastName,
+                //    MiddleName = x.Key.MiddleName,
+                //    Nickname = x.Key.Nickname,
+                //    GroupNames = string.Join(", ", x.Select(y => y.GroupName))
                 //}
+                {
+                    var studentDto = _mapper.Map<StudentWithGroupsDto>(x.Key);
+                    studentDto.GroupNames = string.Join(", ", x.Select(y => y.GroupName));
+                    return studentDto;
+                }
                 )
                 .FirstOrDefault();
         }
