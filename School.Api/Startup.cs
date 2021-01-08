@@ -21,6 +21,12 @@ namespace School.Api
 {
     public class Startup
     {
+        private const string SwaggerEndPointUrl = "/swagger/v1/swagger.json";
+        private const string ConnectionStringName = "Default";
+        private const string MigrationsAssemblyName = "School.Data";
+
+        private IServiceCollection _services;
+
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -30,39 +36,13 @@ namespace School.Api
                 
         public void ConfigureServices(IServiceCollection services)
         {
-            var apiConfiguration = GetApiConfiguration(services);
+            _services = services;
+
+            SetSwaggerGen();
+            SetAutoMapper();
+            SetDbContext();
+
             services                
-                .AddSwaggerGen(options =>
-                {
-                    options.SwaggerDoc(apiConfiguration.Version, (OpenApiInfo)apiConfiguration);
-                })
-                .ConfigureSwaggerGen(options =>
-                {
-                    options.CustomSchemaIds(x => x.FullName);
-                    var basePath = Directory.GetCurrentDirectory();
-                    var xmlFileName = typeof(Startup).Namespace;
-                    var xmlPath = Path.Combine(basePath, $"{xmlFileName}.xml");
-                    options.IncludeXmlComments(xmlPath);
-                });
-
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new ApiMappingProfile());
-                mc.AddProfile(new ServiceMappingProfile());                 
-            });
-            var mapper = mapperConfig.CreateMapper();
-            services.AddSingleton(mapper);
-
-            //services
-            //    .AddAutoMapper(typeof(Startup));
-
-            var connectionString = Configuration.GetConnectionString("Default");
-            services
-                .AddDbContext<SchoolDbContext>(options =>
-                    options.UseSqlServer(
-                        connectionString,
-                        builder => builder.MigrationsAssembly("School.Data"))
-                )
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddTransient<IStudentService, StudentService>()
                 .AddControllers();
@@ -86,21 +66,61 @@ namespace School.Api
             app.UseSwaggerUI(c =>
             {
                 c.RoutePrefix = "";
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", apiConfiguration.Name);
+                c.SwaggerEndpoint(SwaggerEndPointUrl, apiConfiguration.Name);
             });
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }        
+
+        private void SetSwaggerGen()
+        {
+            var apiConfiguration = GetApiConfiguration();
+            _services
+                .AddSwaggerGen(options =>
+                {
+                    options.SwaggerDoc(apiConfiguration.Version, (OpenApiInfo)apiConfiguration);
+                })
+                .ConfigureSwaggerGen(options =>
+                {
+                    options.CustomSchemaIds(x => x.FullName);
+                    var basePath = Directory.GetCurrentDirectory();
+                    var xmlFileName = typeof(Startup).Namespace;
+                    var xmlPath = Path.Combine(basePath, xmlFileName + ".xml");
+                    options.IncludeXmlComments(xmlPath);
+                });
         }
 
-        private ApiConfiguration GetApiConfiguration(IServiceCollection services)
+        private ApiConfiguration GetApiConfiguration()
         {
-            return services
+            return _services
                 .AddCustomOptions(Configuration)
                 .GetRequiredService<IOptions<ApiConfiguration>>()
                 .Value;
+        }
+
+        private void SetAutoMapper()
+        {
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new ApiMappingProfile());
+                mc.AddProfile(new ServiceMappingProfile());
+            });
+            var mapper = mapperConfig.CreateMapper();
+            _services.AddSingleton(mapper);
+        }
+
+        private void SetDbContext()
+        {
+            var connectionString = Configuration.GetConnectionString(ConnectionStringName);
+            _services.AddDbContext<SchoolDbContext>(options =>
+            {
+                options.UseSqlServer(
+                    connectionString,
+                    builder => builder.MigrationsAssembly(MigrationsAssemblyName));
+            });
         }
     }
 }
