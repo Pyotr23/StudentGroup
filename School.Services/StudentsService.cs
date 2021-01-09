@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace School.Services
 {
-    public class StudentService : IStudentService
+    public class StudentsService : IStudentService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStudentRepository _students;
         private readonly IMapper _mapper;
 
-        public StudentService(IUnitOfWork unitOfWork, IMapper mapper)
+        public StudentsService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _students = unitOfWork.Students;
@@ -40,16 +40,15 @@ namespace School.Services
         public async Task<IEnumerable<StudentWithGroupsDto>> GetAllWithGroupNames(StudentFilterParameters filterParameters)
         {
             var students = await _students.GetStudentsWithGroupNameAsync(filterParameters);
-            return students
+
+            var studentDtoes = students
                 .GroupBy(s => s.Student)
-                .Select(x =>
-                {
-                    var studentDto = _mapper.Map<Student, StudentWithGroupsDto>(x.Key);
-                    studentDto.GroupNamesToString = string.Join(", ", x.Select(y => y.GroupName));
-                    return studentDto;
-                })
-                .Take(filterParameters.PageSize)
-                .ToList();             
+                .Select(grouping => _mapper.Map<StudentWithGroupsDto>(grouping));
+
+            if (filterParameters.PageSize != 0)
+                studentDtoes = studentDtoes.Take(filterParameters.PageSize);
+
+            return studentDtoes.ToList();
         }
 
         public async Task<StudentWithGroupsDto> GetWithGroupNames(int id)

@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using School.Api.Resources;
 using School.Core.DTOes;
+using School.Core.Filtration.Parameters;
 using School.Core.Models;
 using School.Core.Services;
 
@@ -13,7 +16,7 @@ namespace School.Api.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController : ControllerBase
+    public class StudentsController : ControllerBase
     {
         private readonly IStudentService _studentService;
         private readonly IMapper _mapper;
@@ -23,7 +26,7 @@ namespace School.Api.Controllers
         /// </summary>
         /// <param name="studentService"> Сервис для управления студентами. </param>
         /// <param name="mapper"> Интерфейс маппера. </param>
-        public StudentController(IStudentService studentService, IMapper mapper)
+        public StudentsController(IStudentService studentService, IMapper mapper)
         {
             _studentService = studentService;
             _mapper = mapper;
@@ -87,6 +90,39 @@ namespace School.Api.Controllers
             var updatedStudent = await _studentService.GetStudentById(id);
             var updatedStudentResource = _mapper.Map<StudentResource>(updatedStudent);
             return Ok(updatedStudentResource);
+        }
+
+        /// <summary>
+        ///     Удалить студента.
+        /// </summary>
+        /// <param name="id"> Идентификатор студента. </param>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            if (id <= 0)
+                return BadRequest();
+
+            var student = await _studentService.GetStudentById(id);
+            if (student == null)
+                return NotFound();
+
+            await _studentService.DeleteStudent(student);
+            return NoContent();
+        }
+
+        /// <summary>
+        ///     Получить студентов. Имеется возможность фильтрации. 
+        /// </summary>
+        /// <param name="filterParameters"> Параметры фильтрации. </param>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<StudentResource>>> GetStudents(
+            [FromQuery] StudentFilterParameters filterParameters)
+        {
+            var studentDtoes = await _studentService.GetAllWithGroupNames(filterParameters);
+            var studentResources = studentDtoes
+                .Select(dto => _mapper.Map<StudentResource>(dto))
+                .ToList();
+            return Ok(studentResources);
         }
     }
 }

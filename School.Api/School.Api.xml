@@ -4,36 +4,48 @@
         <name>School.Api</name>
     </assembly>
     <members>
-        <member name="T:School.Api.Controllers.StudentController">
+        <member name="T:School.Api.Controllers.StudentsController">
             <summary>
                 Контроллер для управления студентами.
             </summary>
         </member>
-        <member name="M:School.Api.Controllers.StudentController.#ctor(School.Core.Services.IStudentService,AutoMapper.IMapper)">
+        <member name="M:School.Api.Controllers.StudentsController.#ctor(School.Core.Services.IStudentService,AutoMapper.IMapper)">
             <summary>
                 Конструктор контроллера Student.
             </summary>
             <param name="studentService"> Сервис для управления студентами. </param>
             <param name="mapper"> Интерфейс маппера. </param>
         </member>
-        <member name="M:School.Api.Controllers.StudentController.GetStudentById(System.Int32)">
+        <member name="M:School.Api.Controllers.StudentsController.GetStudentById(System.Int32)">
             <summary>
                 Получить студента по идентификатору.
             </summary>
             <param name="id"> Идентификатор. </param>
         </member>
-        <member name="M:School.Api.Controllers.StudentController.CreateStudent(School.Api.Resources.SaveStudentResource)">
+        <member name="M:School.Api.Controllers.StudentsController.CreateStudent(School.Api.Resources.SaveStudentResource)">
             <summary>
                 Создать студента.
             </summary>
             <param name="saveStudentResource"> Создаваемый студент. </param>
         </member>
-        <member name="M:School.Api.Controllers.StudentController.UpdateStudent(System.Int32,School.Api.Resources.SaveStudentResource)">
+        <member name="M:School.Api.Controllers.StudentsController.UpdateStudent(System.Int32,School.Api.Resources.SaveStudentResource)">
             <summary>
                 Обновить информацию студента.
             </summary>
             <param name="id"> Идентификатор обновляемого студента. </param>
             <param name="saveStudentResource"> Новое описание студента. </param>
+        </member>
+        <member name="M:School.Api.Controllers.StudentsController.DeleteStudent(System.Int32)">
+            <summary>
+                Удалить студента.
+            </summary>
+            <param name="id"> Идентификатор студента. </param>
+        </member>
+        <member name="M:School.Api.Controllers.StudentsController.GetStudents(School.Core.Filtration.Parameters.StudentFilterParameters)">
+            <summary>
+                Получить студентов. Имеется возможность фильтрации. 
+            </summary>
+            <param name="filterParameters"> Параметры фильтрации. </param>
         </member>
     </members>
 </doc>
