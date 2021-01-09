@@ -43,7 +43,7 @@
         </member>
         <member name="M:School.Api.Controllers.StudentsController.GetStudents(School.Core.Filtration.Parameters.StudentFilterParameters)">
             <summary>
-                Получить студентов. Имеется возможность фильтрации. 
+                Получить студентов с возможностью фильтрации. 
             </summary>
             <param name="filterParameters"> Параметры фильтрации. </param>
         </member>

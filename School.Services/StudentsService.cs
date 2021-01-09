@@ -76,5 +76,10 @@ namespace School.Services
             studentToBeUpdated.Sex = student.Sex;
             await _unitOfWork.CommitAsync();
         }
+
+        public async Task<bool> IsNullOrUniqueNickname(string nickname)
+        {
+            return await _students.IsNullOrUniqueNickname(nickname);
+        }
     }
 }

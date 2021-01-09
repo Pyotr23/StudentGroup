@@ -11,6 +11,8 @@ namespace School.Data.Repositories
 {
     public class StudentRepository : Repository<Student>, IStudentRepository
     {
+        private SchoolDbContext SchoolDbContext => Context as SchoolDbContext;
+
         public StudentRepository(SchoolDbContext context) : base(context)
         { }
 
@@ -75,6 +77,12 @@ namespace School.Data.Repositories
             return await query.ToListAsync();
         }
 
-        private SchoolDbContext SchoolDbContext => Context as SchoolDbContext;
+        public async Task<bool> IsNullOrUniqueNickname(string nickname)
+        {
+            return string.IsNullOrEmpty(nickname)
+                || !await SchoolDbContext
+                    .Students
+                    .AnyAsync(s => s.Nickname == nickname);
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using School.Api.Resources;
+using School.Api.Validators;
 using School.Core.DTOes;
 using School.Core.Filtration.Parameters;
 using School.Core.Models;
@@ -39,16 +40,13 @@ namespace School.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<StudentResource>> GetStudentById(int id)
         {
-            //var student = await _studentService.GetStudentById(id);
-            //if (student == null)
-            //    return NotFound();
-
-            //var studentResource = _mapper.Map<Student, StudentResource>(student);
-            //return Ok(studentResource);
+            if (id <= 0)
+                return BadRequest();
 
             var studentDto = await _studentService.GetWithGroupNames(id);
             if (studentDto == null)
                 return NotFound();
+
             var studentResource = _mapper.Map<StudentWithGroupsDto, StudentResource>(studentDto);
             return Ok(studentResource);
         }
@@ -60,6 +58,14 @@ namespace School.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<StudentResource>> CreateStudent([FromBody] SaveStudentResource saveStudentResource)
         {
+            var validator = new SaveStudentResourceValidator();
+            var validationResult = await validator.ValidateAsync(saveStudentResource);
+            if (!validationResult.IsValid)
+                return BadRequest(validationResult.Errors);
+
+            if (!await _studentService.IsNullOrUniqueNickname(saveStudentResource.Nickname))
+                return BadRequest("Nickname должно быть пустым или уникальным.");
+
             var studentToCreate = _mapper.Map<Student>(saveStudentResource);
             var newStudent = await _studentService.CreateStudent(studentToCreate);
             var student = await _studentService.GetStudentById(newStudent.Id);
@@ -76,9 +82,14 @@ namespace School.Api.Controllers
         public async Task<ActionResult<StudentResource>> UpdateStudent(int id, 
             [FromBody] SaveStudentResource saveStudentResource)
         {
-            var isValidRequest = id > 0;
+            var validator = new SaveStudentResourceValidator();
+            var validationResult = await validator.ValidateAsync(saveStudentResource);
+            var isValidRequest = id > 0 && validationResult.IsValid;
             if (!isValidRequest)
                 return BadRequest();
+
+            if (!await _studentService.IsNullOrUniqueNickname(saveStudentResource.Nickname))
+                return BadRequest("Nickname должно быть пустым или уникальным.");
 
             var studentForUpdate = await _studentService.GetStudentById(id);
             if (studentForUpdate == null)
@@ -111,7 +122,7 @@ namespace School.Api.Controllers
         }
 
         /// <summary>
-        ///     Получить студентов. Имеется возможность фильтрации. 
+        ///     Получить студентов с возможностью фильтрации. 
         /// </summary>
         /// <param name="filterParameters"> Параметры фильтрации. </param>
         [HttpGet]

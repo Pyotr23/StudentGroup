@@ -14,5 +14,6 @@ namespace School.Core.Services
         Task UpdateStudent(Student studentToBeUpdated, Student student);
         Task DeleteStudent(Student student);
         Task<StudentWithGroupsDto> GetWithGroupNames(int id);
+        Task<bool> IsNullOrUniqueNickname(string nickname);
     }
 }
