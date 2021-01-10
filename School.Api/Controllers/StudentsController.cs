@@ -63,7 +63,10 @@ namespace School.Api.Controllers
             if (!validationResult.IsValid)
                 return BadRequest(validationResult.Errors);
 
-            if (!await _studentService.IsNullOrUniqueNickname(saveStudentResource.Nickname))
+            var nickname = saveStudentResource.Nickname;
+            var isNullOrUniqueNickname = string.IsNullOrEmpty(nickname)
+                || await _studentService.IsUniqueNickname(nickname);
+            if (!isNullOrUniqueNickname)
                 return BadRequest("Nickname должно быть пустым или уникальным.");
 
             var studentToCreate = _mapper.Map<Student>(saveStudentResource);
@@ -88,7 +91,7 @@ namespace School.Api.Controllers
             if (!isValidRequest)
                 return BadRequest();
 
-            if (!await _studentService.IsNullOrUniqueNickname(saveStudentResource.Nickname))
+            if (!await _studentService.IsUniqueNickname(saveStudentResource.Nickname, id))
                 return BadRequest("Nickname должно быть пустым или уникальным.");
 
             var studentForUpdate = await _studentService.GetStudentById(id);

@@ -77,12 +77,21 @@ namespace School.Data.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<bool> IsNullOrUniqueNickname(string nickname)
+        public async Task<bool> IsUniqueNickname(string nickname)
         {
-            return string.IsNullOrEmpty(nickname)
-                || !await SchoolDbContext
+            return !await SchoolDbContext
                     .Students
                     .AnyAsync(s => s.Nickname == nickname);
+        }
+
+        public async Task<int?> GetIdByNickname(string nickname)
+        {
+            var student = await SchoolDbContext
+                .Students
+                .FirstOrDefaultAsync(s => s.Nickname == nickname);
+            return student == null
+                ? (int?)null
+                : student.Id;
         }
     }
 }

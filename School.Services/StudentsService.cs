@@ -69,17 +69,19 @@ namespace School.Services
 
         public async Task UpdateStudent(Student studentToBeUpdated, Student student)
         {
-            studentToBeUpdated.Name = student.Name;
-            studentToBeUpdated.LastName = student.LastName;
-            studentToBeUpdated.MiddleName = student.MiddleName;
-            studentToBeUpdated.Nickname = student.Nickname;
-            studentToBeUpdated.Sex = student.Sex;
+            _mapper.Map(student, studentToBeUpdated);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<bool> IsNullOrUniqueNickname(string nickname)
+        public async Task<bool> IsUniqueNickname(string nickname)
         {
-            return await _students.IsNullOrUniqueNickname(nickname);
+            return await _students.IsUniqueNickname(nickname);
+        }
+
+        public async Task<bool> IsUniqueNickname(string nickname, int id)
+        {
+            var studentId = await _students.GetIdByNickname(nickname);
+            return studentId == null || studentId == id;
         }
     }
 }

@@ -10,10 +10,14 @@ namespace School.Services.Mapping
         public ServiceMappingProfile()
         {
             CreateMap<Student, StudentWithGroupsDto>();
+
             CreateMap<IGrouping<Student, StudentWithGroupName>, StudentWithGroupsDto>()
                 .ForMember(dest => dest.GroupNamesToString,
                     opt => opt.MapFrom(src => string.Join(", ", src.Select(s => s.GroupName))))
                 .IncludeMembers(src => src.Key);
+
+            CreateMap<Student, Student>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
         }        
     }
 }
