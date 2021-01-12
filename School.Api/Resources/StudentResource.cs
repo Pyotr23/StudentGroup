@@ -1,13 +1,13 @@
 ﻿namespace School.Api.Resources
 {
-    public class StudentResource
+    public record StudentResource
     {
-        public int Id { get; set; }
-        public string Sex { get; set; }
-        public string LastName { get; set; }
-        public string Name { get; set; }
-        public string MiddleName { get; set; }
-        public string Nickname { get; set; }
-        public string GroupNamesToString { get; set; }
+        public int Id { get; init; }
+        public string Sex { get; init; }
+        public string LastName { get; init; }
+        public string Name { get; init; }
+        public string MiddleName { get; init; }
+        public string Nickname { get; init; }
+        public string GroupNamesToString { get; init; }
     }
 }

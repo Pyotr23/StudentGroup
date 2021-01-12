@@ -101,7 +101,7 @@ namespace School.Api.Controllers
             var student = _mapper.Map<Student>(saveStudentResource);
             await _studentService.UpdateStudent(studentForUpdate, student);
 
-            var updatedStudent = await _studentService.GetStudentById(id);
+            var updatedStudent = await _studentService.GetWithGroupNames(id);
             var updatedStudentResource = _mapper.Map<StudentResource>(updatedStudent);
             return Ok(updatedStudentResource);
         }
