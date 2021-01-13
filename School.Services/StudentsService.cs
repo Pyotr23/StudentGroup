@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace School.Services
 {
-    public class StudentsService : IStudentService
+    public class StudentsService : IStudentsService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStudentRepository _students;

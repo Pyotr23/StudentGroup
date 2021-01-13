@@ -19,7 +19,7 @@ namespace School.Api.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private readonly IStudentService _studentService;
+        private readonly IStudentsService _studentService;
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace School.Api.Controllers
         /// </summary>
         /// <param name="studentService"> Сервис для управления студентами. </param>
         /// <param name="mapper"> Интерфейс маппера. </param>
-        public StudentsController(IStudentService studentService, IMapper mapper)
+        public StudentsController(IStudentsService studentService, IMapper mapper)
         {
             _studentService = studentService;
             _mapper = mapper;

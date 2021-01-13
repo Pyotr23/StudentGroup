@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace School.Core.Services
 {
-    public interface IStudentService
+    public interface IStudentsService
     {
         Task<IEnumerable<StudentWithGroupsDto>> GetAllWithGroupNames(StudentFilterParameters filter);
         Task<Student> GetStudentById(int id);

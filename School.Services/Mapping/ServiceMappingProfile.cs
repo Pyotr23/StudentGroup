@@ -18,6 +18,9 @@ namespace School.Services.Mapping
 
             CreateMap<Student, Student>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<Group, Group>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
         }        
     }
 }
