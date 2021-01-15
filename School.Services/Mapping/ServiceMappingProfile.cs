@@ -9,9 +9,9 @@ namespace School.Services.Mapping
     {
         public ServiceMappingProfile()
         {
-            CreateMap<Student, StudentWithGroupsDto>();
+            CreateMap<Student, StudentDto>();
 
-            CreateMap<IGrouping<Student, StudentWithGroupName>, StudentWithGroupsDto>()
+            CreateMap<IGrouping<Student, StudentWithGroupName>, StudentDto>()
                 .ForMember(dest => dest.GroupNamesToString,
                     opt => opt.MapFrom(src => string.Join(", ", src.Select(s => s.GroupName))))
                 .IncludeMembers(src => src.Key);
@@ -21,6 +21,8 @@ namespace School.Services.Mapping
 
             CreateMap<Group, Group>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<GroupWithStudentCount, GroupDto>();
         }        
     }
 }

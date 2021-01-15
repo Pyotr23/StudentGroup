@@ -10,8 +10,9 @@ namespace School.Api.Mapping
         public ApiMappingProfile()
         {
             CreateMap<Student, StudentResource>();
-            CreateMap<StudentWithGroupsDto, StudentResource>();
+            CreateMap<StudentDto, StudentResource>();
             CreateMap<SaveStudentResource, Student>();
+            CreateMap<GroupDto, GroupResource>();
         }
     }
 }

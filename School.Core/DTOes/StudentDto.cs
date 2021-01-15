@@ -1,6 +1,6 @@
 ﻿namespace School.Core.DTOes
 {
-    public record StudentWithGroupsDto
+    public record StudentDto
     {
         public int Id { get; init; }
         public string Sex { get; init; }

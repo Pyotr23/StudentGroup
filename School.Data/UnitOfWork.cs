@@ -9,6 +9,7 @@ namespace School.Data
     {
         private readonly SchoolDbContext _context;
         private StudentRepository _studentRepository;
+        private GroupRepository _groupRepository;
 
         public UnitOfWork(SchoolDbContext context)
         {
@@ -17,7 +18,7 @@ namespace School.Data
 
         public IStudentRepository Students => _studentRepository ??= new StudentRepository(_context);
 
-        public IGroupRepository Groups => throw new System.NotImplementedException();
+        public IGroupRepository Groups => _groupRepository ??= new GroupRepository(_context);
 
         public IStudentGroupRepository StudentGroups => throw new System.NotImplementedException();
 

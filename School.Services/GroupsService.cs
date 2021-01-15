@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using School.Core;
+using School.Core.DTOes;
 using School.Core.Models;
 using School.Core.Repositories;
 using School.Core.Services;
@@ -42,6 +43,12 @@ namespace School.Services
         {
             _mapper.Map(group, groupToBeUpdated);
             await _unitOfWork.CommitAsync();
+        }
+
+        public async Task<GroupDto> GetWithStudentCount(int id)
+        {
+            var group = await _groups.GetGroupWithStudentCountAsync(id);
+            return _mapper.Map<GroupDto>(group);
         }
     }
 }

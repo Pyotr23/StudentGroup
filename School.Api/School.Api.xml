@@ -4,12 +4,23 @@
         <name>School.Api</name>
     </assembly>
     <members>
+        <member name="T:School.Api.Controllers.GroupsController">
+            <summary>
+                Контроллер для управления группами.
+            </summary>
+        </member>
+        <member name="M:School.Api.Controllers.GroupsController.GetGroupById(System.Int32)">
+            <summary>
+                Получить группу с количеством студентов в ней.
+            </summary>
+            <param name="id"> Идентификатор группы. </param>
+        </member>
         <member name="T:School.Api.Controllers.StudentsController">
             <summary>
                 Контроллер для управления студентами.
             </summary>
         </member>
-        <member name="M:School.Api.Controllers.StudentsController.#ctor(School.Core.Services.IStudentService,AutoMapper.IMapper)">
+        <member name="M:School.Api.Controllers.StudentsController.#ctor(School.Core.Services.IStudentsService,AutoMapper.IMapper)">
             <summary>
                 Конструктор контроллера Student.
             </summary>

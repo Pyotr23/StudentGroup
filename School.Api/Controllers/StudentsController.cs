@@ -47,7 +47,7 @@ namespace School.Api.Controllers
             if (studentDto == null)
                 return NotFound();
 
-            var studentResource = _mapper.Map<StudentWithGroupsDto, StudentResource>(studentDto);
+            var studentResource = _mapper.Map<StudentDto, StudentResource>(studentDto);
             return Ok(studentResource);
         }
 

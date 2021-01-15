@@ -1,5 +1,8 @@
-﻿using School.Core.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using School.Core.DTOes;
+using School.Core.Models;
 using School.Core.Repositories;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace School.Data.Repositories
@@ -16,6 +19,23 @@ namespace School.Data.Repositories
             return await SchoolDbContext
                .Groups
                .FindAsync(id);
+        }
+
+        public async Task<GroupWithStudentCount> GetGroupWithStudentCountAsync(int id)
+        {
+            return await SchoolDbContext
+                .Groups
+                .GroupJoin(SchoolDbContext.StudentGroups,
+                    g => g.Id,
+                    sg => sg.GroupId,
+                    (g, sges) => new GroupWithStudentCount
+                    {
+                        Id = g.Id,
+                        Name = g.Name,
+                        StudentCount = sges.Select(s => s.StudentId).Count()
+                    }
+                )
+                .FirstOrDefaultAsync(g => g.Id == id);                
         }
     }
 }

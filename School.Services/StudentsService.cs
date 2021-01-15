@@ -37,13 +37,13 @@ namespace School.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<IEnumerable<StudentWithGroupsDto>> GetAllWithGroupNames(StudentFilterParameters filterParameters)
+        public async Task<IEnumerable<StudentDto>> GetAllWithGroupNames(StudentFilterParameters filterParameters)
         {
             var students = await _students.GetStudentsWithGroupNameAsync(filterParameters);
 
             var studentDtoes = students
                 .GroupBy(s => s.Student)
-                .Select(grouping => _mapper.Map<StudentWithGroupsDto>(grouping));
+                .Select(grouping => _mapper.Map<StudentDto>(grouping));
 
             if (filterParameters.PageSize != 0)
                 studentDtoes = studentDtoes.Take(filterParameters.PageSize);
@@ -51,14 +51,14 @@ namespace School.Services
             return studentDtoes.ToList();
         }
 
-        public async Task<StudentWithGroupsDto> GetWithGroupNames(int id)
+        public async Task<StudentDto> GetWithGroupNames(int id)
         {
             var students = await _students.GetStudentWithGroupNameAsync(id);
             if (students == null)
                 return null;
             return students
                 .GroupBy(s => s.Student)
-                .Select(grouping => _mapper.Map<StudentWithGroupsDto>(grouping))
+                .Select(grouping => _mapper.Map<StudentDto>(grouping))
                 .FirstOrDefault();
         }
 
