@@ -22,7 +22,7 @@ namespace School.Services.Mapping
             CreateMap<Group, Group>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
-            CreateMap<GroupWithStudentCount, GroupDto>();
+            CreateMap<GroupWithStudentId, GroupDto>();
         }        
     }
 }
