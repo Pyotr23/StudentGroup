@@ -42,8 +42,19 @@ namespace School.Data.Repositories
                     sg => sg.Group,                    
                     (g, sg) => new { g, sg })
                 .SelectMany(x => x.sg.DefaultIfEmpty(),
-                    (one, two) => new GroupWithStudentId { Id = one.g.Id, Name = one.g.Name, StudentId = two == default ? (int?)null : two.StudentId }
-                )                
+                    (one, two) => new GroupWithStudentId 
+                    { 
+                        Id = one.g.Id, 
+                        Name = one.g.Name, 
+                        StudentId = two == default ? (int?)null : two.StudentId 
+                    }
+                )     
+                .GroupBy(x => new Group 
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .Select(x => new GroupWithStudentId { Id = x.Key.Id, Name = x.Key.Name, StudentId = x.Count(v => v.StudentId != null) })
                 .ToListAsync();
             //return await SchoolDbContext
             //    .Groups
