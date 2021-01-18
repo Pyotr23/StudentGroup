@@ -47,9 +47,8 @@ namespace School.Services
 
         public async Task<GroupDto> GetWithStudentCount(int id)
         {             
-            var group = await _groups.GetGroupWithStudentIdAsync(id);
-            
-            return null;
+            var group = await _groups.GetGroupWithStudentIdAsync(id);            
+            return _mapper.Map<GroupDto>(group);
         }
     }
 }

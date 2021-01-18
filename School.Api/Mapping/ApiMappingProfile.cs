@@ -12,7 +12,10 @@ namespace School.Api.Mapping
             CreateMap<Student, StudentResource>();
             CreateMap<StudentDto, StudentResource>();
             CreateMap<SaveStudentResource, Student>();
+
+            CreateMap<Group, GroupResource>();
             CreateMap<GroupDto, GroupResource>();
+            CreateMap<SaveGroupResource, Group>();
         }
     }
 }

@@ -15,6 +15,12 @@
             </summary>
             <param name="id"> Идентификатор группы. </param>
         </member>
+        <member name="M:School.Api.Controllers.GroupsController.CreateGroup(School.Api.Resources.SaveGroupResource)">
+            <summary>
+                Создать новую группу.
+            </summary>
+            <param name="saveGroupResource"> Характеристики новой группы. </param>
+        </member>
         <member name="T:School.Api.Controllers.StudentsController">
             <summary>
                 Контроллер для управления студентами.

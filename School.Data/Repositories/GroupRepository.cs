@@ -30,15 +30,29 @@ namespace School.Data.Repositories
                 .GroupJoin(SchoolDbContext.StudentGroups,
                     g => g,
                     sg => sg.Group,                    
-                    (g, sges) => new GroupWithStudentGroups(g, sges))                   
+                    (g, sges) => new GroupWithStudentGroups 
+                    {
+                        Group = g,
+                        StudentGroups = sges
+                    })                   
                 .SelectMany(gsges => gsges.StudentGroups.DefaultIfEmpty(),
-                    (gsges, sg) => new GroupWithStudentId(gsges.Group, sg))     
+                    (gsges, sg) => new GroupWithStudentId 
+                    {
+                        Id = gsges.Group.Id,
+                        Name = gsges.Group.Name,
+                        StudentId = sg == default ? null : sg.StudentId
+                    })     
                 .GroupBy(x => new Group 
                 {
                     Id = x.Id,
                     Name = x.Name
                 })
-                .Select(grouped => new GroupWithStudentCount(grouped.Key, grouped.ToList()))
+                .Select(grouped => new GroupWithStudentCount 
+                { 
+                    Id = grouped.Key.Id,
+                    Name = grouped.Key.Name,
+                    StudentCount = grouped.Count(g => g.StudentId != null)
+                })
                 .FirstOrDefaultAsync(g => g.Id == id);                   
         }
     }
