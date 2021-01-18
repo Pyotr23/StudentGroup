@@ -64,6 +64,31 @@ namespace School.Api.Controllers
             return Ok(groupResource);
         }
 
+        /// <summary>
+        ///     Обновить информацию о группе.
+        /// </summary>
+        /// <param name="id"> Идентификатор обновляемой группы. </param>
+        /// <param name="saveGroupResource"> Новое описание группы. </param>
+        [HttpPut("{id}")]
+        public async Task<ActionResult<GroupResource>> UpdateGroup(int id,
+            [FromBody] SaveGroupResource saveGroupResource)
+        {
+            var validator = new SaveGroupResourceValidator();
+            var validationResult = await validator.ValidateAsync(saveGroupResource);
+            var isValidRequest = id > 0 && validationResult.IsValid;
+            if (!isValidRequest)
+                return BadRequest();
 
+            var groupForUpdate = await _groupService.GetGroupById(id);
+            if (groupForUpdate == null)
+                return NotFound();
+
+            var group = _mapper.Map<Group>(saveGroupResource);
+            await _groupService.UpdateGroup(groupForUpdate, group);
+
+            var updatedGroup = await _groupService.GetGroupById(id);
+            var updatedGroupResource = _mapper.Map<GroupResource>(updatedGroup);
+            return Ok(updatedGroupResource);
+        }
     }
 }
