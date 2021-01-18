@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>School.Api</name>
+    </assembly>
+    <members>
+        <member name="T:School.Api.Controllers.GroupsController">
+            <summary>
+                Контроллер для управления группами.
+            </summary>
+        </member>
+        <member name="M:School.Api.Controllers.GroupsController.GetGroupById(System.Int32)">
+            <summary>
+                Получить группу с количеством студентов в ней.
+            </summary>
+            <param name="id"> Идентификатор группы. </param>
+        </member>
+        <member name="M:School.Api.Controllers.GroupsController.CreateGroup(School.Api.Resources.SaveGroupResource)">
+            <summary>
+                Создать новую группу.
+            </summary>
+            <param name="saveGroupResource"> Характеристики новой группы. </param>
+        </member>
+        <member name="M:School.Api.Controllers.GroupsController.UpdateGroup(System.Int32,School.Api.Resources.SaveGroupResource)">
+            <summary>
+                Обновить информацию о группе.
+            </summary>
+            <param name="id"> Идентификатор обновляемой группы. </param>
+            <param name="saveGroupResource"> Новое описание группы. </param>
+        </member>
+        <member name="T:School.Api.Controllers.StudentsController">
+            <summary>
+                Контроллер для управления студентами.
+            </summary>
+        </member>
+        <member name="M:School.Api.Controllers.StudentsController.#ctor(School.Core.Services.IStudentsService,AutoMapper.IMapper)">
+            <summary>
+                Конструктор контроллера Student.
+            </summary>
+            <param name="studentService"> Сервис для управления студентами. </param>
+            <param name="mapper"> Интерфейс маппера. </param>
+        </member>
+        <member name="M:School.Api.Controllers.StudentsController.GetStudentById(System.Int32)">
+            <summary>
+                Получить студента по идентификатору.
+            </summary>
+            <param name="id"> Идентификатор. </param>
+        </member>
+        <member name="M:School.Api.Controllers.StudentsController.CreateStudent(School.Api.Resources.SaveStudentResource)">
+            <summary>
+                Создать студента.
+            </summary>
+            <param name="saveStudentResource"> Создаваемый студент. </param>
+        </member>
+        <member name="M:School.Api.Controllers.StudentsController.UpdateStudent(System.Int32,School.Api.Resources.SaveStudentResource)">
+            <summary>
+                Обновить информацию студента.
+            </summary>
+            <param name="id"> Идентификатор обновляемого студента. </param>
+            <param name="saveStudentResource"> Новое описание студента. </param>
+        </member>
+        <member name="M:School.Api.Controllers.StudentsController.DeleteStudent(System.Int32)">
+            <summary>
+                Удалить студента.
+            </summary>
+            <param name="id"> Идентификатор студента. </param>
+        </member>
+        <member name="M:School.Api.Controllers.StudentsController.GetStudents(School.Core.Filtration.Parameters.StudentFilterParameters)">
+            <summary>
+                Получить студентов с возможностью фильтрации. 
+            </summary>
+            <param name="filterParameters"> Параметры фильтрации. </param>
+        </member>
+    </members>
+</doc>
