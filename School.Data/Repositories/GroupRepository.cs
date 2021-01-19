@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using School.Core.DTOes;
+using School.Core.Filtration.Filters;
+using School.Core.Filtration.Parameters;
 using School.Core.Models;
 using School.Core.Repositories;
 using School.Data.Models;
@@ -54,6 +56,39 @@ namespace School.Data.Repositories
                     StudentCount = grouped.Count(g => g.StudentId != null)
                 })
                 .FirstOrDefaultAsync(g => g.Id == id);                   
+        }
+
+        public async Task<IEnumerable<GroupWithStudentCount>> GetGroups(GroupFilterParameters filterParameters)
+        {
+            var filter = new GroupFilter(SchoolDbContext.Groups, filterParameters);
+            return await filter.ApplyFilter()
+                .GroupJoin(SchoolDbContext.StudentGroups,
+                    g => g,
+                    sg => sg.Group,
+                    (g, sges) => new GroupWithStudentGroups
+                    {
+                        Group = g,
+                        StudentGroups = sges
+                    })
+                .SelectMany(gsges => gsges.StudentGroups.DefaultIfEmpty(),
+                    (gsges, sg) => new GroupWithStudentId
+                    {
+                        Id = gsges.Group.Id,
+                        Name = gsges.Group.Name,
+                        StudentId = sg == default ? null : sg.StudentId
+                    })
+                .GroupBy(x => new Group
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .Select(grouped => new GroupWithStudentCount
+                {
+                    Id = grouped.Key.Id,
+                    Name = grouped.Key.Name,
+                    StudentCount = grouped.Count(g => g.StudentId != null)
+                })
+                .ToListAsync();
         }
     }
 }

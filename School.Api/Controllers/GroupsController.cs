@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using School.Api.Resources;
 using School.Api.Validators;
+using School.Core.Filtration.Parameters;
 using School.Core.Models;
 using School.Core.Services;
 using System;
@@ -89,6 +90,39 @@ namespace School.Api.Controllers
             var updatedGroup = await _groupService.GetGroupById(id);
             var updatedGroupResource = _mapper.Map<GroupResource>(updatedGroup);
             return Ok(updatedGroupResource);
+        }
+
+        /// <summary>
+        ///     Удалить группу.
+        /// </summary>
+        /// <param name="id"> Идентификатор группы. </param>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteGroup(int id)
+        {
+            if (id <= 0)
+                return BadRequest();
+
+            var group = await _groupService.GetGroupById(id);
+            if (group == null)
+                return NotFound();
+
+            await _groupService.DeleteGroup(group);
+            return NoContent();
+        }
+
+        /// <summary>
+        ///     Получить группы с возможностью фильтрации. 
+        /// </summary>
+        /// <param name="filterParameters"> Параметры фильтрации. </param>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<GroupResource>>> GetGroups(
+            [FromQuery] GroupFilterParameters filterParameters)
+        {
+            var groupDtoes = await _groupService.GetAll(filterParameters);
+            var groupResources = groupDtoes
+                .Select(dto => _mapper.Map<GroupResource>(dto))
+                .ToList();
+            return Ok(groupResources);
         }
     }
 }

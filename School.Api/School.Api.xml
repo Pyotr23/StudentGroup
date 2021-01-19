@@ -28,6 +28,18 @@
             <param name="id"> Идентификатор обновляемой группы. </param>
             <param name="saveGroupResource"> Новое описание группы. </param>
         </member>
+        <member name="M:School.Api.Controllers.GroupsController.DeleteGroup(System.Int32)">
+            <summary>
+                Удалить группу.
+            </summary>
+            <param name="id"> Идентификатор группы. </param>
+        </member>
+        <member name="M:School.Api.Controllers.GroupsController.GetGroups(School.Core.Filtration.Parameters.GroupFilterParameters)">
+            <summary>
+                Получить группы с возможностью фильтрации. 
+            </summary>
+            <param name="filterParameters"> Параметры фильтрации. </param>
+        </member>
         <member name="T:School.Api.Controllers.StudentsController">
             <summary>
                 Контроллер для управления студентами.

@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using School.Core;
 using School.Core.DTOes;
+using School.Core.Filtration.Parameters;
 using School.Core.Models;
 using School.Core.Repositories;
 using School.Core.Services;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace School.Services
@@ -49,6 +52,14 @@ namespace School.Services
         {             
             var group = await _groups.GetGroupWithStudentIdAsync(id);            
             return _mapper.Map<GroupDto>(group);
+        }
+
+        public async Task<IEnumerable<GroupDto>> GetAll(GroupFilterParameters filterParameters)
+        {
+            var groups = await _groups.GetGroups(filterParameters);
+            return groups
+                .Select(g => _mapper.Map<GroupDto>(g))
+                .ToList();
         }
     }
 }
