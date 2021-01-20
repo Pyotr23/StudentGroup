@@ -10,6 +10,7 @@ namespace School.Data
         private readonly SchoolDbContext _context;
         private StudentRepository _studentRepository;
         private GroupRepository _groupRepository;
+        private StudentGroupRepository _studentGroupRepository;
 
         public UnitOfWork(SchoolDbContext context)
         {
@@ -20,7 +21,7 @@ namespace School.Data
 
         public IGroupRepository Groups => _groupRepository ??= new GroupRepository(_context);
 
-        public IStudentGroupRepository StudentGroups => throw new System.NotImplementedException();
+        public IStudentGroupRepository StudentGroups => _studentGroupRepository ??= new StudentGroupRepository(_context);
 
         public async Task<int> CommitAsync()
         {

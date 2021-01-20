@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using School.Core.Models;
 using System.Threading.Tasks;
 
 namespace School.Core.Services
 {
-    class IStudentGroupsService
+    public interface IStudentGroupsService
     {
+        Task<StudentGroup> AddStudentToGroup(StudentGroup studentGroup);
+        Task<StudentGroup> GetStudentGroup(int studentId, int groupId);
     }
 }
