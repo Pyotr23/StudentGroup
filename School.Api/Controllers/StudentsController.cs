@@ -94,12 +94,12 @@ namespace School.Api.Controllers
             if (!await _studentService.IsUniqueNickname(saveStudentResource.Nickname, id))
                 return BadRequest("Nickname должно быть пустым или уникальным.");
 
-            var studentForUpdate = await _studentService.GetStudentById(id);
-            if (studentForUpdate == null)
+            var studentDtoForUpdate = await _studentService.GetStudentById(id);
+            if (studentDtoForUpdate == null)
                 return NotFound();
 
-            var student = _mapper.Map<Student>(saveStudentResource);
-            await _studentService.UpdateStudent(studentForUpdate, student);
+            var studentDto = _mapper.Map<StudentDto>(saveStudentResource);
+            await _studentService.UpdateStudent(studentDtoForUpdate, studentDto);
 
             var updatedStudent = await _studentService.GetWithGroupNames(id);
             var updatedStudentResource = _mapper.Map<StudentResource>(updatedStudent);

@@ -32,8 +32,9 @@ namespace School.Services
             return _mapper.Map<StudentDto>(newStudent);
         }
 
-        public async Task DeleteStudent(Student student)
+        public async Task DeleteStudent(StudentDto studentDto)
         {
+            var student = _mapper.Map<Student>(studentDto);
             _students.Remove(student);
             await _unitOfWork.CommitAsync();
         }
@@ -69,8 +70,10 @@ namespace School.Services
             return _mapper.Map<StudentDto>(student);
         }
 
-        public async Task UpdateStudent(Student studentToBeUpdated, Student student)
+        public async Task UpdateStudent(StudentDto studentDtoToBeUpdated, StudentDto studentDto)
         {
+            var studentToBeUpdated = _mapper.Map<Student>(studentDtoToBeUpdated);
+            var student = _mapper.Map<Student>(studentDto);
             _mapper.Map(student, studentToBeUpdated);
             await _unitOfWork.CommitAsync();
         }

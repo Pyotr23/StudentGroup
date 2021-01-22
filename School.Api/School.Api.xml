@@ -40,13 +40,6 @@
             </summary>
             <param name="filterParameters"> Параметры фильтрации. </param>
         </member>
-        <member name="M:School.Api.Controllers.GroupsController.AddStudentToGroup(System.Int32,System.Int32)">
-            <summary>
-                Добавить студента в группу.
-            </summary>
-            <param name="groupId"> Идентификатор группы. </param>
-            <param name="studentId"> Идентификатор студента. </param>
-        </member>
         <member name="T:School.Api.Controllers.StudentsController">
             <summary>
                 Контроллер для управления студентами.

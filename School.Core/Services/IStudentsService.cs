@@ -9,10 +9,10 @@ namespace School.Core.Services
     public interface IStudentsService
     {
         Task<IEnumerable<FullStudentDto>> GetAllWithGroupNames(StudentFilterParameters filter);
-        Task<Student> GetStudentById(int id);
-        Task<StudentDto> CreateStudent(StudentDto newStudent);
-        Task UpdateStudent(Student studentToBeUpdated, Student student);
-        Task DeleteStudent(Student student);
+        Task<StudentDto> GetStudentById(int id);
+        Task<StudentDto> CreateStudent(StudentDto newStudentDto);
+        Task UpdateStudent(StudentDto studentDtoToBeUpdated, StudentDto studentDto);
+        Task DeleteStudent(StudentDto studentDto);
         Task<FullStudentDto> GetWithGroupNames(int id);
         Task<bool> IsUniqueNickname(string nickname);
         Task<bool> IsUniqueNickname(string nickname, int id);
