@@ -24,11 +24,12 @@ namespace School.Services
             _mapper = mapper;
         }
 
-        public async Task<Student> CreateStudent(Student newStudent)
+        public async Task<StudentDto> CreateStudent(StudentDto newStudentDto)
         {
+            var newStudent = _mapper.Map<Student>(newStudentDto);
             await _students.AddAsync(newStudent);
             await _unitOfWork.CommitAsync();
-            return newStudent;
+            return _mapper.Map<StudentDto>(newStudent);
         }
 
         public async Task DeleteStudent(Student student)
@@ -37,13 +38,13 @@ namespace School.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<IEnumerable<StudentDto>> GetAllWithGroupNames(StudentFilterParameters filterParameters)
+        public async Task<IEnumerable<FullStudentDto>> GetAllWithGroupNames(StudentFilterParameters filterParameters)
         {
             var students = await _students.GetStudentsWithGroupNameAsync(filterParameters);
 
             var studentDtoes = students
                 .GroupBy(s => s.Student)
-                .Select(grouping => _mapper.Map<StudentDto>(grouping));
+                .Select(grouping => _mapper.Map<FullStudentDto>(grouping));
 
             if (filterParameters.PageSize != 0)
                 studentDtoes = studentDtoes.Take(filterParameters.PageSize);
@@ -51,20 +52,21 @@ namespace School.Services
             return studentDtoes.ToList();
         }
 
-        public async Task<StudentDto> GetWithGroupNames(int id)
+        public async Task<FullStudentDto> GetWithGroupNames(int id)
         {
             var students = await _students.GetStudentWithGroupNameAsync(id);
             if (students == null)
                 return null;
             return students
                 .GroupBy(s => s.Student)
-                .Select(grouping => _mapper.Map<StudentDto>(grouping))
+                .Select(grouping => _mapper.Map<FullStudentDto>(grouping))
                 .FirstOrDefault();
         }
 
-        public async Task<Student> GetStudentById(int id)
+        public async Task<StudentDto> GetStudentById(int id)
         {
-            return await _students.GetByIdAsync(id);
+            var student = await _students.GetByIdAsync(id);
+            return _mapper.Map<StudentDto>(student);
         }
 
         public async Task UpdateStudent(Student studentToBeUpdated, Student student)

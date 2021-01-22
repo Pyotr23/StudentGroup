@@ -47,7 +47,7 @@ namespace School.Api.Controllers
             if (studentDto == null)
                 return NotFound();
 
-            var studentResource = _mapper.Map<StudentDto, StudentResource>(studentDto);
+            var studentResource = _mapper.Map<FullStudentDto, StudentResource>(studentDto);
             return Ok(studentResource);
         }
 
@@ -69,10 +69,10 @@ namespace School.Api.Controllers
             if (!isNullOrUniqueNickname)
                 return BadRequest("Nickname должно быть пустым или уникальным.");
 
-            var studentToCreate = _mapper.Map<Student>(saveStudentResource);
-            var newStudent = await _studentService.CreateStudent(studentToCreate);
-            var student = await _studentService.GetStudentById(newStudent.Id);
-            var studentResource = _mapper.Map<StudentResource>(student);
+            var studentDtoToCreate = _mapper.Map<StudentDto>(saveStudentResource);
+            var newStudentDto = await _studentService.CreateStudent(studentDtoToCreate);
+            var createdStudentDto = await _studentService.GetStudentById(newStudentDto.Id);
+            var studentResource = _mapper.Map<StudentResource>(createdStudentDto);
             return Ok(studentResource);
         }
 
