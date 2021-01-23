@@ -11,7 +11,7 @@ namespace School.Core.Services
         Task<IEnumerable<FullStudentDto>> GetAllWithGroupNames(StudentFilterParameters filter);
         Task<StudentDto> GetStudentById(int id);
         Task<StudentDto> CreateStudent(StudentDto newStudentDto);
-        Task UpdateStudent(StudentDto studentDtoToBeUpdated, StudentDto studentDto);
+        Task UpdateStudent(int id, StudentDto studentDto);
         Task DeleteStudent(StudentDto studentDto);
         Task<FullStudentDto> GetWithGroupNames(int id);
         Task<bool> IsUniqueNickname(string nickname);

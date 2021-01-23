@@ -7,7 +7,6 @@ using School.Api.Resources;
 using School.Api.Validators;
 using School.Core.DTOes;
 using School.Core.Filtration.Parameters;
-using School.Core.Models;
 using School.Core.Services;
 
 namespace School.Api.Controllers
@@ -94,14 +93,13 @@ namespace School.Api.Controllers
             if (!await _studentService.IsUniqueNickname(saveStudentResource.Nickname, id))
                 return BadRequest("Nickname должно быть пустым или уникальным.");
 
-            var studentDtoForUpdate = await _studentService.GetStudentById(id);
-            if (studentDtoForUpdate == null)
-                return NotFound();
-
             var studentDto = _mapper.Map<StudentDto>(saveStudentResource);
-            await _studentService.UpdateStudent(studentDtoForUpdate, studentDto);
+            await _studentService.UpdateStudent(id, studentDto);
 
             var updatedStudent = await _studentService.GetWithGroupNames(id);
+            if (updatedStudent == null)
+                return NotFound();
+
             var updatedStudentResource = _mapper.Map<StudentResource>(updatedStudent);
             return Ok(updatedStudentResource);
         }
