@@ -43,9 +43,17 @@ namespace School.Services
         {
             var students = await _students.GetStudentsWithGroupNameAsync(filterParameters);
 
-            var studentDtoes = students
-                .GroupBy(s => s.Student)
-                .Select(grouping => _mapper.Map<FullStudentDto>(grouping));
+            var studentDtoes = students                
+                .Select(s => new FullStudentDto 
+                {
+                    Id = s.Id,
+                    Sex = s.Sex,
+                    Name = s.Name,
+                    LastName = s.LastName,
+                    MiddleName = s.MiddleName,
+                    Nickname = s.Nickname,
+                    GroupNamesToString = string.Join(", ", s.GroupNames)
+                });
 
             if (filterParameters.PageSize != 0)
                 studentDtoes = studentDtoes.Take(filterParameters.PageSize);
@@ -56,12 +64,12 @@ namespace School.Services
         public async Task<FullStudentDto> GetWithGroupNames(int id)
         {
             var students = await _students.GetStudentWithGroupNameAsync(id);
-            if (students == null)
+            //if (students == null)
                 return null;
-            return students
-                .GroupBy(s => s.Student)
-                .Select(grouping => _mapper.Map<FullStudentDto>(grouping))
-                .FirstOrDefault();
+            //return students
+            //    .GroupBy(s => s.Student)
+            //    .Select(grouping => _mapper.Map<FullStudentDto>(grouping))
+            //    .FirstOrDefault();
         }
 
         public async Task<StudentDto> GetStudentById(int id)

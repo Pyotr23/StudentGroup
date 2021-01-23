@@ -10,7 +10,7 @@ namespace School.Core.Repositories
     {
         Task<Student> GetByIdAsync(int id);
         Task<int?> GetIdByNickname(string nickname);
-        Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(StudentFilterParameters filterParameters);
+        Task<IEnumerable<StudentWithGroupNames>> GetStudentsWithGroupNameAsync(StudentFilterParameters filterParameters);
         Task<IEnumerable<StudentWithGroupName>> GetStudentWithGroupNameAsync(int id);
         Task<bool> IsUniqueNickname(string nickname);
     }
