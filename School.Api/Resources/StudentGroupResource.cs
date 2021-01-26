@@ -3,6 +3,6 @@
     public record StudentGroupResource
     {
         public StudentResource Student { get; init; }
-        public GroupResource Group { get; init; }
+        public FullGroupResource Group { get; init; }
     }
 }

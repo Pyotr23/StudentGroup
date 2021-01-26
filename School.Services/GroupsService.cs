@@ -24,11 +24,12 @@ namespace School.Services
             _mapper = mapper;
         }
 
-        public async Task<Group> CreateGroup(Group newGroup)
+        public async Task<GroupDto> CreateGroup(GroupDto newGroupDto)
         {
+            var newGroup = _mapper.Map<Group>(newGroupDto);
             await _groups.AddAsync(newGroup);
             await _unitOfWork.CommitAsync();
-            return newGroup;
+            return _mapper.Map<GroupDto>(newGroup);
         }
 
         public async Task DeleteGroup(Group group)
@@ -37,9 +38,10 @@ namespace School.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<Group> GetGroupById(int id)
+        public async Task<GroupDto> GetGroupById(int id)
         {
-            return await _groups.GetByIdAsync(id);
+            var group = await _groups.GetByIdAsync(id);
+            return _mapper.Map<GroupDto>(group);
         }
 
         public async Task UpdateGroup(Group groupToBeUpdated, Group group)
@@ -48,17 +50,17 @@ namespace School.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<GroupDto> GetWithStudentCount(int id)
+        public async Task<FullGroupDto> GetWithStudentCount(int id)
         {             
             var group = await _groups.GetGroupWithStudentCountAsync(id);            
-            return _mapper.Map<GroupDto>(group);
+            return _mapper.Map<FullGroupDto>(group);
         }
 
-        public async Task<IEnumerable<GroupDto>> GetAll(GroupFilterParameters filterParameters)
+        public async Task<IEnumerable<FullGroupDto>> GetAll(GroupFilterParameters filterParameters)
         {
             var groups = await _groups.GetAllGroups(filterParameters);
             return groups
-                .Select(g => _mapper.Map<GroupDto>(g))
+                .Select(g => _mapper.Map<FullGroupDto>(g))
                 .ToList();
         }
     }
