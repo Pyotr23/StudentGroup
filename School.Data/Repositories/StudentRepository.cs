@@ -91,7 +91,7 @@ namespace School.Data.Repositories
                 .Students
                 .FirstOrDefaultAsync(s => s.Nickname == nickname);
             return student == null
-                ? (int?)null
+                ? null
                 : student.Id;
         }
     }

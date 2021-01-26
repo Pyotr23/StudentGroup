@@ -150,7 +150,7 @@ namespace School.Api.Controllers
         //    var group = await _groupService.GetGroupById(groupId);
         //    if (studentDto == null || group == null)
         //        return NotFound();
-                        
+
         //    var studentGroup = new StudentGroup
         //    {
         //        StudentId = studentDto.Id,

@@ -4,7 +4,6 @@ using School.Core.Filtration.Filters;
 using School.Core.Filtration.Parameters;
 using School.Core.Models;
 using School.Core.Repositories;
-using School.Data.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,17 +31,19 @@ namespace School.Data.Repositories
                 .GroupJoin(SchoolDbContext.StudentGroups,
                     g => g,
                     sg => sg.Group,                    
-                    (g, sges) => new GroupWithStudentGroups 
+                    (g, sges) => new  
                     {
                         Group = g,
                         StudentGroups = sges
                     })                   
                 .SelectMany(gsges => gsges.StudentGroups.DefaultIfEmpty(),
-                    (gsges, sg) => new GroupWithStudentId 
+                    (gsges, sg) => new  
                     {
                         Id = gsges.Group.Id,
                         Name = gsges.Group.Name,
-                        StudentId = sg == default ? null : sg.StudentId
+                        StudentId = sg == null 
+                            ? (int?)null 
+                            : sg.StudentId
                     })     
                 .GroupBy(x => new Group 
                 {
@@ -65,17 +66,19 @@ namespace School.Data.Repositories
                 .GroupJoin(SchoolDbContext.StudentGroups,
                     g => g,
                     sg => sg.Group,
-                    (g, sges) => new GroupWithStudentGroups
+                    (g, sges) => new 
                     {
                         Group = g,
                         StudentGroups = sges
                     })
                 .SelectMany(gsges => gsges.StudentGroups.DefaultIfEmpty(),
-                    (gsges, sg) => new GroupWithStudentId
+                    (gsges, sg) => new 
                     {
                         Id = gsges.Group.Id,
                         Name = gsges.Group.Name,
-                        StudentId = sg == default ? null : sg.StudentId
+                        StudentId = sg == null 
+                            ? (int?)null 
+                            : sg.StudentId
                     })
                 .GroupBy(x => new Group
                 {
