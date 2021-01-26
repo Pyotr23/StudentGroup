@@ -50,13 +50,13 @@ namespace School.Services
 
         public async Task<GroupDto> GetWithStudentCount(int id)
         {             
-            var group = await _groups.GetGroupWithStudentIdAsync(id);            
+            var group = await _groups.GetGroupWithStudentCountAsync(id);            
             return _mapper.Map<GroupDto>(group);
         }
 
         public async Task<IEnumerable<GroupDto>> GetAll(GroupFilterParameters filterParameters)
         {
-            var groups = await _groups.GetGroups(filterParameters);
+            var groups = await _groups.GetAllGroups(filterParameters);
             return groups
                 .Select(g => _mapper.Map<GroupDto>(g))
                 .ToList();

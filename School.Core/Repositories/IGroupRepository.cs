@@ -9,7 +9,7 @@ namespace School.Core.Repositories
     public interface IGroupRepository : IBaseRepository<Group>
     {
         Task<Group> GetByIdAsync(int id);
-        Task<IEnumerable<GroupWithStudentCount>> GetGroups(GroupFilterParameters filterParameters);
-        Task<GroupWithStudentCount> GetGroupWithStudentIdAsync(int id);
+        Task<IEnumerable<GroupWithStudentCount>> GetAllGroups(GroupFilterParameters filterParameters);
+        Task<GroupWithStudentCount> GetGroupWithStudentCountAsync(int id);
     }
 }

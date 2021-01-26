@@ -62,7 +62,7 @@ namespace School.Data.Repositories
             return await query.ToListAsync();
         }
 
-        public async Task<IEnumerable<StudentWithGroupName>> GetStudentWithGroupNameAsync(int id)
+        public async Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(int id)
         {
             var query = from student in SchoolDbContext.Students
                         where student.Id == id

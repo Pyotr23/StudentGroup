@@ -24,7 +24,7 @@ namespace School.Data.Repositories
                .FindAsync(id);
         }
 
-        public async Task<GroupWithStudentCount> GetGroupWithStudentIdAsync(int id)
+        public async Task<GroupWithStudentCount> GetGroupWithStudentCountAsync(int id)
         {            
             return await SchoolDbContext
                 .Groups
@@ -59,7 +59,7 @@ namespace School.Data.Repositories
                 .FirstOrDefaultAsync(g => g.Id == id);                   
         }
 
-        public async Task<IEnumerable<GroupWithStudentCount>> GetGroups(GroupFilterParameters filterParameters)
+        public async Task<IEnumerable<GroupWithStudentCount>> GetAllGroups(GroupFilterParameters filterParameters)
         {
             var filter = new GroupFilter(SchoolDbContext.Groups, filterParameters);
             return await filter.ApplyFilter()

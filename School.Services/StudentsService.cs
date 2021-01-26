@@ -55,7 +55,7 @@ namespace School.Services
 
         public async Task<FullStudentDto> GetWithGroupNames(int id)
         {
-            var students = await _students.GetStudentWithGroupNameAsync(id);
+            var students = await _students.GetStudentsWithGroupNameAsync(id);
             if (students == null)
                 return null;
             return students
