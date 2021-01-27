@@ -12,8 +12,7 @@ namespace School.Data.Configurations
                 .HasKey(s => s.Id);
 
             builder
-                .Property(s => s.Id)
-                .UseIdentityColumn();
+                .Property(s => s.Id);
 
             builder
                 .Property(s => s.Sex)
@@ -35,10 +34,7 @@ namespace School.Data.Configurations
 
             builder
                 .Property(s => s.Nickname)
-                .HasMaxLength(16);
-
-            builder
-                .ToTable("Students");
+                .HasMaxLength(16);            
         }
     }
 }

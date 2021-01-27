@@ -12,16 +12,12 @@ namespace School.Data.Configurations
                 .HasKey(g => g.Id);
 
             builder
-                .Property(g => g.Id)
-                .UseIdentityColumn();
+                .Property(g => g.Id);
 
             builder
                 .Property(g => g.Name)
                 .IsRequired()
-                .HasMaxLength(25);
-
-            builder
-                .ToTable("Groups");
+                .HasMaxLength(25);            
         }
     }
 }

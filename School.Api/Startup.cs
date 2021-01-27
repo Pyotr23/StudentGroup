@@ -118,7 +118,7 @@ namespace School.Api
             var connectionString = Configuration.GetConnectionString(ConnectionStringName);
             _services.AddDbContext<SchoolDbContext>(options =>
             {
-                options.UseSqlServer(
+                options.UseNpgsql(
                     connectionString,
                     builder => builder.MigrationsAssembly(MigrationsAssemblyName));
             });
