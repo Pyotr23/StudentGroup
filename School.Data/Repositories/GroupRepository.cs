@@ -25,73 +25,75 @@ namespace School.Data.Repositories
         }
 
         public async Task<GroupWithStudentCount> GetGroupWithStudentCountAsync(int id)
-        {            
-            return await SchoolDbContext
-                .Groups
-                .GroupJoin(SchoolDbContext.StudentGroups,
-                    g => g,
-                    sg => sg.Group,                    
-                    (g, sges) => new  
-                    {
-                        Group = g,
-                        StudentGroups = sges
-                    })                   
-                .SelectMany(gsges => gsges.StudentGroups.DefaultIfEmpty(),
-                    (gsges, sg) => new  
-                    {
-                        Id = gsges.Group.Id,
-                        Name = gsges.Group.Name,
-                        StudentId = sg == null 
-                            ? (int?)null 
-                            : sg.StudentId
-                    })     
-                .GroupBy(x => new Group 
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                })
-                .Select(grouped => new GroupWithStudentCount 
-                { 
-                    Id = grouped.Key.Id,
-                    Name = grouped.Key.Name,
-                    StudentCount = grouped.Count(g => g.StudentId != null)
-                })
-                .FirstOrDefaultAsync(g => g.Id == id);                   
+        {
+            //return await SchoolDbContext
+            //    .Groups
+            //    .GroupJoin(SchoolDbContext.StudentGroups,
+            //        g => g,
+            //        sg => sg.Group,                    
+            //        (g, sges) => new  
+            //        {
+            //            Group = g,
+            //            StudentGroups = sges
+            //        })                   
+            //    .SelectMany(gsges => gsges.StudentGroups.DefaultIfEmpty(),
+            //        (gsges, sg) => new  
+            //        {
+            //            Id = gsges.Group.Id,
+            //            Name = gsges.Group.Name,
+            //            StudentId = sg == null 
+            //                ? (int?)null 
+            //                : sg.StudentId
+            //        })     
+            //    .GroupBy(x => new Group 
+            //    {
+            //        Id = x.Id,
+            //        Name = x.Name
+            //    })
+            //    .Select(grouped => new GroupWithStudentCount 
+            //    { 
+            //        Id = grouped.Key.Id,
+            //        Name = grouped.Key.Name,
+            //        StudentCount = grouped.Count(g => g.StudentId != null)
+            //    })
+            //    .FirstOrDefaultAsync(g => g.Id == id);                   
+            return null;
         }
 
         public async Task<IEnumerable<GroupWithStudentCount>> GetAllGroups(GroupFilterParameters filterParameters)
         {
-            var filter = new GroupFilter(SchoolDbContext.Groups, filterParameters);
-            return await filter.ApplyFilter()
-                .GroupJoin(SchoolDbContext.StudentGroups,
-                    g => g,
-                    sg => sg.Group,
-                    (g, sges) => new 
-                    {
-                        Group = g,
-                        StudentGroups = sges
-                    })
-                .SelectMany(gsges => gsges.StudentGroups.DefaultIfEmpty(),
-                    (gsges, sg) => new 
-                    {
-                        Id = gsges.Group.Id,
-                        Name = gsges.Group.Name,
-                        StudentId = sg == null 
-                            ? (int?)null 
-                            : sg.StudentId
-                    })
-                .GroupBy(x => new Group
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                })
-                .Select(grouped => new GroupWithStudentCount
-                {
-                    Id = grouped.Key.Id,
-                    Name = grouped.Key.Name,
-                    StudentCount = grouped.Count(g => g.StudentId != null)
-                })
-                .ToListAsync();
+            //var filter = new GroupFilter(SchoolDbContext.Groups, filterParameters);
+            //return await filter.ApplyFilter()
+            //    .GroupJoin(SchoolDbContext.StudentGroups,
+            //        g => g,
+            //        sg => sg.Group,
+            //        (g, sges) => new 
+            //        {
+            //            Group = g,
+            //            StudentGroups = sges
+            //        })
+            //    .SelectMany(gsges => gsges.StudentGroups.DefaultIfEmpty(),
+            //        (gsges, sg) => new 
+            //        {
+            //            Id = gsges.Group.Id,
+            //            Name = gsges.Group.Name,
+            //            StudentId = sg == null 
+            //                ? (int?)null 
+            //                : sg.StudentId
+            //        })
+            //    .GroupBy(x => new Group
+            //    {
+            //        Id = x.Id,
+            //        Name = x.Name
+            //    })
+            //    .Select(grouped => new GroupWithStudentCount
+            //    {
+            //        Id = grouped.Key.Id,
+            //        Name = grouped.Key.Name,
+            //        StudentCount = grouped.Count(g => g.StudentId != null)
+            //    })
+            //    .ToListAsync();
+            return null;
         }
     }
 }

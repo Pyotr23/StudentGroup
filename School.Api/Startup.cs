@@ -46,7 +46,6 @@ namespace School.Api
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddTransient<IGroupsService, GroupsService>()
                 .AddTransient<IStudentsService, StudentsService>()
-                .AddTransient<IStudentGroupsService, StudentGroupsService>()
                 .AddControllers();
         }
 

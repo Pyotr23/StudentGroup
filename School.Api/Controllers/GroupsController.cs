@@ -21,18 +21,15 @@ namespace School.Api.Controllers
     {
         private readonly IGroupsService _groupService;
         private readonly IStudentsService _studentsService;
-        private readonly IStudentGroupsService _studentGroupsService;
         private readonly IMapper _mapper;
         
         public GroupsController(
             IGroupsService groupsService,
             IStudentsService studentsService,
-            IStudentGroupsService studentGroupsService,
             IMapper mapper)
         {
             _groupService = groupsService;
             _studentsService = studentsService;
-            _studentGroupsService = studentGroupsService;
             _mapper = mapper;
         }
 

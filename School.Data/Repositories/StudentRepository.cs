@@ -26,56 +26,58 @@ namespace School.Data.Repositories
 
         public async Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(StudentFilterParameters filterParameters)
         {
-            var studentFilter = new StudentFilter(SchoolDbContext.Students, filterParameters);
+            //var studentFilter = new StudentFilter(SchoolDbContext.Students, filterParameters);
 
-            IQueryable<StudentWithGroupName> query;
+            //IQueryable<StudentWithGroupName> query;
 
-            if (string.IsNullOrEmpty(filterParameters.GroupName))
-            {
-                query = from student in studentFilter.ApplyFilter()
-                        join studentGroup in SchoolDbContext.StudentGroups
-                            on student.Id equals studentGroup.StudentId into stgr
+            //if (string.IsNullOrEmpty(filterParameters.GroupName))
+            //{
+            //    query = from student in studentFilter.ApplyFilter()
+            //            join studentGroup in SchoolDbContext.StudentGroups
+            //                on student.Id equals studentGroup.StudentId into stgr
 
-                        from gs in stgr.DefaultIfEmpty()
-                        join gr in SchoolDbContext.Groups
-                            on gs.GroupId equals gr.Id into groups
+            //            from gs in stgr.DefaultIfEmpty()
+            //            join gr in SchoolDbContext.Groups
+            //                on gs.GroupId equals gr.Id into groups
 
-                        from g in groups.DefaultIfEmpty()
-                        select new StudentWithGroupName { Student = student, GroupName = g.Name };
-            }
-            else
-            {
-                var groupFilter = new GroupFilter(SchoolDbContext.Groups, filterParameters.GroupName);
+            //            from g in groups.DefaultIfEmpty()
+            //            select new StudentWithGroupName { Student = student, GroupName = g.Name };
+            //}
+            //else
+            //{
+            //    var groupFilter = new GroupFilter(SchoolDbContext.Groups, filterParameters.GroupName);
 
-                query = from student in studentFilter.ApplyFilter()
-                            join studentGroup in SchoolDbContext.StudentGroups
-                                on student.Id equals studentGroup.StudentId into stgr
+            //    query = from student in studentFilter.ApplyFilter()
+            //                join studentGroup in SchoolDbContext.StudentGroups
+            //                    on student.Id equals studentGroup.StudentId into stgr
 
-                            from gs in stgr.DefaultIfEmpty()
-                            join gr in groupFilter.ApplyFilter()
-                                on gs.GroupId equals gr.Id into groups
+            //                from gs in stgr.DefaultIfEmpty()
+            //                join gr in groupFilter.ApplyFilter()
+            //                    on gs.GroupId equals gr.Id into groups
 
-                            from g in groups
-                            select new StudentWithGroupName { Student = student, GroupName = g.Name };
-            }
+            //                from g in groups
+            //                select new StudentWithGroupName { Student = student, GroupName = g.Name };
+            //}
 
-            return await query.ToListAsync();
+            //return await query.ToListAsync();
+            return null;
         }
 
         public async Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(int id)
         {
-            var query = from student in SchoolDbContext.Students
-                        where student.Id == id
-                        join studentGroup in SchoolDbContext.StudentGroups
-                            on student.Id equals studentGroup.StudentId into stgr
+            //var query = from student in SchoolDbContext.Students
+            //            where student.Id == id
+            //            join studentGroup in SchoolDbContext.StudentGroups
+            //                on student.Id equals studentGroup.StudentId into stgr
 
-                        from gs in stgr.DefaultIfEmpty()
-                        join gr in SchoolDbContext.Groups
-                            on gs.GroupId equals gr.Id into groups
+            //            from gs in stgr.DefaultIfEmpty()
+            //            join gr in SchoolDbContext.Groups
+            //                on gs.GroupId equals gr.Id into groups
 
-                        from g in groups.DefaultIfEmpty()
-                        select new StudentWithGroupName { Student = student, GroupName = g.Name };
-            return await query.ToListAsync();
+            //            from g in groups.DefaultIfEmpty()
+            //            select new StudentWithGroupName { Student = student, GroupName = g.Name };
+            //return await query.ToListAsync();
+            return null;
         }
 
         public async Task<bool> IsUniqueNickname(string nickname)

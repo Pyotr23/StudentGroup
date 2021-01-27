@@ -8,7 +8,6 @@ namespace School.Core
     {
         IStudentRepository Students { get; }
         IGroupRepository Groups { get; }
-        IStudentGroupRepository StudentGroups { get ; }
         Task<int> CommitAsync();
     }
 }

@@ -8,7 +8,6 @@ namespace School.Data
     {
         public DbSet<Student> Students { get; set; }
         public DbSet<Group> Groups { get; set; }
-        public DbSet<StudentGroup> StudentGroups { get; set; }
 
         public SchoolDbContext(DbContextOptions<SchoolDbContext> options)
             : base(options)
@@ -18,8 +17,7 @@ namespace School.Data
         {
             builder
                 .ApplyConfiguration(new StudentConfiguration())
-                .ApplyConfiguration(new GroupConfiguration())
-                .ApplyConfiguration(new StudentGroupConfiguration());
+                .ApplyConfiguration(new GroupConfiguration());
         }
     }
 }
