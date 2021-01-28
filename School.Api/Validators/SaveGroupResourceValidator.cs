@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using School.Api.Resources;
+using School.Api.Resources.GroupResources;
 
 namespace School.Api.Validators
 {

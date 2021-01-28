@@ -3,10 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using School.Api.Resources;
+using School.Api.Resources.StudentResources;
 using School.Api.Validators;
 using School.Core.DTOes;
-using School.Core.Filtration.Parameters;
 using School.Core.Services;
 
 namespace School.Api.Controllers

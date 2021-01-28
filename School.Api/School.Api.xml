@@ -15,7 +15,7 @@
             </summary>
             <param name="id"> Идентификатор группы. </param>
         </member>
-        <member name="M:School.Api.Controllers.GroupsController.CreateGroup(School.Api.Resources.SaveGroupResource)">
+        <member name="M:School.Api.Controllers.GroupsController.CreateGroup(School.Api.Resources.GroupResources.SaveGroupResource)">
             <summary>
                 Создать новую группу.
             </summary>
@@ -50,13 +50,13 @@
             </summary>
             <param name="id"> Идентификатор. </param>
         </member>
-        <member name="M:School.Api.Controllers.StudentsController.CreateStudent(School.Api.Resources.SaveStudentResource)">
+        <member name="M:School.Api.Controllers.StudentsController.CreateStudent(School.Api.Resources.StudentResources.SaveStudentResource)">
             <summary>
                 Создать студента.
             </summary>
             <param name="saveStudentResource"> Создаваемый студент. </param>
         </member>
-        <member name="M:School.Api.Controllers.StudentsController.UpdateStudent(System.Int32,School.Api.Resources.SaveStudentResource)">
+        <member name="M:School.Api.Controllers.StudentsController.UpdateStudent(System.Int32,School.Api.Resources.StudentResources.SaveStudentResource)">
             <summary>
                 Обновить информацию студента.
             </summary>

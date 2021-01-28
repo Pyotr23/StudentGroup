@@ -1,4 +1,4 @@
-﻿namespace School.Api.Resources
+﻿namespace School.Api.Resources.GroupResources
 {
     public record FullGroupResource
     {

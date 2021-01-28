@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using School.Api.Resources;
+using School.Api.Resources.GroupResources;
 using School.Api.Validators;
 using School.Core.DTOes;
 using School.Core.Filtration.Parameters;

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using School.Api.Resources;
+using School.Api.Resources.GroupResources;
+using School.Api.Resources.StudentResources;
 using School.Core.DTOes;
 using School.Core.Models;
 
