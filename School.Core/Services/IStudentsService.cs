@@ -7,13 +7,14 @@ namespace School.Core.Services
 {
     public interface IStudentsService
     {
-        Task<IEnumerable<FullStudentDto>> GetAllWithGroupNames(StudentFilterParameters filter);
-        Task<StudentDto> GetStudentById(int id);
-        Task<StudentDto> CreateStudent(StudentDto newStudentDto);
-        Task UpdateStudent(int id, StudentDto studentDto);
-        Task DeleteStudent(StudentDto studentDto);
-        Task<FullStudentDto> GetWithGroupNames(int id);
-        Task<bool> IsUniqueNickname(string nickname);
-        Task<bool> IsUniqueNickname(string nickname, int id);
+        Task<IEnumerable<FullStudentDto>> GetStudentsWithGroupNamesAsync(StudentFilterParameters filter);
+        Task<StudentDto> GetStudentByIdAsync(int id);
+        Task<StudentDto> CreateStudentAsync(StudentDto newStudentDto);
+        Task UpdateStudentAsync(int id, StudentDto studentDto);
+        Task DeleteStudentAsync(StudentDto studentDto);
+        Task<FullStudentDto> GetWithGroupNamesAsync(int id);
+        Task<bool> IsUniqueNicknameAsync(string nickname);
+        Task<bool> IsUniqueNicknameAsync(string nickname, int id);
+        Task<IEnumerable<StudentDto>> GetAllStudentsAsync();
     }
 }

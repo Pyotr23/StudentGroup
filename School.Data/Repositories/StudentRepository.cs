@@ -16,15 +16,8 @@ namespace School.Data.Repositories
 
         public StudentRepository(SchoolDbContext context) : base(context)
         { }
-
-        public async Task<Student> GetByIdAsync(int id)
-        {
-            return await SchoolDbContext
-                .Students
-                .FindAsync(id);
-        }
-
-        public async Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(StudentFilterParameters filterParameters)
+        
+        public async Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNamesAsync(StudentFilterParameters filterParameters)
         {
             //var studentFilter = new StudentFilter(SchoolDbContext.Students, filterParameters);
 
@@ -63,7 +56,7 @@ namespace School.Data.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(int id)
+        public async Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNamesAsync(int id)
         {
             //var query = from student in SchoolDbContext.Students
             //            where student.Id == id
@@ -87,14 +80,12 @@ namespace School.Data.Repositories
                     .AnyAsync(s => s.Nickname == nickname);
         }
 
-        public async Task<int?> GetIdByNickname(string nickname)
+        public async Task<int?> GetIdByNicknameAsync(string nickname)
         {
             var student = await SchoolDbContext
                 .Students
                 .FirstOrDefaultAsync(s => s.Nickname == nickname);
-            return student == null
-                ? null
-                : student.Id;
+            return student?.Id;
         }
     }
 }

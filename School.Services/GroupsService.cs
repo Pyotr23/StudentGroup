@@ -58,7 +58,7 @@ namespace School.Services
 
         public async Task<IEnumerable<FullGroupDto>> GetAll(GroupFilterParameters filterParameters)
         {
-            var groups = await _groups.GetAllGroups(filterParameters);
+            var groups = await _groups.GetGroupsWithStudentCountAsync(filterParameters);
             return groups
                 .Select(g => _mapper.Map<FullGroupDto>(g))
                 .ToList();

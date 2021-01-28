@@ -24,7 +24,7 @@ namespace School.Services
             _mapper = mapper;
         }
 
-        public async Task<StudentDto> CreateStudent(StudentDto newStudentDto)
+        public async Task<StudentDto> CreateStudentAsync(StudentDto newStudentDto)
         {
             var newStudent = _mapper.Map<Student>(newStudentDto);
             await _students.AddAsync(newStudent);
@@ -32,16 +32,16 @@ namespace School.Services
             return _mapper.Map<StudentDto>(newStudent);
         }
 
-        public async Task DeleteStudent(StudentDto studentDto)
+        public async Task DeleteStudentAsync(StudentDto studentDto)
         {
             var student = _mapper.Map<Student>(studentDto);
             _students.Remove(student);
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<IEnumerable<FullStudentDto>> GetAllWithGroupNames(StudentFilterParameters filterParameters)
+        public async Task<IEnumerable<FullStudentDto>> GetStudentsWithGroupNamesAsync(StudentFilterParameters filterParameters)
         {
-            var students = await _students.GetStudentsWithGroupNameAsync(filterParameters);
+            var students = await _students.GetStudentsWithGroupNamesAsync(filterParameters);
 
             var studentDtoes = students
                 .GroupBy(s => s.Student)
@@ -53,24 +53,25 @@ namespace School.Services
             return studentDtoes.ToList();
         }
 
-        public async Task<FullStudentDto> GetWithGroupNames(int id)
+        public async Task<FullStudentDto> GetWithGroupNamesAsync(int id)
         {
-            var students = await _students.GetStudentsWithGroupNameAsync(id);
-            if (students == null)
-                return null;
-            return students
-                .GroupBy(s => s.Student)
-                .Select(grouping => _mapper.Map<FullStudentDto>(grouping))
-                .FirstOrDefault();
+            //var students = await _students.GetStudentsWithGroupNamesAsync(id);
+            //if (students == null)
+            //    return null;
+            //return students
+            //    .GroupBy(s => s.Student)
+            //    .Select(grouping => _mapper.Map<FullStudentDto>(grouping))
+            //    .FirstOrDefault();
+            return null;
         }
 
-        public async Task<StudentDto> GetStudentById(int id)
+        public async Task<StudentDto> GetStudentByIdAsync(int id)
         {
             var student = await _students.GetByIdAsync(id);
             return _mapper.Map<StudentDto>(student);
         }
 
-        public async Task UpdateStudent(int id, StudentDto studentDto)
+        public async Task UpdateStudentAsync(int id, StudentDto studentDto)
         {
             var studentToBeUpdated = await GetStudent(id);
             if (studentToBeUpdated == null)
@@ -81,20 +82,28 @@ namespace School.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public async Task<bool> IsUniqueNickname(string nickname)
+        public async Task<bool> IsUniqueNicknameAsync(string nickname)
         {
             return await _students.IsUniqueNickname(nickname);
         }
 
-        public async Task<bool> IsUniqueNickname(string nickname, int id)
+        public async Task<bool> IsUniqueNicknameAsync(string nickname, int id)
         {
-            var studentId = await _students.GetIdByNickname(nickname);
+            var studentId = await _students.GetIdByNicknameAsync(nickname);
             return studentId == null || studentId == id;
         }
 
         private async Task<Student> GetStudent(int id)
         {
             return await _students.GetByIdAsync(id);
+        }
+
+        public async Task<IEnumerable<StudentDto>> GetAllStudentsAsync()
+        {
+            var students = await _students.GetAllAsync();
+            return students
+                .Select(s => _mapper.Map<StudentDto>(s))
+                .ToList();
         }
     }
 }

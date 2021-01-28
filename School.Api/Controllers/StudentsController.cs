@@ -33,20 +33,33 @@ namespace School.Api.Controllers
         }
 
         /// <summary>
+        ///     Получить список всех студентов.
+        /// </summary>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<StudentResource>>> GetAllStudents()
+        {
+            var dtoes = await _studentService.GetAllStudentsAsync();
+            var resources = dtoes
+                .Select(dto => _mapper.Map<StudentResource>(dto))
+                .ToList();
+            return Ok(resources);
+        }
+
+        /// <summary>
         ///     Получить студента по идентификатору.
         /// </summary>
         /// <param name="id"> Идентификатор. </param>
         [HttpGet("{id}")]
-        public async Task<ActionResult<StudentResource>> GetStudentById(int id)
+        public async Task<ActionResult<FullStudentResource>> GetStudentById(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            var studentDto = await _studentService.GetWithGroupNames(id);
+            var studentDto = await _studentService.GetWithGroupNamesAsync(id);
             if (studentDto == null)
                 return NotFound();
 
-            var studentResource = _mapper.Map<FullStudentDto, StudentResource>(studentDto);
+            var studentResource = _mapper.Map<FullStudentDto, FullStudentResource>(studentDto);
             return Ok(studentResource);
         }
 
@@ -55,7 +68,7 @@ namespace School.Api.Controllers
         /// </summary>
         /// <param name="saveStudentResource"> Создаваемый студент. </param>
         [HttpPost]
-        public async Task<ActionResult<StudentResource>> CreateStudent([FromBody] SaveStudentResource saveStudentResource)
+        public async Task<ActionResult<FullStudentResource>> CreateStudent([FromBody] SaveStudentResource saveStudentResource)
         {
             var validator = new SaveStudentResourceValidator();
             var validationResult = await validator.ValidateAsync(saveStudentResource);
@@ -64,14 +77,14 @@ namespace School.Api.Controllers
 
             var nickname = saveStudentResource.Nickname;
             var isNullOrUniqueNickname = string.IsNullOrEmpty(nickname)
-                || await _studentService.IsUniqueNickname(nickname);
+                || await _studentService.IsUniqueNicknameAsync(nickname);
             if (!isNullOrUniqueNickname)
                 return BadRequest("Nickname должно быть пустым или уникальным.");
 
             var studentDtoToCreate = _mapper.Map<StudentDto>(saveStudentResource);
-            var newStudentDto = await _studentService.CreateStudent(studentDtoToCreate);
-            var createdStudentDto = await _studentService.GetStudentById(newStudentDto.Id);
-            var studentResource = _mapper.Map<StudentResource>(createdStudentDto);
+            var newStudentDto = await _studentService.CreateStudentAsync(studentDtoToCreate);
+            var createdStudentDto = await _studentService.GetStudentByIdAsync(newStudentDto.Id);
+            var studentResource = _mapper.Map<FullStudentResource>(createdStudentDto);
             return Ok(studentResource);
         }
 
@@ -81,7 +94,7 @@ namespace School.Api.Controllers
         /// <param name="id"> Идентификатор обновляемого студента. </param>
         /// <param name="saveStudentResource"> Новое описание студента. </param>
         [HttpPut("{id}")]
-        public async Task<ActionResult<StudentResource>> UpdateStudent(int id, 
+        public async Task<ActionResult<FullStudentResource>> UpdateStudent(int id, 
             [FromBody] SaveStudentResource saveStudentResource)
         {
             var validator = new SaveStudentResourceValidator();
@@ -90,17 +103,17 @@ namespace School.Api.Controllers
             if (!isValidRequest)
                 return BadRequest();
 
-            if (!await _studentService.IsUniqueNickname(saveStudentResource.Nickname, id))
+            if (!await _studentService.IsUniqueNicknameAsync(saveStudentResource.Nickname, id))
                 return BadRequest("Nickname должно быть пустым или уникальным.");
 
             var studentDto = _mapper.Map<StudentDto>(saveStudentResource);
-            await _studentService.UpdateStudent(id, studentDto);
+            await _studentService.UpdateStudentAsync(id, studentDto);
 
-            var updatedStudent = await _studentService.GetWithGroupNames(id);
+            var updatedStudent = await _studentService.GetWithGroupNamesAsync(id);
             if (updatedStudent == null)
                 return NotFound();
 
-            var updatedStudentResource = _mapper.Map<StudentResource>(updatedStudent);
+            var updatedStudentResource = _mapper.Map<FullStudentResource>(updatedStudent);
             return Ok(updatedStudentResource);
         }
 
@@ -114,11 +127,11 @@ namespace School.Api.Controllers
             if (id <= 0)
                 return BadRequest();
 
-            var student = await _studentService.GetStudentById(id);
+            var student = await _studentService.GetStudentByIdAsync(id);
             if (student == null)
                 return NotFound();
 
-            await _studentService.DeleteStudent(student);
+            await _studentService.DeleteStudentAsync(student);
             return NoContent();
         }
 
@@ -126,15 +139,15 @@ namespace School.Api.Controllers
         ///     Получить студентов с возможностью фильтрации. 
         /// </summary>
         /// <param name="filterParameters"> Параметры фильтрации. </param>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<StudentResource>>> GetStudents(
-            [FromQuery] StudentFilterParameters filterParameters)
-        {
-            var studentDtoes = await _studentService.GetAllWithGroupNames(filterParameters);
-            var studentResources = studentDtoes
-                .Select(dto => _mapper.Map<StudentResource>(dto))
-                .ToList();
-            return Ok(studentResources);
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<FullStudentResource>>> GetStudents(
+        //    [FromQuery] StudentFilterParameters filterParameters)
+        //{
+        //    var studentDtoes = await _studentService.GetStudentsWithGroupNamesAsync(filterParameters);
+        //    var studentResources = studentDtoes
+        //        .Select(dto => _mapper.Map<FullStudentResource>(dto))
+        //        .ToList();
+        //    return Ok(studentResources);
+        //}
     }
 }

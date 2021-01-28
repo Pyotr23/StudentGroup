@@ -60,7 +60,7 @@ namespace School.Data.Repositories
             return null;
         }
 
-        public async Task<IEnumerable<GroupWithStudentCount>> GetAllGroups(GroupFilterParameters filterParameters)
+        public async Task<IEnumerable<GroupWithStudentCount>> GetGroupsWithStudentCountAsync(GroupFilterParameters filterParameters)
         {
             //var filter = new GroupFilter(SchoolDbContext.Groups, filterParameters);
             //return await filter.ApplyFilter()

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace School.Core.Repositories
 {
-    public interface IGroupRepository : IBaseRepository<Group>
+    public interface IGroupRepository : IRepository<Group>
     {
-        Task<Group> GetByIdAsync(int id);
-        Task<IEnumerable<GroupWithStudentCount>> GetAllGroups(GroupFilterParameters filterParameters);
+        Task<IEnumerable<GroupWithStudentCount>> GetGroupsWithStudentCountAsync(GroupFilterParameters filterParameters);
         Task<GroupWithStudentCount> GetGroupWithStudentCountAsync(int id);
     }
 }

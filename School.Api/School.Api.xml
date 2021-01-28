@@ -39,6 +39,11 @@
             <param name="studentService"> Сервис для управления студентами. </param>
             <param name="mapper"> Интерфейс маппера. </param>
         </member>
+        <member name="M:School.Api.Controllers.StudentsController.GetAllStudents">
+            <summary>
+                Получить список всех студентов.
+            </summary>
+        </member>
         <member name="M:School.Api.Controllers.StudentsController.GetStudentById(System.Int32)">
             <summary>
                 Получить студента по идентификатору.
@@ -63,12 +68,6 @@
                 Удалить студента.
             </summary>
             <param name="id"> Идентификатор студента. </param>
-        </member>
-        <member name="M:School.Api.Controllers.StudentsController.GetStudents(School.Core.Filtration.Parameters.StudentFilterParameters)">
-            <summary>
-                Получить студентов с возможностью фильтрации. 
-            </summary>
-            <param name="filterParameters"> Параметры фильтрации. </param>
         </member>
     </members>
 </doc>

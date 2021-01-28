@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace School.Core.Repositories
 {
-    public interface IStudentRepository : IBaseRepository<Student>
+    public interface IStudentRepository : IRepository<Student>
     {
-        Task<Student> GetByIdAsync(int id);
-        Task<int?> GetIdByNickname(string nickname);
-        Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(StudentFilterParameters filterParameters);
-        Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNameAsync(int id);
+        Task<int?> GetIdByNicknameAsync(string nickname);
+        Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNamesAsync(StudentFilterParameters filterParameters);
         Task<bool> IsUniqueNickname(string nickname);
     }
 }
