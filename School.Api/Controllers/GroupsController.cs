@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using School.Api.Resources;
 using School.Api.Resources.GroupResources;
-using School.Api.Validators;
 using School.Core.DTOes;
 using School.Core.Filtration.Parameters;
-using School.Core.Models;
 using School.Core.Services;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,11 +56,6 @@ namespace School.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<FullGroupResource>> CreateGroup([FromBody] SaveGroupResource saveGroupResource)
         {
-            var validator = new SaveGroupResourceValidator();
-            var validationResult = await validator.ValidateAsync(saveGroupResource);
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);            
-
             var groupDtoToCreate = _mapper.Map<GroupDto>(saveGroupResource);
             var newGroupDto = await _groupService.CreateGroup(groupDtoToCreate);
             var groupDto = await _groupService.GetGroupById(newGroupDto.Id);

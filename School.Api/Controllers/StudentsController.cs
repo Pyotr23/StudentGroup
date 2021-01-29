@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using School.Api.Resources.StudentResources;
-using School.Api.Validators;
 using School.Core.DTOes;
 using School.Core.Services;
 
@@ -69,11 +68,6 @@ namespace School.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<StudentResource>> CreateStudent([FromBody] SaveStudentResource saveStudentResource)
         {
-            //var validator = new SaveStudentResourceValidator();
-            //var validationResult = await validator.ValidateAsync(saveStudentResource);
-            //if (!validationResult.IsValid)
-            //    return BadRequest(validationResult.Errors);
-
             //var nickname = saveStudentResource.Nickname;
             //var isNullOrUniqueNickname = string.IsNullOrEmpty(nickname)
             //    || await _studentService.IsUniqueNicknameAsync(nickname);
@@ -96,12 +90,6 @@ namespace School.Api.Controllers
         public async Task<ActionResult<FullStudentResource>> UpdateStudent(int id, 
             [FromBody] SaveStudentResource saveStudentResource)
         {
-            var validator = new SaveStudentResourceValidator();
-            var validationResult = await validator.ValidateAsync(saveStudentResource);
-            var isValidRequest = id > 0 && validationResult.IsValid;
-            if (!isValidRequest)
-                return BadRequest();
-
             if (!await _studentService.IsUniqueNicknameAsync(saveStudentResource.Nickname, id))
                 return BadRequest("Nickname должно быть пустым или уникальным.");
 
