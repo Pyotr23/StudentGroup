@@ -1,11 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace School.Api.Resources.StudentResources
+﻿namespace School.Api.Resources.StudentResources
 {
-    public record FullStudentResource : SaveStudentResource
+    public record FullStudentResource : StudentResource
     {
-        [Required]
-        public int Id { get; init; }
         public string GroupNamesToString { get; init; }
     }
 }

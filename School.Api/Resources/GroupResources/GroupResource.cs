@@ -1,8 +1,10 @@
-﻿namespace School.Api.Resources.GroupResources
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace School.Api.Resources.GroupResources
 {
-    public record GroupResource
+    public record GroupResource : SaveGroupResource
     {
+        [Required]
         public int Id { get; init; }
-        public string Name { get; init; }
     }
 }
