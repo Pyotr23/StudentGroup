@@ -49,16 +49,16 @@ namespace School.Api.Controllers
         /// </summary>
         /// <param name="id"> Идентификатор. </param>
         [HttpGet("{id}")]
-        public async Task<ActionResult<FullStudentResource>> GetStudentById(int id)
+        public async Task<ActionResult<StudentResource>> GetStudentById(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            var studentDto = await _studentService.GetWithGroupNamesAsync(id);
+            var studentDto = await _studentService.GetStudentByIdAsync(id);
             if (studentDto == null)
                 return NotFound();
 
-            var studentResource = _mapper.Map<FullStudentDto, FullStudentResource>(studentDto);
+            var studentResource = _mapper.Map<StudentResource>(studentDto);
             return Ok(studentResource);
         }
 
@@ -67,23 +67,23 @@ namespace School.Api.Controllers
         /// </summary>
         /// <param name="saveStudentResource"> Создаваемый студент. </param>
         [HttpPost]
-        public async Task<ActionResult<FullStudentResource>> CreateStudent([FromBody] SaveStudentResource saveStudentResource)
+        public async Task<ActionResult<StudentResource>> CreateStudent([FromBody] SaveStudentResource saveStudentResource)
         {
-            var validator = new SaveStudentResourceValidator();
-            var validationResult = await validator.ValidateAsync(saveStudentResource);
-            if (!validationResult.IsValid)
-                return BadRequest(validationResult.Errors);
+            //var validator = new SaveStudentResourceValidator();
+            //var validationResult = await validator.ValidateAsync(saveStudentResource);
+            //if (!validationResult.IsValid)
+            //    return BadRequest(validationResult.Errors);
 
-            var nickname = saveStudentResource.Nickname;
-            var isNullOrUniqueNickname = string.IsNullOrEmpty(nickname)
-                || await _studentService.IsUniqueNicknameAsync(nickname);
-            if (!isNullOrUniqueNickname)
-                return BadRequest("Nickname должно быть пустым или уникальным.");
+            //var nickname = saveStudentResource.Nickname;
+            //var isNullOrUniqueNickname = string.IsNullOrEmpty(nickname)
+            //    || await _studentService.IsUniqueNicknameAsync(nickname);
+            //if (!isNullOrUniqueNickname)
+            //    return BadRequest("Nickname должно быть пустым или уникальным.");
 
             var studentDtoToCreate = _mapper.Map<StudentDto>(saveStudentResource);
             var newStudentDto = await _studentService.CreateStudentAsync(studentDtoToCreate);
             var createdStudentDto = await _studentService.GetStudentByIdAsync(newStudentDto.Id);
-            var studentResource = _mapper.Map<FullStudentResource>(createdStudentDto);
+            var studentResource = _mapper.Map<StudentResource>(createdStudentDto);
             return Ok(studentResource);
         }
 
