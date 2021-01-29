@@ -136,5 +136,12 @@ namespace School.Api.Controllers
         //        .ToList();
         //    return Ok(studentResources);
         //}
+                
+        public async Task<IActionResult> VerifyNickname(string nickname)
+        {
+            return await _studentService.IsUniqueNicknameAsync(nickname)
+                ? new JsonResult(true)
+                : new JsonResult($"Nickname \"{nickname}\" is already in use.");
+        }
     }
 }
