@@ -73,7 +73,7 @@ namespace School.Api.Controllers
             //    || await _studentService.IsUniqueNicknameAsync(nickname);
             //if (!isNullOrUniqueNickname)
             //    return BadRequest("Nickname должно быть пустым или уникальным.");
-
+            var isValid = ModelState.IsValid;
             var studentDtoToCreate = _mapper.Map<StudentDto>(saveStudentResource);
             //var newStudentDto = await _studentService.CreateStudentAsync(studentDtoToCreate);
             //var createdStudentDto = await _studentService.GetStudentByIdAsync(newStudentDto.Id);

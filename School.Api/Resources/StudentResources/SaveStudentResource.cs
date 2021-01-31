@@ -6,23 +6,23 @@ namespace School.Api.Resources.StudentResources
 {
     public record SaveStudentResource
     {
-        [Required]
+        //[Required]
         public string Sex { get; init; }
 
-        [Required]
-        [MaxLength(40)]
+        //[Required]
+        //[MaxLength(40)]
         public string LastName { get; init; }
 
-        [Required]
-        [MaxLength(40)]
+        //[Required]
+        //[MaxLength(40)]
         public string Name { get; init; }
 
-        [MaxLength(60)]
+        //[MaxLength(60)]
         public string MiddleName { get; init; }
 
-        [MinLength(6)]
-        [MaxLength(16)]
-        [NicknameUnique]
+        //[MinLength(6)]
+        //[MaxLength(16)]
+        //[NicknameUnique]
         public string Nickname { get; init; }
     }
 }

@@ -1,4 +1,6 @@
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,8 @@ using Microsoft.OpenApi.Models;
 using School.Api.Configurations;
 using School.Api.Extensions;
 using School.Api.Mapping;
+using School.Api.Resources.StudentResources;
+using School.Api.Validators;
 using School.Core;
 using School.Core.Services;
 using School.Data;
@@ -42,11 +46,16 @@ namespace School.Api
             SetAutoMapper();
             SetDbContext();
 
-            services                
+            services
+                .AddMvcCore()
+                .AddFluentValidation();
+
+            services
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddTransient<IGroupsService, GroupsService>()
                 .AddTransient<IStudentsService, StudentsService>()
-                .AddControllers();
+                .AddTransient<IValidator<SaveStudentResource>, SaveStudentResourceValidator>()
+                .AddControllers();                
         }
 
         
