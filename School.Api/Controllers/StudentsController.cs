@@ -75,10 +75,11 @@ namespace School.Api.Controllers
             //    return BadRequest("Nickname должно быть пустым или уникальным.");
 
             var studentDtoToCreate = _mapper.Map<StudentDto>(saveStudentResource);
-            var newStudentDto = await _studentService.CreateStudentAsync(studentDtoToCreate);
-            var createdStudentDto = await _studentService.GetStudentByIdAsync(newStudentDto.Id);
-            var studentResource = _mapper.Map<StudentResource>(createdStudentDto);
-            return Ok(studentResource);
+            //var newStudentDto = await _studentService.CreateStudentAsync(studentDtoToCreate);
+            //var createdStudentDto = await _studentService.GetStudentByIdAsync(newStudentDto.Id);
+            //var studentResource = _mapper.Map<StudentResource>(createdStudentDto);
+            //return Ok(studentResource);
+            return null;
         }
 
         /// <summary>
@@ -137,11 +138,17 @@ namespace School.Api.Controllers
         //    return Ok(studentResources);
         //}
                 
-        public async Task<IActionResult> VerifyNickname(string nickname)
+        internal async Task<IActionResult> VerifyNickname(string nickname)
         {
             return await _studentService.IsUniqueNicknameAsync(nickname)
                 ? new JsonResult(true)
                 : new JsonResult($"Nickname \"{nickname}\" is already in use.");
+        }
+              
+        [AcceptVerbs("Post")]
+        internal JsonResult Foo()
+        {
+            return new JsonResult(false);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using School.Api.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace School.Api.Resources.StudentResources
@@ -21,7 +22,7 @@ namespace School.Api.Resources.StudentResources
 
         [MinLength(6)]
         [MaxLength(16)]
-        [Remote(action: "VerifyNickname", controller: "Students")]
+        [NicknameUnique]
         public string Nickname { get; init; }
     }
 }
