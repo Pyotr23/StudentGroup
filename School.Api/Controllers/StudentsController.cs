@@ -66,20 +66,14 @@ namespace School.Api.Controllers
         /// </summary>
         /// <param name="saveStudentResource"> Создаваемый студент. </param>
         [HttpPost]
-        public async Task<ActionResult<StudentResource>> CreateStudent([FromBody] SaveStudentResource saveStudentResource)
+        public async Task<ActionResult<StudentResource>> CreateStudent(
+            [FromBody] SaveStudentResource saveStudentResource)
         {
-            //var nickname = saveStudentResource.Nickname;
-            //var isNullOrUniqueNickname = string.IsNullOrEmpty(nickname)
-            //    || await _studentService.IsUniqueNicknameAsync(nickname);
-            //if (!isNullOrUniqueNickname)
-            //    return BadRequest("Nickname должно быть пустым или уникальным.");
-            var isValid = ModelState.IsValid;
             var studentDtoToCreate = _mapper.Map<StudentDto>(saveStudentResource);
-            //var newStudentDto = await _studentService.CreateStudentAsync(studentDtoToCreate);
-            //var createdStudentDto = await _studentService.GetStudentByIdAsync(newStudentDto.Id);
-            //var studentResource = _mapper.Map<StudentResource>(createdStudentDto);
-            //return Ok(studentResource);
-            return null;
+            var newStudentDto = await _studentService.CreateStudentAsync(studentDtoToCreate);
+            var createdStudentDto = await _studentService.GetStudentByIdAsync(newStudentDto.Id);
+            var studentResource = _mapper.Map<StudentResource>(createdStudentDto);
+            return Ok(studentResource);
         }
 
         /// <summary>
@@ -88,20 +82,19 @@ namespace School.Api.Controllers
         /// <param name="id"> Идентификатор обновляемого студента. </param>
         /// <param name="saveStudentResource"> Новое описание студента. </param>
         [HttpPut("{id}")]
-        public async Task<ActionResult<FullStudentResource>> UpdateStudent(int id, 
+        public async Task<ActionResult<StudentResource>> UpdateStudent(int id, 
             [FromBody] SaveStudentResource saveStudentResource)
         {
-            if (!await _studentService.IsUniqueNicknameAsync(saveStudentResource.Nickname, id))
-                return BadRequest("Nickname должно быть пустым или уникальным.");
-
             var studentDto = _mapper.Map<StudentDto>(saveStudentResource);
+
+            //var studentDtoToUpdate = _
             await _studentService.UpdateStudentAsync(id, studentDto);
 
-            var updatedStudent = await _studentService.GetWithGroupNamesAsync(id);
-            if (updatedStudent == null)
+            var updatedStudentDto = await _studentService.GetStudentByIdAsync(id);
+            if (updatedStudentDto == null)
                 return NotFound();
 
-            var updatedStudentResource = _mapper.Map<FullStudentResource>(updatedStudent);
+            var updatedStudentResource = _mapper.Map<StudentResource>(updatedStudentDto);
             return Ok(updatedStudentResource);
         }
 
@@ -115,11 +108,11 @@ namespace School.Api.Controllers
             if (id <= 0)
                 return BadRequest();
 
-            var student = await _studentService.GetStudentByIdAsync(id);
-            if (student == null)
+            var studentDto = await _studentService.GetStudentByIdAsync(id);
+            if (studentDto == null)
                 return NotFound();
 
-            await _studentService.DeleteStudentAsync(student);
+            await _studentService.DeleteStudentAsync(studentDto);
             return NoContent();
         }
 
@@ -136,19 +129,6 @@ namespace School.Api.Controllers
         //        .Select(dto => _mapper.Map<FullStudentResource>(dto))
         //        .ToList();
         //    return Ok(studentResources);
-        //}
-                
-        internal async Task<IActionResult> VerifyNickname(string nickname)
-        {
-            return await _studentService.IsUniqueNicknameAsync(nickname)
-                ? new JsonResult(true)
-                : new JsonResult($"Nickname \"{nickname}\" is already in use.");
-        }
-              
-        [AcceptVerbs("Post")]
-        internal JsonResult Foo()
-        {
-            return new JsonResult(false);
-        }
+        //}                
     }
 }

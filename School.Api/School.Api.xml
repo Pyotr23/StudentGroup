@@ -69,11 +69,5 @@
             </summary>
             <param name="id"> Идентификатор студента. </param>
         </member>
-        <member name="M:School.Api.Controllers.StudentsController.VerifyNickname(System.String)">
-            <summary>
-                Получить студентов с возможностью фильтрации. 
-            </summary>
-            <param name="filterParameters"> Параметры фильтрации. </param>
-        </member>
     </members>
 </doc>

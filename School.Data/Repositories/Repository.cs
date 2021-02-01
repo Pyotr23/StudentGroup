@@ -12,10 +12,11 @@ namespace School.Data.Repositories
         public Repository(DbContext context)
         {
             Context = context;
+            Context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public async Task AddAsync(TEntity entity)
-        {
+        {            
             await Context.Set<TEntity>().AddAsync(entity);
         }
 
