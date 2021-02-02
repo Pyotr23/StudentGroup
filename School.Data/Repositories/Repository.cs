@@ -34,5 +34,10 @@ namespace School.Data.Repositories
         {
             return await Context.Set<TEntity>().ToListAsync();
         }
+
+        public void Attach(TEntity entity)
+        {
+            Context.Set<TEntity>().Attach(entity);
+        }
     }
 }

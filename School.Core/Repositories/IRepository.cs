@@ -13,5 +13,6 @@ namespace School.Core.Repositories
         //Task<TEntity> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
         Task AddAsync(TEntity entity);
         void Remove(TEntity entity);
+        void Attach(TEntity entity);
     }
 }

@@ -71,14 +71,15 @@ namespace School.Services
             return _mapper.Map<StudentDto>(student);
         }
 
-        public async Task UpdateStudentAsync(int id, StudentDto studentDto)
+        public async Task UpdateStudentAsync(StudentDto studentDtoForUpdate, StudentDto studentDto)
         {
-            var studentToBeUpdated = await GetStudent(id);
-            if (studentToBeUpdated == null)
-                return;
-
+            //var studentToBeUpdated = await GetStudent(id);
+            //if (studentToBeUpdated == null)
+            //    return;
             var student = _mapper.Map<Student>(studentDto);
-            _mapper.Map(student, studentToBeUpdated);
+            var studentForUpdate = _mapper.Map<Student>(studentDtoForUpdate);
+            _students.Attach(studentForUpdate);            
+            _mapper.Map(student, studentForUpdate);
             await _unitOfWork.CommitAsync();
         }
 

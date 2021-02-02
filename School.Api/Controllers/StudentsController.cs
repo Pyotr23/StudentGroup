@@ -87,8 +87,8 @@ namespace School.Api.Controllers
         {
             var studentDto = _mapper.Map<StudentDto>(saveStudentResource);
 
-            //var studentDtoToUpdate = _
-            await _studentService.UpdateStudentAsync(id, studentDto);
+            var studentDtoToUpdate = await _studentService.GetStudentByIdAsync(id);
+            await _studentService.UpdateStudentAsync(studentDtoToUpdate, studentDto);
 
             var updatedStudentDto = await _studentService.GetStudentByIdAsync(id);
             if (updatedStudentDto == null)

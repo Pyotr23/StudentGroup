@@ -10,11 +10,11 @@ namespace School.Core.Services
         Task<IEnumerable<FullStudentDto>> GetStudentsWithGroupNamesAsync(StudentFilterParameters filter);
         Task<StudentDto> GetStudentByIdAsync(int id);
         Task<StudentDto> CreateStudentAsync(StudentDto newStudentDto);
-        Task UpdateStudentAsync(int id, StudentDto studentDto);
         Task DeleteStudentAsync(StudentDto studentDto);
         Task<FullStudentDto> GetWithGroupNamesAsync(int id);
         Task<bool> IsUniqueNicknameAsync(string nickname);
         Task<bool> IsUniqueNicknameAsync(string nickname, int id);
         Task<IEnumerable<StudentDto>> GetAllStudentsAsync();
+        Task UpdateStudentAsync(StudentDto studentDtoForUpdate, StudentDto studentDto);
     }
 }
