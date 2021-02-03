@@ -8,8 +8,7 @@ namespace School.Core.Repositories
 {
     public interface IStudentRepository : IRepository<Student>
     {
-        Task<int?> GetIdByNicknameAsync(string nickname);
-        Task<IEnumerable<Student>> GetStudentsWithGroupNamesAsync(StudentFilterParameters filterParameters);
-        Task<bool> IsUniqueNickname(string nickname);
+        Task<IEnumerable<Student>> GetStudentsAsync(StudentFilterParameters filterParameters);
+        Task<bool> IsUniqueNicknameAsync(string nickname);
     }
 }

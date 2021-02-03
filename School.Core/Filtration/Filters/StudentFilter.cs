@@ -31,7 +31,7 @@ namespace School.Core.Filtration.Filters
                 Query = Query.Where(s => s.MiddleName == _filterParameters.MiddleName);
 
             if (!string.IsNullOrEmpty(_filterParameters.Nickname))
-                Query = Query.Where(s => s.Nickname == _filterParameters.Nickname);
+                Query = Query.Where(s => s.Nickname == _filterParameters.Nickname);          
 
             return Query;
         }

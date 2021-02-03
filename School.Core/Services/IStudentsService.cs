@@ -11,10 +11,7 @@ namespace School.Core.Services
         Task<StudentDto> GetStudentByIdAsync(int id);
         Task<StudentDto> CreateStudentAsync(StudentDto newStudentDto);
         Task DeleteStudentAsync(StudentDto studentDto);
-        Task<FullStudentDto> GetWithGroupNamesAsync(int id);
-        Task<bool> IsUniqueNicknameAsync(string nickname);
-        Task<bool> IsUniqueNicknameAsync(string nickname, int id);
-        Task<IEnumerable<StudentDto>> GetAllStudentsAsync();
         Task UpdateStudentAsync(StudentDto studentDtoForUpdate, StudentDto studentDto);
+        Task<bool> IsUniqueNicknameAsync(string nickname);
     }
 }

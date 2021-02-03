@@ -41,24 +41,9 @@ namespace School.Services
 
         public async Task<IEnumerable<FullStudentDto>> GetStudentsWithGroupNamesAsync(StudentFilterParameters filterParameters)
         {
-            var students = await _students.GetStudentsWithGroupNamesAsync(filterParameters);
-
-            //var studentDtoes = students
-            //    .GroupBy(s => s.Student)
-            //    .Select(grouping => _mapper.Map<FullStudentDto>(grouping));
+            var students = await _students.GetStudentsAsync(filterParameters);            
             var studentDtoes = students
-                .Select(s => new FullStudentDto
-                {
-                    Id = s.Id,
-                    Sex = s.Sex,
-                    Name = s.Name,
-                    LastName = s.LastName,
-                    MiddleName = s.MiddleName,
-                    Nickname = s.Nickname,
-                    GroupNamesToString = s.Groups == null
-                        ? string.Empty
-                        : string.Join(", ", s.Groups.Select(g => g.Name))
-                });
+                .Select(student => _mapper.Map<FullStudentDto>(student));
 
             if (filterParameters.PageSize != 0)
                 studentDtoes = studentDtoes.Take(filterParameters.PageSize);
@@ -83,31 +68,7 @@ namespace School.Services
 
         public async Task<bool> IsUniqueNicknameAsync(string nickname)
         {
-            return await _students.IsUniqueNickname(nickname);
-        }
-
-        public async Task<bool> IsUniqueNicknameAsync(string nickname, int id)
-        {
-            var studentId = await _students.GetIdByNicknameAsync(nickname);
-            return studentId == null || studentId == id;
-        }
-
-        private async Task<Student> GetStudent(int id)
-        {
-            return await _students.GetByIdAsync(id);
-        }
-
-        public async Task<IEnumerable<StudentDto>> GetAllStudentsAsync()
-        {
-            var students = await _students.GetAllAsync();
-            return students
-                .Select(s => _mapper.Map<StudentDto>(s))
-                .ToList();
-        }
-
-        public Task<FullStudentDto> GetWithGroupNamesAsync(int id)
-        {
-            throw new System.NotImplementedException();
+            return await _students.IsUniqueNicknameAsync(nickname);
         }
     }
 }

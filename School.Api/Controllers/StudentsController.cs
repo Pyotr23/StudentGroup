@@ -29,20 +29,7 @@ namespace School.Api.Controllers
         {
             _studentService = studentService;
             _mapper = mapper;
-        }
-
-        /// <summary>
-        ///     Получить список всех студентов.
-        /// </summary>
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<StudentResource>>> GetAllStudents()
-        //{
-        //    var dtoes = await _studentService.GetAllStudentsAsync();
-        //    var resources = dtoes
-        //        .Select(dto => _mapper.Map<StudentResource>(dto))
-        //        .ToList();
-        //    return Ok(resources);
-        //}
+        }    
 
         /// <summary>
         ///     Получить студента по идентификатору.
