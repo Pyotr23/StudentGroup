@@ -4,6 +4,7 @@ using School.Core.Filtration.Filters;
 using School.Core.Filtration.Parameters;
 using School.Core.Models;
 using School.Core.Repositories;
+using School.Data.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,16 +24,8 @@ namespace School.Data.Repositories
             return await studentFilter
                 .ApplyFilter()
                 .Include(s => s.Groups)
-                .Where(student => string.IsNullOrEmpty(filterParameters.GroupName)
-                    || student
-                        .Groups
-                        .Any(g => g.Name == filterParameters.GroupName)
-                )               
-                .OrderBy(s => s.Id)
-                .Skip(filterParameters.SkipCount)
-                .Take(filterParameters.PageSize == 0 
-                    ? int.MaxValue
-                    : filterParameters.PageSize)                
+                .FilterByGroupName(filterParameters.GroupName)           
+                .WithPagination(filterParameters)                                
                 .ToListAsync();
         }        
 
