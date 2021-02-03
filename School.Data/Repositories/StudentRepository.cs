@@ -17,8 +17,16 @@ namespace School.Data.Repositories
         public StudentRepository(SchoolDbContext context) : base(context)
         { }
         
-        public async Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNamesAsync(StudentFilterParameters filterParameters)
+        public async Task<IEnumerable<Student>> GetStudentsWithGroupNamesAsync(StudentFilterParameters filterParameters)
         {
+            StudentFilter studentFilter = new(SchoolDbContext.Students, filterParameters);
+            IQueryable<StudentWithGroupName> query;
+            return await studentFilter
+                .ApplyFilter()
+                .Include(s => s.Groups)
+                .ToListAsync();
+                
+
             //var studentFilter = new StudentFilter(SchoolDbContext.Students, filterParameters);
 
             //IQueryable<StudentWithGroupName> query;
@@ -53,7 +61,7 @@ namespace School.Data.Repositories
             //}
 
             //return await query.ToListAsync();
-            return null;
+            //return null;
         }
 
         public async Task<IEnumerable<StudentWithGroupName>> GetStudentsWithGroupNamesAsync(int id)

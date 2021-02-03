@@ -43,27 +43,28 @@ namespace School.Services
         {
             var students = await _students.GetStudentsWithGroupNamesAsync(filterParameters);
 
+            //var studentDtoes = students
+            //    .GroupBy(s => s.Student)
+            //    .Select(grouping => _mapper.Map<FullStudentDto>(grouping));
             var studentDtoes = students
-                .GroupBy(s => s.Student)
-                .Select(grouping => _mapper.Map<FullStudentDto>(grouping));
+                .Select(s => new FullStudentDto
+                {
+                    Id = s.Id,
+                    Sex = s.Sex,
+                    Name = s.Name,
+                    LastName = s.LastName,
+                    MiddleName = s.MiddleName,
+                    Nickname = s.Nickname,
+                    GroupNamesToString = s.Groups == null
+                        ? string.Empty
+                        : string.Join(", ", s.Groups.Select(g => g.Name))
+                });
 
             if (filterParameters.PageSize != 0)
                 studentDtoes = studentDtoes.Take(filterParameters.PageSize);
 
             return studentDtoes.ToList();
-        }
-
-        public async Task<FullStudentDto> GetWithGroupNamesAsync(int id)
-        {
-            //var students = await _students.GetStudentsWithGroupNamesAsync(id);
-            //if (students == null)
-            //    return null;
-            //return students
-            //    .GroupBy(s => s.Student)
-            //    .Select(grouping => _mapper.Map<FullStudentDto>(grouping))
-            //    .FirstOrDefault();
-            return null;
-        }
+        }         
 
         public async Task<StudentDto> GetStudentByIdAsync(int id)
         {
@@ -73,9 +74,6 @@ namespace School.Services
 
         public async Task UpdateStudentAsync(StudentDto studentDtoForUpdate, StudentDto studentDto)
         {
-            //var studentToBeUpdated = await GetStudent(id);
-            //if (studentToBeUpdated == null)
-            //    return;
             var student = _mapper.Map<Student>(studentDto);
             var studentForUpdate = _mapper.Map<Student>(studentDtoForUpdate);
             _students.Attach(studentForUpdate);            
@@ -105,6 +103,11 @@ namespace School.Services
             return students
                 .Select(s => _mapper.Map<StudentDto>(s))
                 .ToList();
+        }
+
+        public Task<FullStudentDto> GetWithGroupNamesAsync(int id)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

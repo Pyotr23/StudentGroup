@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using School.Api.Resources.StudentResources;
 using School.Core.DTOes;
+using School.Core.Filtration.Parameters;
 using School.Core.Services;
 
 namespace School.Api.Controllers
@@ -33,15 +34,15 @@ namespace School.Api.Controllers
         /// <summary>
         ///     Получить список всех студентов.
         /// </summary>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<StudentResource>>> GetAllStudents()
-        {
-            var dtoes = await _studentService.GetAllStudentsAsync();
-            var resources = dtoes
-                .Select(dto => _mapper.Map<StudentResource>(dto))
-                .ToList();
-            return Ok(resources);
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<StudentResource>>> GetAllStudents()
+        //{
+        //    var dtoes = await _studentService.GetAllStudentsAsync();
+        //    var resources = dtoes
+        //        .Select(dto => _mapper.Map<StudentResource>(dto))
+        //        .ToList();
+        //    return Ok(resources);
+        //}
 
         /// <summary>
         ///     Получить студента по идентификатору.
@@ -120,15 +121,15 @@ namespace School.Api.Controllers
         ///     Получить студентов с возможностью фильтрации. 
         /// </summary>
         /// <param name="filterParameters"> Параметры фильтрации. </param>
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<FullStudentResource>>> GetStudents(
-        //    [FromQuery] StudentFilterParameters filterParameters)
-        //{
-        //    var studentDtoes = await _studentService.GetStudentsWithGroupNamesAsync(filterParameters);
-        //    var studentResources = studentDtoes
-        //        .Select(dto => _mapper.Map<FullStudentResource>(dto))
-        //        .ToList();
-        //    return Ok(studentResources);
-        //}                
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<FullStudentResource>>> GetStudents(
+            [FromQuery] StudentFilterParameters filterParameters)
+        {
+            var studentDtoes = await _studentService.GetStudentsWithGroupNamesAsync(filterParameters);
+            var studentResources = studentDtoes
+                .Select(dto => _mapper.Map<FullStudentResource>(dto))
+                .ToList();
+            return Ok(studentResources);
+        }
     }
 }
