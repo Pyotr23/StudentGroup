@@ -32,20 +32,20 @@ namespace School.Api.Controllers
         }
 
         /// <summary>
-        ///     Получить группу с количеством студентов в ней.
+        ///     Получить группу.
         /// </summary>
         /// <param name="id"> Идентификатор группы. </param>
         [HttpGet("{id}")]
-        public async Task<ActionResult<FullGroupResource>> GetGroupById(int id)
+        public async Task<ActionResult<GroupResource>> GetGroupById(int id)
         {
             if (id <= 0)
                 return BadRequest();
 
-            var groupDto = await _groupService.GetWithStudentCount(id);
+            var groupDto = await _groupService.GetGroupById(id);
             if (groupDto == null)
                 return NotFound();
 
-            var groupResource = _mapper.Map<FullGroupResource>(groupDto);
+            var groupResource = _mapper.Map<GroupResource>(groupDto);
             return Ok(groupResource);
         }
 

@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using School.Api.Configurations;
 using School.Api.Extensions;
 using School.Api.Mapping;
+using School.Api.Resources.GroupResources;
 using School.Api.Resources.StudentResources;
 using School.Api.Validators;
 using School.Core;
@@ -55,6 +56,7 @@ namespace School.Api
                 .AddTransient<IGroupsService, GroupsService>()
                 .AddTransient<IStudentsService, StudentsService>()
                 .AddTransient<IValidator<SaveStudentResource>, SaveStudentResourceValidator>()
+                .AddTransient<IValidator<SaveGroupResource>, SaveGroupResourceValidator>()
                 .AddControllers();                
         }
 

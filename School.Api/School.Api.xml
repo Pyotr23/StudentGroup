@@ -11,7 +11,7 @@
         </member>
         <member name="M:School.Api.Controllers.GroupsController.GetGroupById(System.Int32)">
             <summary>
-                Получить группу с количеством студентов в ней.
+                Получить группу.
             </summary>
             <param name="id"> Идентификатор группы. </param>
         </member>
