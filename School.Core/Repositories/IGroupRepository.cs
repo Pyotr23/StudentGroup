@@ -8,7 +8,6 @@ namespace School.Core.Repositories
 {
     public interface IGroupRepository : IRepository<Group>
     {
-        Task<IEnumerable<GroupWithStudentCount>> GetGroupsWithStudentCountAsync(GroupFilterParameters filterParameters);
-        Task<GroupWithStudentCount> GetGroupWithStudentCountAsync(int id);
+        Task<IEnumerable<GroupWithStudentCount>> GetGroupsAsync(GroupFilterParameters filterParameters);
     }
 }

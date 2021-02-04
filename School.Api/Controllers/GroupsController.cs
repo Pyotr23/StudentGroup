@@ -41,7 +41,7 @@ namespace School.Api.Controllers
             if (id <= 0)
                 return BadRequest();
 
-            var groupDto = await _groupService.GetGroupById(id);
+            var groupDto = await _groupService.GetGroupByIdAsync(id);
             if (groupDto == null)
                 return NotFound();
 
@@ -57,8 +57,8 @@ namespace School.Api.Controllers
         public async Task<ActionResult<FullGroupResource>> CreateGroup([FromBody] SaveGroupResource saveGroupResource)
         {
             var groupDtoToCreate = _mapper.Map<GroupDto>(saveGroupResource);
-            var newGroupDto = await _groupService.CreateGroup(groupDtoToCreate);
-            var groupDto = await _groupService.GetGroupById(newGroupDto.Id);
+            var newGroupDto = await _groupService.CreateGroupAsync(groupDtoToCreate);
+            var groupDto = await _groupService.GetGroupByIdAsync(newGroupDto.Id);
             var groupResource = _mapper.Map<GroupResource>(groupDto);
             return Ok(groupResource);
         }
@@ -68,45 +68,42 @@ namespace School.Api.Controllers
         /// </summary>
         /// <param name="id"> Идентификатор обновляемой группы. </param>
         /// <param name="saveGroupResource"> Новое описание группы. </param>
-        //[HttpPut("{id}")]
-        //public async Task<ActionResult<GroupResource>> UpdateGroup(int id,
-        //    [FromBody] SaveGroupResource saveGroupResource)
-        //{
-        //    var validator = new SaveGroupResourceValidator();
-        //    var validationResult = await validator.ValidateAsync(saveGroupResource);
-        //    var isValidRequest = id > 0 && validationResult.IsValid;
-        //    if (!isValidRequest)
-        //        return BadRequest();
+        [HttpPut("{id}")]
+        public async Task<ActionResult<GroupResource>> UpdateGroup(int id,
+            [FromBody] SaveGroupResource saveGroupResource)
+        {                
+            if (id <= 0)
+                return BadRequest();
 
-        //    var groupForUpdate = await _groupService.GetGroupById(id);
-        //    if (groupForUpdate == null)
-        //        return NotFound();
+            var groupDtoForUpdate = await _groupService.GetGroupByIdAsync(id);
+            if (groupDtoForUpdate == null)
+                return NotFound();
 
-        //    var group = _mapper.Map<Group>(saveGroupResource);
-        //    await _groupService.UpdateGroup(groupForUpdate, group);
+            var groupDto = _mapper.Map<GroupDto>(saveGroupResource);
+            await _groupService.UpdateGroupAsync(groupDtoForUpdate, groupDto);
 
-        //    var updatedGroup = await _groupService.GetGroupById(id);
-        //    var updatedGroupResource = _mapper.Map<GroupResource>(updatedGroup);
-        //    return Ok(updatedGroupResource);
-        //}
+            var updatedGroup = await _groupService.GetGroupByIdAsync(id);
+            var updatedGroupResource = _mapper.Map<GroupResource>(updatedGroup);
+            return Ok(updatedGroupResource);
+        }
 
         /// <summary>
         ///     Удалить группу.
         /// </summary>
         /// <param name="id"> Идентификатор группы. </param>
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteGroup(int id)
-        //{
-        //    if (id <= 0)
-        //        return BadRequest();
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteGroup(int id)
+        {
+            if (id <= 0)
+                return BadRequest();
 
-        //    var group = await _groupService.GetGroupById(id);
-        //    if (group == null)
-        //        return NotFound();
+            var groupDto = await _groupService.GetGroupByIdAsync(id);
+            if (groupDto == null)
+                return NotFound();
 
-        //    await _groupService.DeleteGroup(group);
-        //    return NoContent();
-        //}
+            await _groupService.DeleteGroupAsync(groupDto);
+            return NoContent();
+        }
 
         /// <summary>
         ///     Получить группы с возможностью фильтрации. 
@@ -116,7 +113,7 @@ namespace School.Api.Controllers
         public async Task<ActionResult<IEnumerable<FullGroupResource>>> GetGroups(
             [FromQuery] GroupFilterParameters filterParameters)
         {
-            var groupDtoes = await _groupService.GetAll(filterParameters);
+            var groupDtoes = await _groupService.GetAllAsync(filterParameters);
             var groupResources = groupDtoes
                 .Select(dto => _mapper.Map<FullGroupResource>(dto))
                 .ToList();

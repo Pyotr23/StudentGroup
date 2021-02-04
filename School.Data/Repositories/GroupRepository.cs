@@ -24,76 +24,32 @@ namespace School.Data.Repositories
                .FindAsync(id);
         }
 
-        public async Task<GroupWithStudentCount> GetGroupWithStudentCountAsync(int id)
+        public async Task<IEnumerable<GroupWithStudentCount>> GetGroupsAsync(GroupFilterParameters filterParameters)
         {
-            //return await SchoolDbContext
-            //    .Groups
-            //    .GroupJoin(SchoolDbContext.StudentGroups,
-            //        g => g,
-            //        sg => sg.Group,                    
-            //        (g, sges) => new  
-            //        {
-            //            Group = g,
-            //            StudentGroups = sges
-            //        })                   
-            //    .SelectMany(gsges => gsges.StudentGroups.DefaultIfEmpty(),
-            //        (gsges, sg) => new  
-            //        {
-            //            Id = gsges.Group.Id,
-            //            Name = gsges.Group.Name,
-            //            StudentId = sg == null 
-            //                ? (int?)null 
-            //                : sg.StudentId
-            //        })     
-            //    .GroupBy(x => new Group 
-            //    {
-            //        Id = x.Id,
-            //        Name = x.Name
-            //    })
-            //    .Select(grouped => new GroupWithStudentCount 
-            //    { 
-            //        Id = grouped.Key.Id,
-            //        Name = grouped.Key.Name,
-            //        StudentCount = grouped.Count(g => g.StudentId != null)
-            //    })
-            //    .FirstOrDefaultAsync(g => g.Id == id);                   
-            return null;
-        }
+            var groups = await SchoolDbContext
+                .Groups
+                .Include(x => x.Students)
+                .ToListAsync();
 
-        public async Task<IEnumerable<GroupWithStudentCount>> GetGroupsWithStudentCountAsync(GroupFilterParameters filterParameters)
-        {
-            //var filter = new GroupFilter(SchoolDbContext.Groups, filterParameters);
-            //return await filter.ApplyFilter()
-            //    .GroupJoin(SchoolDbContext.StudentGroups,
-            //        g => g,
-            //        sg => sg.Group,
-            //        (g, sges) => new 
-            //        {
-            //            Group = g,
-            //            StudentGroups = sges
-            //        })
-            //    .SelectMany(gsges => gsges.StudentGroups.DefaultIfEmpty(),
-            //        (gsges, sg) => new 
-            //        {
-            //            Id = gsges.Group.Id,
-            //            Name = gsges.Group.Name,
-            //            StudentId = sg == null 
-            //                ? (int?)null 
-            //                : sg.StudentId
-            //        })
-            //    .GroupBy(x => new Group
-            //    {
-            //        Id = x.Id,
-            //        Name = x.Name
-            //    })
-            //    .Select(grouped => new GroupWithStudentCount
-            //    {
-            //        Id = grouped.Key.Id,
-            //        Name = grouped.Key.Name,
-            //        StudentCount = grouped.Count(g => g.StudentId != null)
-            //    })
-            //    .ToListAsync();
-            return null;
+            var filter = new GroupFilter(SchoolDbContext.Groups, filterParameters);
+            return await filter
+                .ApplyFilter()
+                
+                .Include(g => g.Students)
+                //.SelectMany(
+                //    g => g.Students.DefaultIfEmpty(),
+                //    (g, s) => new GroupWithStudentCount
+                //    {
+                //        Group = g,
+                //        StudentCount = g.Students.Count
+                //    }
+                //)
+                .Select(g => new GroupWithStudentCount
+                {
+                    Group = g,
+                    StudentCount = g.Students.Count
+                })
+                .ToListAsync();
         }
     }
 }
