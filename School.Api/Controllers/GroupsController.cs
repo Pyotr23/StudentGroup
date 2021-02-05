@@ -18,16 +18,13 @@ namespace School.Api.Controllers
     public class GroupsController : ControllerBase
     {
         private readonly IGroupsService _groupService;
-        private readonly IStudentsService _studentsService;
         private readonly IMapper _mapper;
         
         public GroupsController(
             IGroupsService groupsService,
-            IStudentsService studentsService,
             IMapper mapper)
         {
             _groupService = groupsService;
-            _studentsService = studentsService;
             _mapper = mapper;
         }
 
@@ -118,43 +115,6 @@ namespace School.Api.Controllers
                 .Select(dto => _mapper.Map<FullGroupResource>(dto))
                 .ToList();
             return Ok(groupResources);
-        }
-
-        /// <summary>
-        ///     Добавить студента в группу.
-        /// </summary>
-        /// <param name="groupId"> Идентификатор группы. </param>
-        /// <param name="studentId"> Идентификатор студента. </param>
-        //[HttpPut("{groupId}/Student/{studentId}")]
-        //public async Task<ActionResult<StudentGroupResource>> AddStudentToGroup(
-        //    int groupId, int studentId)
-        //{
-        //    var isValidRequest = studentId > 0 && groupId > 0;
-        //    if (!isValidRequest)
-        //        return BadRequest();
-
-        //    var studentDto = await _studentsService.GetStudentById(studentId);
-        //    var group = await _groupService.GetGroupById(groupId);
-        //    if (studentDto == null || group == null)
-        //        return NotFound();
-
-        //    var studentGroup = new StudentGroup
-        //    {
-        //        StudentId = studentDto.Id,
-        //        Student = studentDto,
-        //        GroupId = group.Id,
-        //        Group = group
-        //    };
-
-        //    await _studentGroupsService.AddStudentToGroup(studentGroup);
-        //    var fullStudentDto = await _studentsService.GetWithGroupNames(studentId);
-        //    var groupDto = await _groupService.GetWithStudentCount(groupId);
-        //    var studentGroupResource = new StudentGroupResource
-        //    {
-        //        Student = _mapper.Map<StudentResource>(fullStudentDto),
-        //        Group = _mapper.Map<GroupResource>(groupDto)
-        //    };
-        //    return Ok(studentGroupResource);
-        //}
+        }        
     }
 }

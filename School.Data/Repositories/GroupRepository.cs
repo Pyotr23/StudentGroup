@@ -17,33 +17,12 @@ namespace School.Data.Repositories
         public GroupRepository(SchoolDbContext context) : base(context)
         { }
 
-        public async Task<Group> GetByIdAsync(int id)
-        {
-            return await SchoolDbContext
-               .Groups
-               .FindAsync(id);
-        }
-
         public async Task<IEnumerable<GroupWithStudentCount>> GetGroupsAsync(GroupFilterParameters filterParameters)
         {
-            var groups = await SchoolDbContext
-                .Groups
-                .Include(x => x.Students)
-                .ToListAsync();
-
             var filter = new GroupFilter(SchoolDbContext.Groups, filterParameters);
             return await filter
-                .ApplyFilter()
-                
-                .Include(g => g.Students)
-                //.SelectMany(
-                //    g => g.Students.DefaultIfEmpty(),
-                //    (g, s) => new GroupWithStudentCount
-                //    {
-                //        Group = g,
-                //        StudentCount = g.Students.Count
-                //    }
-                //)
+                .ApplyFilter()                
+                .Include(g => g.Students)                
                 .Select(g => new GroupWithStudentCount
                 {
                     Group = g,
