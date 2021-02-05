@@ -76,7 +76,6 @@ namespace School.Services
         public async Task AddStudentToGroupAsync(int studentId, GroupDto groupDto)
         {            
             var student = await _students.GetStudentWithGroupsByIdAsync(studentId);
-            _students.Attach(student);
 
             var group = _mapper.Map<Group>(groupDto);
             if (student.Groups.Contains(group))
@@ -90,6 +89,18 @@ namespace School.Services
         {
             var student = await _students.GetStudentWithGroupsByIdAsync(id);
             return _mapper.Map<FullStudentDto>(student);
+        }
+
+        public async Task DeleteStudentFromGroupAsync(int studentId, GroupDto groupDto)
+        {
+            var student = await _students.GetStudentWithGroupsByIdAsync(studentId);            
+
+            var group = student.Groups.FirstOrDefault(g => g.Id == groupDto.Id);
+            if (group == null)
+                return;
+
+            student.Groups.Remove(group);
+            await _unitOfWork.CommitAsync();
         }
     }
 }

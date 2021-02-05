@@ -92,5 +92,13 @@
             <param name="groupId"> Идентификатор группы. </param>
             <returns></returns>
         </member>
+        <member name="M:School.Api.Controllers.StudentsController.RemoveStudentFromGroup(System.Int32,System.Int32)">
+            <summary>
+                Убрать студента из группы.
+            </summary>
+            <param name="studentId"> Идентификатор студента. </param>
+            <param name="groupId"> Идентификатор группы. </param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

@@ -150,5 +150,32 @@ namespace School.Api.Controllers
             return Ok(resource);
         }
 
+        /// <summary>
+        ///     Убрать студента из группы.
+        /// </summary>
+        /// <param name="studentId"> Идентификатор студента. </param>
+        /// <param name="groupId"> Идентификатор группы. </param>
+        /// <returns></returns>
+        [HttpDelete("{studentId}/Groups/{groupId}")]
+        public async Task<ActionResult<FullStudentResource>> RemoveStudentFromGroup(
+            int studentId, int groupId)
+        {
+            if (studentId <= 0 || groupId <= 0)
+                return BadRequest();
+
+            var studentDto = await _studentService.GetStudentByIdAsync(studentId);
+            if (studentDto == null)
+                return NotFound();
+
+            var groupDto = await _groupService.GetGroupByIdAsync(groupId);
+            if (groupDto == null)
+                return NotFound();
+
+            await _studentService.DeleteStudentFromGroupAsync(studentId, groupDto);
+
+            var fullStudentDto = await _studentService.GetFullStudentInfoAsync(studentId);
+            var resource = _mapper.Map<FullStudentResource>(fullStudentDto);
+            return Ok(resource);
+        }
     }
 }
