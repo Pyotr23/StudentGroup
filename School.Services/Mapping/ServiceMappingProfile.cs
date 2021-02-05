@@ -15,7 +15,7 @@ namespace School.Services.Mapping
 
             CreateMap<Student, FullStudentDto>()
                 .ForMember(dest => dest.GroupNamesToString,
-                    opt => opt.MapFrom(src => string.Join(", ", src.Groups.Select(s => s.Name))));
+                    opt => opt.MapFrom(src => string.Join(", ", src.Groups.Select(s => s.Name))));            
                 
             CreateMap<Student, Student>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());

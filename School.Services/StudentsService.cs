@@ -15,12 +15,14 @@ namespace School.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStudentRepository _students;
+        private readonly IGroupRepository _groups;
         private readonly IMapper _mapper;
 
         public StudentsService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _students = unitOfWork.Students;
+            _groups = unitOfWork.Groups;
             _mapper = mapper;
         }
 
@@ -69,6 +71,25 @@ namespace School.Services
         public async Task<bool> IsUniqueNicknameAsync(string nickname)
         {
             return await _students.IsUniqueNicknameAsync(nickname);
+        }
+
+        public async Task AddStudentToGroupAsync(int studentId, GroupDto groupDto)
+        {            
+            var student = await _students.GetStudentWithGroupsByIdAsync(studentId);
+            _students.Attach(student);
+
+            var group = _mapper.Map<Group>(groupDto);
+            if (student.Groups.Contains(group))
+                return;
+
+            student.Groups.Add(group);
+            await _unitOfWork.CommitAsync();
+        }
+
+        public async Task<FullStudentDto> GetFullStudentInfoAsync(int id)
+        {
+            var student = await _students.GetStudentWithGroupsByIdAsync(id);
+            return _mapper.Map<FullStudentDto>(student);
         }
     }
 }

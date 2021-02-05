@@ -18,16 +18,19 @@ namespace School.Api.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly IStudentsService _studentService;
+        private readonly IGroupsService _groupService;
         private readonly IMapper _mapper;
 
         /// <summary>
         ///     Конструктор контроллера Student.
         /// </summary>
         /// <param name="studentService"> Сервис для управления студентами. </param>
+        /// <param name="groupService"> Сурвис для управления группами. </param>
         /// <param name="mapper"> Интерфейс маппера. </param>
-        public StudentsController(IStudentsService studentService, IMapper mapper)
+        public StudentsController(IStudentsService studentService, IGroupsService groupService, IMapper mapper)
         {
             _studentService = studentService;
+            _groupService = groupService;
             _mapper = mapper;
         }    
 
@@ -118,5 +121,34 @@ namespace School.Api.Controllers
                 .ToList();
             return Ok(studentResources);
         }
+
+        /// <summary>
+        ///     Добавить студента в группу.
+        /// </summary>
+        /// <param name="studentId"> Идентификатор студента. </param>
+        /// <param name="groupId"> Идентификатор группы. </param>
+        /// <returns></returns>
+        [HttpPut("{studentId}/Groups/{groupId}")]
+        public async Task<ActionResult<FullStudentResource>> AddStudentToGroup(
+            int studentId, int groupId)
+        {
+            if (studentId <= 0 || groupId <= 0)
+                return BadRequest();
+
+            var studentDto = await _studentService.GetStudentByIdAsync(studentId);
+            if (studentDto == null)
+                return NotFound();
+
+            var groupDto = await _groupService.GetGroupByIdAsync(groupId);
+            if (groupDto == null)
+                return NotFound();
+
+            await _studentService.AddStudentToGroupAsync(studentId, groupDto);
+
+            var fullStudentDto = await _studentService.GetFullStudentInfoAsync(studentId);
+            var resource = _mapper.Map<FullStudentResource>(fullStudentDto);
+            return Ok(resource);
+        }
+
     }
 }

@@ -45,11 +45,12 @@
                 Контроллер для управления студентами.
             </summary>
         </member>
-        <member name="M:School.Api.Controllers.StudentsController.#ctor(School.Core.Services.IStudentsService,AutoMapper.IMapper)">
+        <member name="M:School.Api.Controllers.StudentsController.#ctor(School.Core.Services.IStudentsService,School.Core.Services.IGroupsService,AutoMapper.IMapper)">
             <summary>
                 Конструктор контроллера Student.
             </summary>
             <param name="studentService"> Сервис для управления студентами. </param>
+            <param name="groupService"> Сурвис для управления группами. </param>
             <param name="mapper"> Интерфейс маппера. </param>
         </member>
         <member name="M:School.Api.Controllers.StudentsController.GetStudentById(System.Int32)">
@@ -82,6 +83,14 @@
                 Получить студентов с возможностью фильтрации. 
             </summary>
             <param name="filterParameters"> Параметры фильтрации. </param>
+        </member>
+        <member name="M:School.Api.Controllers.StudentsController.AddStudentToGroup(System.Int32,System.Int32)">
+            <summary>
+                Добавить студента в группу.
+            </summary>
+            <param name="studentId"> Идентификатор студента. </param>
+            <param name="groupId"> Идентификатор группы. </param>
+            <returns></returns>
         </member>
     </members>
 </doc>

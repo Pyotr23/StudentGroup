@@ -35,5 +35,13 @@ namespace School.Data.Repositories
                     .Students
                     .AnyAsync(s => s.Nickname == nickname);
         }
+
+        public async Task<Student> GetStudentWithGroupsByIdAsync(int id)
+        {
+            return await SchoolDbContext
+                .Students
+                .Include(s => s.Groups)
+                .FirstOrDefaultAsync(s => s.Id == id);
+        }
     }
 }
