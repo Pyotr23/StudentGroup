@@ -15,6 +15,6 @@ namespace School.Core.Services
         Task<bool> IsUniqueNicknameAsync(string nickname);
         Task AddStudentToGroupAsync(int studentId, GroupDto groupDto);
         Task<FullStudentDto> GetFullStudentInfoAsync(int id);
-        Task DeleteStudentFromGroupAsync(int studentId, GroupDto groupDto);
+        Task DeleteStudentFromGroupAsync(int studentId, int groupId);
     }
 }

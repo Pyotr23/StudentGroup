@@ -171,7 +171,7 @@ namespace School.Api.Controllers
             if (groupDto == null)
                 return NotFound();
 
-            await _studentService.DeleteStudentFromGroupAsync(studentId, groupDto);
+            await _studentService.DeleteStudentFromGroupAsync(studentId, groupId);
 
             var fullStudentDto = await _studentService.GetFullStudentInfoAsync(studentId);
             var resource = _mapper.Map<FullStudentResource>(fullStudentDto);

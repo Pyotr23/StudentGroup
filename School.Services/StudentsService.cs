@@ -91,14 +91,15 @@ namespace School.Services
             return _mapper.Map<FullStudentDto>(student);
         }
 
-        public async Task DeleteStudentFromGroupAsync(int studentId, GroupDto groupDto)
+        public async Task DeleteStudentFromGroupAsync(int studentId, int groupId)
         {
             var student = await _students.GetStudentWithGroupsByIdAsync(studentId);            
-
-            var group = student.Groups.FirstOrDefault(g => g.Id == groupDto.Id);
+            
+            var group = student.Groups.FirstOrDefault(g => g.Id == groupId);            
             if (group == null)
                 return;
 
+            _groups.Attach(group);
             student.Groups.Remove(group);
             await _unitOfWork.CommitAsync();
         }
