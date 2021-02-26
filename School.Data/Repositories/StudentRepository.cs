@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using School.Core.DTOes;
 using School.Core.Filtration.Filters;
 using School.Core.Filtration.Parameters;
 using School.Core.Models;
 using School.Core.Repositories;
 using School.Data.Extensions;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace School.Data.Repositories
