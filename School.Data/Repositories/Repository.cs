@@ -12,7 +12,8 @@ namespace School.Data.Repositories
         public Repository(DbContext context)
         {
             Context = context;
-            Context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            if (Context.ChangeTracker != null)
+                Context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public async Task AddAsync(TEntity entity)
