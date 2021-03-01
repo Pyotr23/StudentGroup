@@ -3,6 +3,7 @@ using Moq;
 using NSubstitute;
 using NUnit.Framework;
 using School.Core.Models;
+using School.Core.Repositories;
 using School.Data.Repositories;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,64 +17,23 @@ namespace School.Data.Tests.Unit.Repositories
         [Test]
         public async Task AddAsync()
         {
-            //var studentRepository = Substitute.For<StudentRepository>();
-            //var student = new Student() 
-            //{
-            //    Id = 1
-            //};
+            var options = new DbContextOptionsBuilder<SchoolDbContext>()
+                .UseInMemoryDatabase("test")
+                .Options;
 
-            //await studentRepository.AddAsync(student);
+            var context = Substitute.For<SchoolDbContext>(options);
+            setDbSet(context, new List<Student>());
+            var repository = Substitute.For<StudentRepository>(context);
 
-            //Assert.AreSame(student, await studentRepository.GetByIdAsync(1));
+            //var fakeUnitOfWork = Substitute.For<UnitOfWork>(context);
 
-
-
-            //var students = new List<Student>().AsQueryable();
-
-            //var mockSet = Substitute.For<DbSet<Student>, IQueryable<Student>>();
-
-            //// setup all IQueryable methods using what you have from "data"
-            //((IQueryable<Student>)mockSet).Provider.Returns(students.Provider);
-            //((IQueryable<Student>)mockSet).Expression.Returns(students.Expression);
-            //((IQueryable<Student>)mockSet).ElementType.Returns(students.ElementType);
-            //((IQueryable<Student>)mockSet).GetEnumerator().Returns(students.GetEnumerator());
-            //var options = Substitute.For<DbContextOptions<SchoolDbContext>>();
-            //var dbContextMock = Substitute.For<SchoolDbContext>(options);
-            //dbContextMock.Set<Student>().Returns(mockSet);
-
-            //// Act
-            //var actors = Substitute.For<StudentRepository>(dbContextMock);
-            //var data = await actors.GetStudentsAsync(new Core.Filtration.Parameters.StudentFilterParameters());
-
-            //// Assert
-            //Assert.IsTrue(data.Count() == 0);
-
-
-
-            //var students = new List<Student>();
-            ////var options = Substitute.For<DbContextOptions<SchoolDbContext>>();
-            ////var options = new DbContextOptions<SchoolDbContext>();
-            //var context = Substitute.For<SchoolDbContext>();
-            //context.Students.AddRange(students);
-            //var studentRepository = new StudentRepository(context);
-            //var student = new Student()
-            //{
-            //    Id = 1
-            //};
-
-            //await studentRepository.AddAsync(student);
-
-            //Assert.AreSame(student, await studentRepository.GetByIdAsync(1));
-
-            var dbMoq = new Mock<SchoolDbContext>();
-            dbMoq.Setup(p => p.Students).Returns(GetQueryableMockDbSet(new List<Student>()));            
-            var context = dbMoq.Object;
-
-            var repository = new Mock<StudentRepository>(context).Object;
-
-            await repository.AddAsync(new Student());
-
-            Assert.AreEqual(1, context.Students.Count());
+            //await repository.AddAsync(new Student());            
+            //await fakeUnitOfWork.CommitAsync();
+            var students = await repository.GetAllAsync();
+            
+            //Assert.AreEqual(1, context.Set<Student>());
+            Assert.AreEqual(1, students.Count());
+            
         }
 
         public DbSet<T> GetQueryableMockDbSet<T>(List<T> sourceList) where T : class
@@ -86,6 +46,24 @@ namespace School.Data.Tests.Unit.Repositories
             dbSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => queryable.GetEnumerator());
             dbSet.Setup(d => d.Add(It.IsAny<T>())).Callback<T>((s) => sourceList.Add(s));
             return dbSet.Object;
+        }
+
+        public static void setDbSet<T>(DbContext dbContext, IEnumerable<T> data = null)
+            where T : class
+        {
+            var dbSet = Substitute.For<DbSet<T>, IQueryable<T>>();
+
+            if (data != null)
+            {
+                var queryable = data.AsQueryable();
+                ((IQueryable<T>)dbSet).Provider.Returns(queryable.Provider);
+                ((IQueryable<T>)dbSet).Expression.Returns(queryable.Expression);
+                ((IQueryable<T>)dbSet).ElementType.Returns(queryable.ElementType);
+                ((IQueryable<T>)dbSet).GetEnumerator().Returns(queryable.GetEnumerator());
+                ((IQueryable<T>)dbSet).AsNoTracking().Returns(queryable);
+            }
+
+            dbContext.Set<T>().Returns(dbSet);
         }
     }
 }
