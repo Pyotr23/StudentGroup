@@ -5,6 +5,7 @@ using NUnit.Framework;
 using School.Core.Models;
 using School.Core.Repositories;
 using School.Data.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,26 +15,68 @@ namespace School.Data.Tests.Unit.Repositories
     [TestFixture]
     public class StudentRepositoryTests
     {
+        //[Test]
+        //public async Task AddAsync()
+        //{
+        //    var dbContextMock = new Mock<SchoolDbContext>();
+        //    var dbSetMock = new Mock<DbSet<Student>>();
+        //    dbSetMock.Setup(s => s.(It.IsAny<int>())).Returns();
+        //    dbContextMock.Setup(s => s.Set<Student>()).Returns(dbSetMock.Object);
+
+        //    //Execute method of SUT (ProductsRepository)  
+        //    var productRepository = new StudentRepository(dbContextMock.Object);
+        //    var product = await productRepository.GetByIdAsync(6);
+
+        //    //Assert  
+        //    Assert.NotNull(product);
+        //    Assert.IsAssignableFrom<Student>(product);
+
+        //}
+
         [Test]
-        public async Task AddAsync()
+        public async Task BlogRepository_Searches_Posts_By_Authors_Surname()
+        {
+            IStudentRepository repo = new StudentRepository(GetMockContext());
+
+            var posts =  await repo.GetByIdAsync(1);
+
+            Assert.AreEqual(1, posts.Id);
+        }
+
+        [Test]
+        public async Task BlogRepository_Searches_Posts_By_Authors_Surname2()
+        {
+            var context = GetMockContext();
+            IStudentRepository repo = new StudentRepository(context);
+
+            await repo.AddAsync(new()
+            {
+                Id = 2
+            });
+            context.SaveChanges();
+
+            var res = await repo.GetByIdAsync(2);
+
+            Assert.AreEqual(2, res.Id);
+        }
+
+
+        private SchoolDbContext GetMockContext()
         {
             var options = new DbContextOptionsBuilder<SchoolDbContext>()
-                .UseInMemoryDatabase("test")
-                .Options;
+                              .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                              .Options;
 
-            var context = Substitute.For<SchoolDbContext>(options);
-            setDbSet(context, new List<Student>());
-            var repository = Substitute.For<StudentRepository>(context);
+            var context = new SchoolDbContext(options);
 
-            //var fakeUnitOfWork = Substitute.For<UnitOfWork>(context);
+            context.Students.Add(new()
+            {
+                Id = 1
+            });
 
-            //await repository.AddAsync(new Student());            
-            //await fakeUnitOfWork.CommitAsync();
-            var students = await repository.GetAllAsync();
-            
-            //Assert.AreEqual(1, context.Set<Student>());
-            Assert.AreEqual(1, students.Count());
-            
+            context.SaveChanges();
+
+            return context;
         }
 
         public DbSet<T> GetQueryableMockDbSet<T>(List<T> sourceList) where T : class
