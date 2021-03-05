@@ -15,6 +15,12 @@ namespace School.Data.Tests.Unit.Repositories
     [TestFixture]
     public class RepositoryTests
     {
+        private const string TestName = "TestName";
+        private const string TestLastName = "TestLastName";
+        private const string TestMiddleName = "TestMiddleName";
+        private const string TestNickname = "TestNickname";
+        private const string TestSex = "TestSex";
+
         [Test]
         public async Task GetByIdAsync_StudentExists_GetTheSame()
         {
@@ -91,6 +97,66 @@ namespace School.Data.Tests.Unit.Repositories
             var receivedStudents = await repo.GetAllAsync();
 
             Assert.AreEqual(0, receivedStudents.Count());
+        }
+
+        [Test]
+        public async Task AddAsync_StudentNotNull_PropertiesAreEqual()
+        {
+            var students = new List<Student> {
+                new()
+                {
+                    Id = 1
+                }
+            };
+            var context = await GetMockContextAsync(students);
+            IStudentRepository repo = new StudentRepository(context);
+            var studentForAdding = new Student
+            {
+                Name = TestName,
+                LastName = TestLastName,
+                MiddleName = TestMiddleName,
+                Nickname = TestNickname,
+                Sex = TestSex
+            };
+
+            await repo.AddAsync(studentForAdding);
+            await context.SaveChangesAsync();
+
+            var addedStudent = context
+                .Students
+                .AsEnumerable()
+                .LastOrDefault();
+
+            Assert.AreEqual(TestName, addedStudent.Name);
+            Assert.AreEqual(TestLastName, addedStudent.LastName);
+            Assert.AreEqual(TestMiddleName, addedStudent.MiddleName);
+            Assert.AreEqual(TestNickname, addedStudent.Nickname);
+            Assert.AreEqual(TestSex, addedStudent.Sex);
+        }
+
+        [Test]
+        public async Task AddAsync_StudentNotNull_IncrementedId()
+        {
+            var students = new List<Student> 
+            {
+                new()
+                {
+                    Id = 2
+                }
+            };
+            var context = await GetMockContextAsync(students);
+            IStudentRepository repo = new StudentRepository(context);
+            var studentForAdding = new Student();
+
+            await repo.AddAsync(studentForAdding);
+            await context.SaveChangesAsync();
+
+            var addedStudent = context
+                .Students
+                .AsEnumerable()
+                .LastOrDefault();
+
+            Assert.AreEqual(3, addedStudent.Id);
         }
 
         private async Task<SchoolDbContext> GetMockContextAsync(IEnumerable<Student> students)
