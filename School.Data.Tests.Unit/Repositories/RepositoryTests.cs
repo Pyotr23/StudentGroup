@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Moq;
-using NSubstitute;
 using NUnit.Framework;
 using School.Core.Models;
 using School.Core.Repositories;
@@ -157,6 +155,27 @@ namespace School.Data.Tests.Unit.Repositories
                 .LastOrDefault();
 
             Assert.AreEqual(3, addedStudent.Id);
+        }
+
+        [Test]
+        public async Task Remove_StidentExists_NoStudentById()
+        {
+            var studentForRemove = new Student
+            {
+                Id = 2
+            };
+            var students = new List<Student>
+            {
+                studentForRemove
+            };
+            var context = await GetMockContextAsync(students);
+            IStudentRepository repo = new StudentRepository(context);
+
+            repo.Remove(studentForRemove);
+            await context.SaveChangesAsync();
+            var removedStudent = await repo.GetByIdAsync(studentForRemove.Id);
+
+            Assert.IsNull(removedStudent);
         }
 
         private async Task<SchoolDbContext> GetMockContextAsync(IEnumerable<Student> students)
