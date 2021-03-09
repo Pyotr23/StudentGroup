@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
+using School.Core.Filtration.Parameters;
 using School.Core.Models;
 using School.Core.Repositories;
 using School.Data.Repositories;
@@ -18,6 +19,8 @@ namespace School.Data.Tests.Unit.Repositories
         private const string TestMiddleName = "TestMiddleName";
         private const string TestNickname = "TestNickname";
         private const string TestSex = "TestSex";
+
+        #region Тестирование методов родительского класса
 
         [Test]
         public async Task GetByIdAsync_StudentExists_GetTheSame()
@@ -176,6 +179,97 @@ namespace School.Data.Tests.Unit.Repositories
             var removedStudent = await repo.GetByIdAsync(studentForRemove.Id);
 
             Assert.IsNull(removedStudent);
+        }
+
+        #endregion
+
+        [Test]
+        public async Task GetAllStudents_AddThreeStudents_NotNullThreeStudents()
+        {
+            var students = new List<Student>
+            {
+                new()
+                {
+                    Id = 1
+                },
+                new()
+                {
+                    Id = 2
+                },
+                new()
+                {
+                    Id = 3
+                }
+            };
+
+            var context = await GetMockContextAsync(students);
+            IStudentRepository repo = new StudentRepository(context);
+
+            var studentsInDb = await repo.GetStudentsAsync(new StudentFilterParameters());
+
+            Assert.IsNotNull(studentsInDb.FirstOrDefault(s => s.Id == 1));
+            Assert.IsNotNull(studentsInDb.FirstOrDefault(s => s.Id == 2));
+            Assert.IsNotNull(studentsInDb.FirstOrDefault(s => s.Id == 3));
+        }
+
+        [Test]
+        public async Task IsUniqueNicknameAsync_UniqueNickname_ReturnTrue()
+        {
+            var context = await GetMockContextAsync(new List<Student>());
+            IStudentRepository repo = new StudentRepository(context);
+
+            var isUnique = await repo.IsUniqueNicknameAsync("Unique");
+
+            Assert.IsTrue(isUnique);
+        }
+
+        [Test]
+        public async Task IsUniqueNicknameAsync_NotUniqueNickname_ReturnFalse()
+        {
+            var students = new List<Student>
+            {
+                new()
+                {
+                    Nickname = "NotUnique"
+                }
+            };
+            var context = await GetMockContextAsync(students);
+            IStudentRepository repo = new StudentRepository(context);
+
+            var isUnique = await repo.IsUniqueNicknameAsync("NotUnique");
+
+            Assert.IsFalse(isUnique);
+        }
+
+        [Test]
+        public async Task GetStudentWithGroupsByIdAsync_HasGroups_GroupCountsAreEqual()
+        {
+            var groups = new List<Group>()
+            {
+                new()
+                {
+                    Id = 1
+                },
+                new()
+                {
+                    Id = 2
+                }
+            };
+            var students = new List<Student>
+            {
+                new()
+                {
+                    Id = 1,
+                    Groups = groups
+                }
+            };
+            var context = await GetMockContextAsync(students);
+            IStudentRepository repo = new StudentRepository(context);
+
+            var resultStudent = await repo.GetStudentWithGroupsByIdAsync(1);
+            var resultGroups = resultStudent.Groups;
+            Assert.AreEqual(1, resultStudent.Id);
+            Assert.AreEqual(groups.Count, resultGroups.Count);
         }
 
         private async Task<SchoolDbContext> GetMockContextAsync(IEnumerable<Student> students)
