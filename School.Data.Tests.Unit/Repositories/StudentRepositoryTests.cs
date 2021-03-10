@@ -1,10 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using School.Core.Filtration.Parameters;
 using School.Core.Models;
 using School.Core.Repositories;
 using School.Data.Repositories;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +10,7 @@ using System.Threading.Tasks;
 namespace School.Data.Tests.Unit.Repositories
 {
     [TestFixture]
-    public class RepositoryTests
+    public class StudentRepositoryTests : BaseRepositoryTests<Student>
     {
         private const string TestName = "TestName";
         private const string TestLastName = "TestLastName";
@@ -20,7 +18,7 @@ namespace School.Data.Tests.Unit.Repositories
         private const string TestNickname = "TestNickname";
         private const string TestSex = "TestSex";
 
-        #region Тестирование методов родительского класса
+        #region Тестирование методов родительского класса (CRUD)
 
         [Test]
         public async Task GetByIdAsync_StudentExists_GetTheSame()
@@ -270,21 +268,6 @@ namespace School.Data.Tests.Unit.Repositories
             var resultGroups = resultStudent.Groups;
             Assert.AreEqual(1, resultStudent.Id);
             Assert.AreEqual(groups.Count, resultGroups.Count);
-        }
-
-        private async Task<SchoolDbContext> GetMockContextAsync(IEnumerable<Student> students)
-        {
-            var options = new DbContextOptionsBuilder<SchoolDbContext>()
-                              .UseInMemoryDatabase(Guid.NewGuid().ToString())
-                              .Options;
-
-            var context = new SchoolDbContext(options);
-
-            await context.Students.AddRangeAsync(students);
-
-            context.SaveChanges();
-
-            return context;
         }
     }
 }
